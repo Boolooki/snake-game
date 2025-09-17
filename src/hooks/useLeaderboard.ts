@@ -1,15 +1,15 @@
-// src/hooks/useLeaderboard.ts
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { LeaderboardEntry } from '../types';
 
-export const useLeaderboard = () => {
-  const [data, setData] = useState<[]>([]);
+export function useLeaderboard() {
+  const [data, setData] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch('/api/getLeaderboard')
       .then((res) => res.json())
-      .then((json) => {
+      .then((json: LeaderboardEntry[]) => {
         setData(json);
         setLoading(false);
       })
@@ -20,4 +20,4 @@ export const useLeaderboard = () => {
   }, []);
 
   return { data, loading, error };
-};
+}

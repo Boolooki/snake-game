@@ -4,3 +4,10 @@ export type Position = {
 };
 
 export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
+
+export type LeaderboardEntry = {
+  username: string;
+  score: number;
+  duration: number;
+  powerupsUsed?: string[];
+};
