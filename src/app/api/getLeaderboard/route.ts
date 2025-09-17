@@ -11,8 +11,8 @@ export async function GET() {
       .limit(10);
 
     return NextResponse.json(topScores);
-  } catch (err: any) {
-    console.error('GetLeaderboard error:', err.message);
+  } catch (err) {
+    console.error('GetLeaderboard error:', err);
     return NextResponse.json({ error: 'Database error' }, { status: 500 });
   }
 }

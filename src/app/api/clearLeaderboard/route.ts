@@ -8,8 +8,8 @@ export async function DELETE() {
     await connectDB();
     await Leaderboard.deleteMany({});
     return NextResponse.json({ success: true });
-  } catch (err: any) {
-    console.error('ClearLeaderboard error:', err.message);
+  } catch (err) {
+    console.error('ClearLeaderboard error:', err);
     return NextResponse.json({ error: 'Database error' }, { status: 500 });
   }
 }

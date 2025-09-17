@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 export const useLeaderboard = () => {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
