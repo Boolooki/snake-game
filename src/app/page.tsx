@@ -42,12 +42,13 @@ export default function Home() {
         <div className="fixed inset-0 bg-green-300 bg-opacity-60 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded shadow text-center">
             <h2 className="text-lg font-bold mb-4">Enter your name to start</h2>
+            
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="px-3 py-2 border rounded w-64 text-center mb-4"
-              placeholder="Your name"
+              placeholder="Maximum 10 character"
             />
             <button
               onClick={() => {
@@ -58,6 +59,7 @@ export default function Home() {
               Start Game
             </button>
           </div>
+          
         </div>
       )}
 

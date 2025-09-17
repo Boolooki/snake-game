@@ -5,9 +5,19 @@ import Leaderboard from '../../models/Leaderboard';
 export async function POST(request: Request) {
   const body = await request.json();
   const { username, score, duration, powerupsUsed } = body;
+  console.log("User:",username,"Score",score,"Duration",duration)
 
-  if (!username || typeof score !== 'number') {
-    return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+  if (
+    typeof username !== 'string' ||
+    username.trim().length === 0 ||
+    username.length > 10 ||
+    /<script.*?>.*?<\/script>/i.test(username) || // crude XSS check
+    typeof score !== 'number' ||
+    score < 0 || score > 401 ||
+    typeof duration !== 'number' ||
+    duration < 0 || duration > 120000
+  ) {
+    return NextResponse.json({ error: 'Invalid payload' }, { status: 400 },);
   }
 
   try {
@@ -29,8 +39,8 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error('SubmitScore error:', err);
+  } catch (err: any) {
+    console.error('SubmitScore error:', err.message);
     return NextResponse.json({ error: 'Database error' }, { status: 500 });
   }
 }
