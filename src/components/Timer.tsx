@@ -6,17 +6,17 @@ export default function Timer({
   isGameOver,
   isPaused,
   triggerReset,
+  onTimeUpdate,
 }: {
   isGameOver: boolean;
   isPaused: boolean;
   triggerReset: boolean;
+  onTimeUpdate: (seconds: number) => void;
 }) {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-
     if (isPaused || isGameOver) return;
-
     else if (triggerReset) {
       setSeconds(0);
       return;
@@ -27,7 +27,11 @@ export default function Timer({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isPaused, isGameOver , triggerReset]);
+  }, [isPaused, isGameOver, triggerReset]);
+
+  useEffect(() => {
+    onTimeUpdate?.(seconds);
+  }, [seconds]);
 
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60);

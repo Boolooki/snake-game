@@ -7,29 +7,47 @@ import {
   INITIAL_ENERGYSHIELD,
   INITIAL_SPEEDBURST,
 } from "../constants/gameConstants";
-import { randomPos, isCollision, isOutOfBounds } from "../utils/gameUtils";
+import {
+  getSafeRandomPos,
+  isCollision,
+  isOutOfBounds,
+} from "../utils/gameUtils";
 
 export const useSnakeGame = () => {
   const [direction, setDirection] = useState<Direction>("RIGHT");
   const [snake, setSnake] = useState<Position[]>(INITIAL_SNAKE);
+
   const [food, setFood] = useState<Position>(INITIAL_FOOD);
   const [energyShield, setEnergyShield] =
     useState<Position>(INITIAL_ENERGYSHIELD);
   const [speedBurst, setSpeedBurst] = useState<Position>(INITIAL_SPEEDBURST);
   const [bomb, setBomb] = useState<Position[]>([]);
   const [score, setScore] = useState<number>(0);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [playTime, setPlayTime] = useState(0);
+  const [username, setUsername] = useState('');
+
+  const [isPaused, setIsPaused] = useState<boolean>(true);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [isEnergyShield, setIsEnergyShield] = useState<boolean>(false);
   const [isSpeedBurst, setIsSpeedBurst] = useState<boolean>(false);
   const [triggerReset, setTriggerReset] = useState<boolean>(false);
-  
+  const [hasStarted, setHasStarted] = useState(false);
 
   const inputBuffer = useRef<Direction>("RIGHT");
 
+  const exclude: Position[] = [
+    ...snake,
+    food,
+    energyShield,
+    speedBurst,
+    ...bomb,
+  ];
+
   const spawnBombs = useCallback(() => {
-    const count = Math.floor(Math.random() * 3) + 1; // 1–3 ลูก
-    const newBomb = Array.from({ length: count }, () => randomPos());
+    const count = Math.floor(Math.random() * 7) + 1; // 1–7 ลูก
+    const newBomb = Array.from({ length: count }, () =>
+      getSafeRandomPos(exclude)
+    );
     setBomb(newBomb);
   }, []);
 
@@ -121,20 +139,20 @@ export const useSnakeGame = () => {
       });
 
       if (head.x === food.x && head.y === food.y) {
-        setFood(randomPos());
+        setFood(getSafeRandomPos(exclude));
         setScore((prev) => prev + 1);
         spawnBombs(); // สุ่มระเบิดใหม่
         return newSnake;
       }
 
       if (head.x === energyShield.x && head.y === energyShield.y) {
-        setEnergyShield(randomPos());
+        setEnergyShield(getSafeRandomPos(exclude));
         setIsEnergyShield(true);
         return utilSnake;
       }
 
       if (head.x === speedBurst.x && head.y === speedBurst.y) {
-        setSpeedBurst(randomPos());
+        setSpeedBurst(getSafeRandomPos(exclude));
         setIsSpeedBurst(true);
         setTimeout(() => {
           setIsSpeedBurst(false);
@@ -204,12 +222,28 @@ export const useSnakeGame = () => {
     return () => clearInterval(interval);
   }, [moveSnake, isPaused, isGameOver]);
 
+  useEffect(() => {
+  if (isGameOver) {
+    fetch('/api/submitScore', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: username || 'Anonymous',
+        score,
+        duration: playTime * 1000,
+        powerupsUsed: "test",
+      }),
+    });
+  }
+}, [isGameOver]);
+
+
   const resetGame = useCallback(() => {
     setSnake(INITIAL_SNAKE);
-    setEnergyShield(INITIAL_ENERGYSHIELD);
+    setEnergyShield(getSafeRandomPos(exclude));
     setDirection("RIGHT");
     inputBuffer.current = "RIGHT";
-    setFood(randomPos());
+    setFood(getSafeRandomPos(exclude));
     spawnBombs();
     setScore(0);
     setIsGameOver(false);
@@ -236,5 +270,10 @@ export const useSnakeGame = () => {
     direction,
     inputBuffer, // ถ้าใช้ ref
     triggerReset,
+    setPlayTime,
+    username,
+    setUsername,
+    hasStarted,
+    setHasStarted,
   };
 };

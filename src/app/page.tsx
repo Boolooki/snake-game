@@ -4,6 +4,7 @@ import React from "react";
 import { useSnakeGame } from "../hooks/useSnakeGame";
 import Board from "../components/Board";
 import Score from "../components/Score";
+import LeaderboardScore from "../components/Leaderboard";
 import {
   ArrowPathIcon,
   PauseIcon,
@@ -27,15 +28,48 @@ export default function Home() {
     energyShield,
     speedBurst,
     bomb,
+    username,
+    setUsername,
     triggerReset,
+    setPlayTime,
+    hasStarted,
+    setHasStarted,
   } = useSnakeGame();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-100 p-4">
+      {!hasStarted && (
+        <div className="fixed inset-0 bg-green-300 bg-opacity-60 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow text-center">
+            <h2 className="text-lg font-bold mb-4">Enter your name to start</h2>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="px-3 py-2 border rounded w-64 text-center mb-4"
+              placeholder="Your name"
+            />
+            <button
+              onClick={() => {
+                if (username.trim()) setHasStarted(true);
+              }}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+              Start Game
+            </button>
+          </div>
+        </div>
+      )}
+
       <h1 className="text-3xl font-bold">Snake Game</h1>
       <div className="flex mt-2 space-x-4">
         <Score value={score} />
-        <Timer isPaused={isPaused} isGameOver={isGameOver} triggerReset={triggerReset} />
+        <Timer
+          isGameOver={isGameOver}
+          isPaused={isPaused}
+          triggerReset={triggerReset}
+          onTimeUpdate={(sec) => setPlayTime(sec)}
+        />
       </div>
 
       <div className={`flex mt-4 mb-4 ${isGameOver ? "" : "space-x-4"}`}>
@@ -52,6 +86,7 @@ export default function Home() {
             <PauseIcon className="w-5 h-5" />
           )}
         </button>
+        <LeaderboardScore />
       </div>
       <Board
         snake={snake}
