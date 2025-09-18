@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { formatTime } from "@/utils/gameUtils";
 
 export default function Timer({
   isGameOver,
@@ -32,12 +33,6 @@ export default function Timer({
   useEffect(() => {
     onTimeUpdate?.(seconds);
   }, [seconds]);
-
-  const formatTime = (sec: number) => {
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-  };
 
   return (
     <div className="text-xl font-bold text-center mt-4">

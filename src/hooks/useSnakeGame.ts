@@ -230,7 +230,7 @@ export const useSnakeGame = () => {
       body: JSON.stringify({
         username: username || 'Anonymous',
         score,
-        duration: playTime * 1000,
+        duration: playTime,
         powerupsUsed: "test",
       }),
     });

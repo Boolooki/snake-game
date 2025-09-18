@@ -27,3 +27,9 @@ export function isOutOfBounds(head?: Position): boolean {
   return head.x < 1 || head.x > GRID_SIZE || head.y < 1 || head.y > GRID_SIZE;
 }
 
+export function formatTime(sec: number) {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  };
+

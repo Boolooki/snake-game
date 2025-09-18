@@ -1,17 +1,8 @@
 import { useLeaderboard } from "../hooks/useLeaderboard";
+import { formatTime } from "@/utils/gameUtils";
 
 export default function LeaderboardModal({ onClose }: { onClose: () => void }) {
   const { data, loading, error } = useLeaderboard();
-
-  function formatDuration(seconds: number): string {
-    const mins = Math.floor(seconds / 60);
-    const secs = (seconds % 60);
-
-    if (mins > 0) {
-      return `${mins} m${mins > 1 ? "s" : ""} ${secs} s`;
-    }
-    return `${secs} s`;
-  }
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
@@ -35,7 +26,7 @@ export default function LeaderboardModal({ onClose }: { onClose: () => void }) {
                 {i + 1}. {entry.username}
               </span>
               <span>{entry.score}</span>
-              <span>{formatDuration(entry.duration / 1000)}</span>
+              <span>{formatTime(entry.duration)}</span>
             </li>
           ))}
         </ul>
