@@ -48,7 +48,7 @@ export const useSnakeGame = () => {
     const count = Math.floor(Math.random() * 5) + 1; // 1–5 ลูก
     const newBombs = getSafePositionsArray(exclude, count);
     setBomb(newBombs);
-  }, [snake, food, energyShield, speedBurst, bomb]);
+  }, []);
 
   useEffect(() => {
     let touchStartX = 0;
@@ -98,13 +98,6 @@ export const useSnakeGame = () => {
   }, [direction]);
 
   const moveSnake = useCallback(() => {
-    const exclude: Position[] = [
-      ...snake,
-      food,
-      energyShield,
-      speedBurst,
-      ...bomb,
-    ];
     const dir = inputBuffer.current;
     setDirection(dir); // อัปเดตทิศทางจริงหลังเคลื่อนที่
 
@@ -128,12 +121,20 @@ export const useSnakeGame = () => {
 
       const newSnake = [head, ...prevSnake];
       const utilSnake = [head, ...prevSnake.slice(0, -1)];
+      const exclude: Position[] = [
+        ...snake,
+        food,
+        energyShield,
+        speedBurst,
+        ...bomb,
+      ];
 
       requestAnimationFrame(() => {
         if (isCollision(prevSnake, head) || isOutOfBounds(head)) {
           setIsGameOver(true);
           setIsEnergyShield(false);
-        } else if (
+        }
+        if (
           bomb.some((b) => b.x === head.x && b.y === head.y && !isEnergyShield)
         ) {
           setIsGameOver(true);
