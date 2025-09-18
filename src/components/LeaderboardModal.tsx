@@ -35,7 +35,6 @@ export default function LeaderboardModal({ onClose }: { onClose: () => void }) {
                 {i + 1}. {entry.username}
               </span>
               <span>{entry.score}</span>
-              tsx
               <span>{formatDuration(entry.duration / 1000)}</span>
             </li>
           ))}
