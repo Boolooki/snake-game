@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     typeof score !== 'number' ||
     score < 0 || score > 401 ||
     typeof duration !== 'number' ||
-    duration < 0 || duration > 2000000
+    duration < 0 || duration > 3600000
   ) {
     return NextResponse.json({ error: 'Invalid payload' }, { status: 400 },);
   }
