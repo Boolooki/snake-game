@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import LeaderboardModal from './LeaderboardModal';
 
+
 export default function LeaderboardScore() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
 

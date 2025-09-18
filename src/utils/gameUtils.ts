@@ -3,7 +3,6 @@ import { GRID_SIZE } from '../constants/gameConstants';
 
 export function getSafeRandomPos(exclude: Position[]): Position {
   const maxAttempts = 1000;
-
   for (let i = 0; i < maxAttempts; i++) {
     const pos = {
       x: Math.floor(Math.random() * GRID_SIZE) + 1,
@@ -13,9 +12,38 @@ export function getSafeRandomPos(exclude: Position[]): Position {
     const isConflict = exclude.some((p) => p.x === pos.x && p.y === pos.y);
     if (!isConflict) return pos;
   }
-
   throw new Error("Unable to find safe position after many attempts");
 }
+
+export function getSafePositionsArray(exclude: Position[], count: number): Position[] {
+  const positions: Position[] = [];
+  const maxAttempts = 1000;
+  let attempts = 0;
+
+  while (positions.length < count && attempts < maxAttempts) {
+    const pos = {
+      x: Math.floor(Math.random() * GRID_SIZE) + 1,
+      y: Math.floor(Math.random() * GRID_SIZE) + 1,
+    };
+
+    const isConflict =
+      exclude.some((p) => p.x === pos.x && p.y === pos.y) ||
+      positions.some((p) => p.x === pos.x && p.y === pos.y);
+
+    if (!isConflict) {
+      positions.push(pos);
+    }
+
+    attempts++;
+  }
+
+  if (positions.length < count) {
+    throw new Error(`Unable to find ${count} safe bomb positions after ${maxAttempts} attempts`);
+  }
+
+  return positions;
+}
+
 
 export function isCollision(snake: Position[], head: Position): boolean {
   if (!head) return false;
@@ -32,4 +60,3 @@ export function formatTime(sec: number) {
     const s = sec % 60;
     return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}m`;
   };
-

@@ -6,11 +6,13 @@ import {
   INITIAL_FOOD,
   INITIAL_ENERGYSHIELD,
   INITIAL_SPEEDBURST,
+  INITIAL_BOMBS,
 } from "../constants/gameConstants";
 import {
   getSafeRandomPos,
   isCollision,
   isOutOfBounds,
+  getSafePositionsArray,
 } from "../utils/gameUtils";
 
 export const useSnakeGame = () => {
@@ -21,10 +23,10 @@ export const useSnakeGame = () => {
   const [energyShield, setEnergyShield] =
     useState<Position>(INITIAL_ENERGYSHIELD);
   const [speedBurst, setSpeedBurst] = useState<Position>(INITIAL_SPEEDBURST);
-  const [bomb, setBomb] = useState<Position[]>([]);
+  const [bomb, setBomb] = useState<Position[]>(INITIAL_BOMBS);
   const [score, setScore] = useState<number>(0);
   const [playTime, setPlayTime] = useState(0);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
 
   const [isPaused, setIsPaused] = useState<boolean>(true);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
@@ -35,25 +37,18 @@ export const useSnakeGame = () => {
 
   const inputBuffer = useRef<Direction>("RIGHT");
 
-  const exclude: Position[] = [
-    ...snake,
-    food,
-    energyShield,
-    speedBurst,
-    ...bomb,
-  ];
-
   const spawnBombs = useCallback(() => {
-    const count = Math.floor(Math.random() * 7) + 1; // 1–7 ลูก
-    const newBomb = Array.from({ length: count }, () =>
-      getSafeRandomPos(exclude)
-    );
-    setBomb(newBomb);
-  }, []);
-
-  useEffect(() => {
-    spawnBombs(); // ตอนเริ่มเกม
-  }, []);
+    const exclude: Position[] = [
+      ...snake,
+      food,
+      energyShield,
+      speedBurst,
+      ...bomb,
+    ];
+    const count = Math.floor(Math.random() * 5) + 1; // 1–5 ลูก
+    const newBombs = getSafePositionsArray(exclude, count);
+    setBomb(newBombs);
+  }, [snake, food, energyShield, speedBurst, bomb]);
 
   useEffect(() => {
     let touchStartX = 0;
@@ -103,6 +98,13 @@ export const useSnakeGame = () => {
   }, [direction]);
 
   const moveSnake = useCallback(() => {
+    const exclude: Position[] = [
+      ...snake,
+      food,
+      energyShield,
+      speedBurst,
+      ...bomb,
+    ];
     const dir = inputBuffer.current;
     setDirection(dir); // อัปเดตทิศทางจริงหลังเคลื่อนที่
 
@@ -217,33 +219,41 @@ export const useSnakeGame = () => {
 
   useEffect(() => {
     if (isPaused || isGameOver) return;
+
     setTriggerReset(false);
     const interval = setInterval(moveSnake, getCurrentSpeed());
     return () => clearInterval(interval);
   }, [moveSnake, isPaused, isGameOver]);
 
   useEffect(() => {
-  if (isGameOver) {
-    fetch('/api/submitScore', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: username || 'Anonymous',
-        score,
-        duration: playTime,
-        powerupsUsed: "test",
-      }),
-    });
-  }
-}, [isGameOver]);
-
+    if (isGameOver) {
+      fetch("/api/submitScore", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: username || "Anonymous",
+          score,
+          duration: playTime,
+          powerupsUsed: "test",
+        }),
+      });
+    }
+  });
 
   const resetGame = useCallback(() => {
+    const exclude: Position[] = [
+      ...snake,
+      food,
+      energyShield,
+      speedBurst,
+      ...bomb,
+    ];
     setSnake(INITIAL_SNAKE);
     setEnergyShield(getSafeRandomPos(exclude));
     setDirection("RIGHT");
     inputBuffer.current = "RIGHT";
     setFood(getSafeRandomPos(exclude));
+    setSpeedBurst(getSafeRandomPos(exclude));
     spawnBombs();
     setScore(0);
     setIsGameOver(false);
