@@ -8,9 +8,9 @@ export default function LeaderboardModal({ onClose }: { onClose: () => void }) {
     const secs = (seconds % 60).toFixed(1);
 
     if (mins > 0) {
-      return `${mins} minute${mins > 1 ? "s" : ""} ${secs} seconds`;
+      return `${mins} m${mins > 1 ? "s" : ""} ${secs} s`;
     }
-    return `${secs} seconds`;
+    return `${secs} s`;
   }
 
   return (
