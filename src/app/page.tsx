@@ -58,7 +58,9 @@ export default function Home() {
             />
             <button
               onClick={() => {
-                if (username.trim()) setHasStarted(true);
+                if (username.trim()) 
+                  setHasStarted(true);
+                  setIsPaused(false);
               }}
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             >

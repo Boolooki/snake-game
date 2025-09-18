@@ -30,6 +30,6 @@ export function isOutOfBounds(head?: Position): boolean {
 export function formatTime(sec: number) {
     const m = Math.floor(sec / 60);
     const s = sec % 60;
-    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}m`;
   };
 
