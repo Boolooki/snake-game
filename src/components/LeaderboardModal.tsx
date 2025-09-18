@@ -5,7 +5,7 @@ export default function LeaderboardModal({ onClose }: { onClose: () => void }) {
 
   function formatDuration(seconds: number): string {
     const mins = Math.floor(seconds / 60);
-    const secs = (seconds % 60).toFixed(1);
+    const secs = (seconds % 60);
 
     if (mins > 0) {
       return `${mins} m${mins > 1 ? "s" : ""} ${secs} s`;
