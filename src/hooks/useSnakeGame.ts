@@ -264,6 +264,17 @@ export const useSnakeGame = () => {
     setTriggerReset(true);
   }, []);
 
+  const onStart = () => {
+    if (username.trim()) {
+      setHasStarted(true);
+      setIsPaused(false);
+    }
+  };
+
+  const onPauseToggle = () => {
+    setIsPaused((prev) => !prev);
+  };
+
   return {
     snake,
     food,
@@ -286,5 +297,7 @@ export const useSnakeGame = () => {
     setUsername,
     hasStarted,
     setHasStarted,
+    onStart,
+    onPauseToggle,
   };
 };
