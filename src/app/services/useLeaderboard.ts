@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LeaderboardEntry } from '../types';
+import { LeaderboardEntry } from '../../types';
 
 export function useLeaderboard() {
   const [data, setData] = useState<LeaderboardEntry[]>([]);
