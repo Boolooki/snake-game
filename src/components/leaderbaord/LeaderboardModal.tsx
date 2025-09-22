@@ -23,7 +23,7 @@ export default function LeaderboardModal({ onClose }: { onClose: () => void }) {
           {data?.map((entry, i) => (
             <li
               key={i}
-              className="flex justify-between bg-white px-2 py-1 rounded shadow-sm"
+              className="flex justify-between bg-white px-2 py-1 rounded shadow-sm transform scale-95 opacity-0 animate-[fadeIn_1s_ease-out_forwards]"
             >
               <span className="truncate">
                 {i + 1}. {entry.username}
