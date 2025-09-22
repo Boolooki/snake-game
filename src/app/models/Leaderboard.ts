@@ -9,5 +9,9 @@ const LeaderboardSchema = new mongoose.Schema({
   powerupsUsed: [String],
 });
 
-export default mongoose.models.Leaderboard ||
-  mongoose.model('Leaderboard', LeaderboardSchema);
+const LeaderboardModel =
+  (mongoose.models && mongoose.models.Leaderboard) ||
+  mongoose.model("Leaderboard", LeaderboardSchema);
+
+export default LeaderboardModel;
+

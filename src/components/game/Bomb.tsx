@@ -1,5 +1,5 @@
 import React from 'react';
-import { Position } from '../types';
+import { Position } from '../../types';
 
 export default function Bomb({ position }: { position: Position }) {
   return (
