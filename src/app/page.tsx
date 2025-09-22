@@ -2,12 +2,12 @@
 
 import React from "react";
 import { useSnakeGame } from "../hooks/useSnakeGame";
-import Board from "../components/Board";
-import Score from "../components/Score";
-import Timer from "../components/Timer";
-import BuffStatus from "../components/BuffStatus" 
-import ControlButtons from "../components/ControlButtons" 
-import StartModal from "../components/StartModal" 
+import Board from "../components/game/Board";
+import Score from "../components/ui/Score";
+import Timer from "../components/ui/Timer";
+import BuffStatus from "../components/ui/BuffStatus" 
+import ControlButtons from "../components/ui/ControlButtons" 
+import StartModal from "../components/ui/StartModal" 
 
 export default function Home() {
   const game = useSnakeGame();

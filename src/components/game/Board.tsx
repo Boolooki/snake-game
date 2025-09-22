@@ -3,8 +3,8 @@ import Snake from './Snake';
 import Food from './Food';
 import Bomb from './Bomb';
 import EnergyShield from './Energyshield';
-import { Position } from '../types';
-import { GRID_SIZE } from '../constants/gameConstants';
+import { Position } from '../../types';
+import { GRID_SIZE } from '../../constants/gameConstants';
 import SpeedBurst from './Speedburst';
 
 export default function Board({

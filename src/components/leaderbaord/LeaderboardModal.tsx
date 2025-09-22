@@ -1,4 +1,4 @@
-import { useLeaderboard } from "../app/services/useLeaderboard";
+import { useLeaderboard } from "../../app/services/useLeaderboard";
 import { formatTime } from "@/utils/gameUtils";
 
 export default function LeaderboardModal({ onClose }: { onClose: () => void }) {

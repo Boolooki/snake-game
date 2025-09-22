@@ -1,5 +1,5 @@
 import { PropsControlButton } from "@/types";
-import LeaderboardScore from "./Leaderboard";
+import LeaderboardScore from "../leaderbaord/Leaderboard";
 import {ArrowPathIcon,PlayIcon,PauseIcon} from "@heroicons/react/24/outline";
 
 export default function ControlButtons({ isPaused, isGameOver, resetGame, onPauseToggle }: PropsControlButton) {

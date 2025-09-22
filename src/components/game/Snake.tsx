@@ -1,5 +1,5 @@
 import React from 'react';
-import { Position } from '../types';
+import { Position } from '../../types';
 
 
 export default function Snake({ segments, isEnergyShield, isSpeedBurst }: { segments: Position[], isEnergyShield: boolean, isSpeedBurst: boolean }) {
