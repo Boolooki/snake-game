@@ -30,3 +30,15 @@ export type PropsBuffStatus = {
   isEnergyShield: boolean;
   isSpeedBurst: boolean;
 };
+
+export type PropsBoard = {
+  snake: Position[];
+  food: Position;
+  energyShield: Position;
+  bomb: Position[];
+  speedBurst: Position;
+  isEnergyShield: boolean;
+  isSpeedBurst: boolean;
+  isGameOver: boolean;
+  isPaused: boolean;
+};
