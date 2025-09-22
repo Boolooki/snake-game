@@ -265,7 +265,7 @@ export const useSnakeGame = () => {
     const speed = isSpeedBurst ? SPEED / 2 : SPEED;
     const interval = setInterval(moveSnake, speed);
     return () => clearInterval(interval);
-  }, [moveSnake, isPaused, isGameOver]);
+  }, [moveSnake, isPaused, isGameOver, isSpeedBurst]);
 
   const hasSubmitted = useRef(false);
 
@@ -291,7 +291,7 @@ export const useSnakeGame = () => {
         powerupsUsed: "test",
       }),
     });
-  }, [isGameOver, isPaused, score, playTime, hasSubmitted]);
+  }, [isGameOver, isPaused, score, playTime, hasSubmitted ,username]);
 
   const resetGame = useCallback(() => {
     const exclude: Position[] = [
