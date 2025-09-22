@@ -19,14 +19,16 @@ export default function LeaderboardModal({ onClose }: { onClose: () => void }) {
         {loading && <p>Loading...</p>}
         {error && <p>Error occurred</p>}
 
-        <ul className="space-y-2">
+        <ul className="space-y-2 font-mono text-sm">
           {data?.map((entry, i) => (
-            <li key={i} className="flex justify-between gap-4">
-              <span>
+            <li
+              key={i}
+              className="flex justify-between bg-white px-2 py-1 rounded shadow-sm"
+            >
+              <span className="truncate">
                 {i + 1}. {entry.username}
               </span>
-              <span>{entry.score}</span>
-              <span>{formatTime(entry.duration)}</span>
+              <span className="text-right">{entry.score}point {formatTime(entry.duration)}</span>
             </li>
           ))}
         </ul>
