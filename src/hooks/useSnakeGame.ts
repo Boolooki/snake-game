@@ -136,7 +136,13 @@ export const useSnakeGame = () => {
           ...bomb,
         ]);
         setFood(newFood);
-        const newExclude = [...newSnake, ...snake, newFood, energyShield, speedBurst];
+        const newExclude = [
+          ...newSnake,
+          ...snake,
+          newFood,
+          energyShield,
+          speedBurst,
+        ];
         spawnBombs(newExclude);
         setScore((prev) => prev + 1);
         return newSnake;
@@ -150,7 +156,13 @@ export const useSnakeGame = () => {
           speedBurst,
           ...bomb,
         ]);
-        const newExclude = [...newSnake, ...snake, newFood, energyShield, speedBurst];
+        const newExclude = [
+          ...newSnake,
+          ...snake,
+          newFood,
+          energyShield,
+          speedBurst,
+        ];
         setEnergyShield(getSafeRandomPos(newExclude));
         setIsEnergyShield(true);
         return utilSnake;
@@ -164,7 +176,13 @@ export const useSnakeGame = () => {
           speedBurst,
           ...bomb,
         ]);
-        const newExclude = [...newSnake, ...snake, newFood, energyShield, speedBurst];
+        const newExclude = [
+          ...newSnake,
+          ...snake,
+          newFood,
+          energyShield,
+          speedBurst,
+        ];
         setSpeedBurst(getSafeRandomPos(newExclude));
         setIsSpeedBurst(true);
         setTimeout(() => {
@@ -183,15 +201,30 @@ export const useSnakeGame = () => {
           speedBurst,
           ...bomb,
         ]);
-        const newExclude = [...newSnake, ...snake, newFood, energyShield, speedBurst];
-        spawnBombs(newExclude)
+        const newExclude = [
+          ...newSnake,
+          ...snake,
+          newFood,
+          energyShield,
+          speedBurst,
+        ];
+        spawnBombs(newExclude);
         setIsEnergyShield(false);
         return utilSnake;
       }
 
       return [head, ...prevSnake.slice(0, -1)];
     });
-  }, [food, energyShield, bomb, isEnergyShield, isSpeedBurst]);
+  }, [
+    food,
+    energyShield,
+    bomb,
+    isEnergyShield,
+    isSpeedBurst,
+    snake,
+    spawnBombs,
+    speedBurst,
+  ]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -242,22 +275,33 @@ export const useSnakeGame = () => {
     setTriggerReset(false);
     const interval = setInterval(moveSnake, getCurrentSpeed());
     return () => clearInterval(interval);
-  }, [moveSnake, isPaused, isGameOver]);
+  }, [moveSnake, isPaused, isGameOver, getCurrentSpeed]);
+
+  const hasSubmitted = useRef(false);
 
   useEffect(() => {
-    if (!isGameOver || isPaused || score === 0 || playTime < 3){
-      fetch("/api/submitScore", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: username || "Anonymous",
-          score,
-          duration: playTime,
-          powerupsUsed: "test",
-        }),
-      });
-    }
-  });
+    if (
+      !isGameOver ||
+      isPaused ||
+      score === 0 ||
+      playTime < 3 ||
+      hasSubmitted.current
+    )
+      return;
+
+    hasSubmitted.current = true;
+
+    fetch("/api/submitScore", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username || "Anonymous",
+        score,
+        duration: playTime,
+        powerupsUsed: "test",
+      }),
+    });
+  }, [isGameOver]);
 
   const resetGame = useCallback(() => {
     const exclude: Position[] = [
@@ -279,7 +323,7 @@ export const useSnakeGame = () => {
     setIsEnergyShield(false);
     setIsSpeedBurst(false);
     setTriggerReset(true);
-  }, []);
+  }, [bomb, energyShield, food, snake, speedBurst]);
 
   const onStart = () => {
     if (username.trim()) {

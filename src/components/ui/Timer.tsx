@@ -32,7 +32,7 @@ export default function Timer({
 
   useEffect(() => {
     onTimeUpdate?.(seconds);
-  }, [seconds]);
+  }, [seconds,onTimeUpdate]);
 
   return (
     <div className="text-xl font-bold text-center mt-4">
