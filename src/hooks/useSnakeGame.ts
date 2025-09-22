@@ -215,16 +215,7 @@ export const useSnakeGame = () => {
 
       return [head, ...prevSnake.slice(0, -1)];
     });
-  }, [
-    food,
-    energyShield,
-    bomb,
-    isEnergyShield,
-    isSpeedBurst,
-    snake,
-    spawnBombs,
-    speedBurst,
-  ]);
+  }, [food, energyShield, bomb, isEnergyShield, snake, spawnBombs, speedBurst]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -267,15 +258,14 @@ export const useSnakeGame = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [direction]);
 
-  const getCurrentSpeed = () => (isSpeedBurst ? SPEED / 2 : SPEED);
-
   useEffect(() => {
     if (isPaused || isGameOver) return;
 
     setTriggerReset(false);
-    const interval = setInterval(moveSnake, getCurrentSpeed());
+    const speed = isSpeedBurst ? SPEED / 2 : SPEED;
+    const interval = setInterval(moveSnake, speed);
     return () => clearInterval(interval);
-  }, [moveSnake, isPaused, isGameOver, getCurrentSpeed]);
+  }, [moveSnake, isPaused, isGameOver]);
 
   const hasSubmitted = useRef(false);
 
@@ -301,7 +291,7 @@ export const useSnakeGame = () => {
         powerupsUsed: "test",
       }),
     });
-  }, [isGameOver]);
+  }, [isGameOver, isPaused, score, playTime, hasSubmitted]);
 
   const resetGame = useCallback(() => {
     const exclude: Position[] = [
