@@ -245,7 +245,7 @@ export const useSnakeGame = () => {
   }, [moveSnake, isPaused, isGameOver]);
 
   useEffect(() => {
-    if (isGameOver) {
+    if (!isGameOver || isPaused || score === 0 || playTime < 3){
       fetch("/api/submitScore", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
