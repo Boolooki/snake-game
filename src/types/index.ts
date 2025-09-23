@@ -42,3 +42,9 @@ export type PropsBoard = {
   isGameOver: boolean;
   isPaused: boolean;
 };
+
+export type PropsLanguage = {
+  language: 'th' | 'en';
+  onLangToggle: (lang: "th" | "en") => void;
+};
+

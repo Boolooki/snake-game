@@ -5,9 +5,11 @@ import { useSnakeGame } from "../hooks/useSnakeGame";
 import Board from "../components/game/Board";
 import Score from "../components/ui/Score";
 import Timer from "../components/ui/Timer";
-import BuffStatus from "../components/ui/BuffStatus" 
-import ControlButtons from "../components/ui/ControlButtons" 
-import StartModal from "../components/ui/StartModal" 
+import BuffStatus from "../components/ui/BuffStatus";
+import ControlButtons from "../components/ui/ControlButtons";
+import StartModal from "../components/ui/StartModal";
+import LanguageSelector from "@/components/ui/LanguageSelector";
+import GameInstructions from "@/components/ui/GameInstructions";
 
 export default function Home() {
   const game = useSnakeGame();
@@ -20,7 +22,9 @@ export default function Home() {
         onStart={game.onStart}
         hasStarted={game.hasStarted}
       />
+
       <h1 className="text-3xl font-bold">Snake Game</h1>
+
       <div className="flex mt-2 space-x-4">
         <Score value={game.score} />
         <Timer
@@ -31,7 +35,7 @@ export default function Home() {
         />
       </div>
 
-      <ControlButtons 
+      <ControlButtons
         isGameOver={game.isGameOver}
         isPaused={game.isPaused}
         resetGame={game.resetGame}
@@ -50,16 +54,20 @@ export default function Home() {
         isSpeedBurst={game.isSpeedBurst}
       />
 
-      <div className="text-sm text-gray-600 mt-5">
-        Use Arrow Keys, ASWD or Gestures to Move
+      <div className="mt-5">
+        <GameInstructions currentlanguage={game.language} />
       </div>
-      <div className="text-sm text-gray-600 mt-2">
-        Collect the blue shield to survive one red bomb!
-      </div>
+
       <BuffStatus
         isEnergyShield={game.isEnergyShield}
         isSpeedBurst={game.isSpeedBurst}
       />
+      <div className="mt-3">
+        <LanguageSelector
+          language={game.language}
+          onLangToggle={game.onLangToggle}
+        />
+      </div>
     </div>
   );
 }

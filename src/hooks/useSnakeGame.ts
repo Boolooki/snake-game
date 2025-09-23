@@ -34,6 +34,7 @@ export const useSnakeGame = () => {
   const [isSpeedBurst, setIsSpeedBurst] = useState<boolean>(false);
   const [triggerReset, setTriggerReset] = useState<boolean>(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [language, setLanguage] = useState<"th" | "en">("th");
 
   const inputBuffer = useRef<Direction>("RIGHT");
 
@@ -350,5 +351,7 @@ export const useSnakeGame = () => {
     setHasStarted,
     onStart,
     onPauseToggle,
+    language,
+    onLangToggle: (lang: "th" | "en") => setLanguage(lang)
   };
 };

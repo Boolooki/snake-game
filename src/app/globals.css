@@ -1,9 +1,37 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primary: #00C2FF;
+  --color-secondary: #E6F4F1;
+  --color-accent: #FFD6E8;
+
+  --font-sans: 'Geist', 'Inter', sans-serif;
+  --radius-default: 12px;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
+
+.card {
+  background: var(--color-secondary);
+  border-radius: var(--radius-default);
+  box-shadow: var(--shadow-soft);
+  font-family: var(--font-sans);
+  padding: 1rem;
+}
+
+.button {
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-default);
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-soft);
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: #0090cc;
+}
+
 
 @media (prefers-color-scheme: dark) {
   :root {
