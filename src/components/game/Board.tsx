@@ -25,7 +25,7 @@ export default function Board(game: PropsBoard) {
         <Bomb key={index} position={b} />
       ))}
 
-      <BoardOverlay isGameOver={game.isGameOver} isPaused={game.isPaused} />
+      <BoardOverlay isGameOver={game.isGameOver} isPaused={game.isPaused} language={game.language} />
     </div>
   );
 }
