@@ -24,6 +24,8 @@ export async function POST(request: Request) {
     await connectDB();
 
     const existing = await Leaderboard.findOne({ username });
+    console.log("Existing score:", existing?.score);
+    console.log("Incoming score type:", typeof score, score);
 
     if (!existing || score > existing.score) {
       await Leaderboard.findOneAndUpdate(

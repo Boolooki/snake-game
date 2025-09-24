@@ -268,7 +268,7 @@ export const useSnakeGame = () => {
     return () => clearInterval(interval);
   }, [moveSnake, isPaused, isGameOver, isSpeedBurst]);
 
-  const hasSubmitted = useRef(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
     if (
@@ -276,11 +276,11 @@ export const useSnakeGame = () => {
       isPaused ||
       score === 0 ||
       playTime < 3 ||
-      hasSubmitted.current
+      hasSubmitted
     )
       return;
-
-    hasSubmitted.current = true;
+      
+    setHasSubmitted(true);
 
     fetch("/api/submitScore", {
       method: "POST",
@@ -314,6 +314,7 @@ export const useSnakeGame = () => {
     setIsEnergyShield(false);
     setIsSpeedBurst(false);
     setTriggerReset(true);
+    setHasSubmitted(false);
   }, [bomb, energyShield, food, snake, speedBurst]);
 
   const onStart = () => {

@@ -1,4 +1,4 @@
-type Language = "th" | "en";
+import type { Language } from "@/types"; // ถ้าคุณแยก type ไว้
 
 const messages = {
   th: {
@@ -11,11 +11,11 @@ const messages = {
   },
 };
 
-export default function GameInstructions({ currentlanguage }: { currentlanguage: Language }) {
+export default function GameInstructions({ language }: { language: Language }) {
   return (
-    <>
-      <div>{messages[currentlanguage].move}</div>
-      <div>{messages[currentlanguage].shield}</div>
-    </>
+    <div className="text-sm text-gray-600 mt-5 space-y-2">
+      <div>{messages[language].move}</div>
+      <div>{messages[language].shield}</div>
+    </div>
   );
 }

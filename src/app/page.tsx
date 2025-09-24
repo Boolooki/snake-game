@@ -10,6 +10,8 @@ import ControlButtons from "../components/ui/ControlButtons";
 import StartModal from "../components/ui/StartModal";
 import LanguageSelector from "@/components/ui/LanguageSelector";
 import GameInstructions from "@/components/ui/GameInstructions";
+import LeaderboardScore from "@/components/leaderbaord/Leaderboard";
+
 
 export default function Home() {
   const game = useSnakeGame();
@@ -23,24 +25,29 @@ export default function Home() {
         hasStarted={game.hasStarted}
       />
 
-      <h1 className="text-3xl font-bold">Snake Game</h1>
+      <h1 className="text-3xl font-bold">
+        {game.language === "th" ? "เกมงูกินหรรม" : "Snake Game"}
+      </h1>
 
       <div className="flex mt-2 space-x-4">
-        <Score value={game.score} />
+        <Score value={game.score} language={game.language} />
         <Timer
           isGameOver={game.isGameOver}
           isPaused={game.isPaused}
           triggerReset={game.triggerReset}
+          language={game.language}
           onTimeUpdate={(sec) => game.setPlayTime(sec)}
         />
       </div>
 
+      <div className="flex items-center space-x-4">
       <ControlButtons
         isGameOver={game.isGameOver}
         isPaused={game.isPaused}
         resetGame={game.resetGame}
         onPauseToggle={game.onPauseToggle}
       />
+      <LeaderboardScore language={game.language} /></div>
 
       <Board
         snake={game.snake}
@@ -52,15 +59,17 @@ export default function Home() {
         isGameOver={game.isGameOver}
         isPaused={game.isPaused}
         isSpeedBurst={game.isSpeedBurst}
+        language={game.language}
       />
 
       <div className="mt-5">
-        <GameInstructions currentlanguage={game.language} />
+        <GameInstructions language={game.language}/>
       </div>
 
       <BuffStatus
         isEnergyShield={game.isEnergyShield}
         isSpeedBurst={game.isSpeedBurst}
+        language={game.language}
       />
       <div className="mt-3">
         <LanguageSelector

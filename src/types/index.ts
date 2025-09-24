@@ -5,6 +5,8 @@ export type Position = {
 
 export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 
+export type Language = "th" | "en";
+
 export type LeaderboardEntry = {
   username: string;
   score: number;
@@ -41,6 +43,7 @@ export type PropsBoard = {
   isSpeedBurst: boolean;
   isGameOver: boolean;
   isPaused: boolean;
+  language: 'th' | 'en';
 };
 
 export type PropsLanguage = {
