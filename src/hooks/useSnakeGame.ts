@@ -315,6 +315,7 @@ export const useSnakeGame = () => {
     setIsSpeedBurst(false);
     setTriggerReset(true);
     setHasSubmitted(false);
+    spawnBombs(exclude);
   }, [bomb, energyShield, food, snake, speedBurst]);
 
   const onStart = () => {

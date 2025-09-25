@@ -19,6 +19,8 @@ export type PropsStartModal = {
   setUsername: (name: string) => void;
   onStart: () => void;
   hasStarted: boolean;
+  language: 'th' | 'en';
+  onLangToggle: (lang: "th" | "en") => void;
 };
 
 export type PropsControlButton = {

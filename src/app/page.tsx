@@ -23,6 +23,8 @@ export default function Home() {
         setUsername={game.setUsername}
         onStart={game.onStart}
         hasStarted={game.hasStarted}
+        language={game.language}
+        onLangToggle={game.onLangToggle}
       />
 
       <h1 className="text-3xl font-bold">
