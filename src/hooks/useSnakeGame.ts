@@ -18,7 +18,7 @@ import {
 export const useSnakeGame = () => {
   const [direction, setDirection] = useState<Direction>("RIGHT");
   const [snake, setSnake] = useState<Position[]>(INITIAL_SNAKE);
-  const [countdown, setCountdown] = useState<number | null>(3);
+  const [countdown, setCountdown] = useState<number | null>(600);
 
   const [food, setFood] = useState<Position>(INITIAL_FOOD);
   const [energyShield, setEnergyShield] =
@@ -263,7 +263,7 @@ export const useSnakeGame = () => {
         inputBuffer.current = newDir;
       }
 
-      if (e.key === " ") {
+      if (e.key === " " ) {
         setIsPaused((prev) => !prev);
       }
     };
@@ -277,7 +277,7 @@ export const useSnakeGame = () => {
 
     const timer = setTimeout(() => {
       setCountdown((prev) => {
-        if (prev === 1) return null; // ✅ จบแล้วเซตเป็น null
+        if (prev === 1) return null ; // ✅ จบแล้วเซตเป็น null
         return prev !== null ? prev - 1 : null;
       });
     }, 1000);
@@ -341,7 +341,7 @@ export const useSnakeGame = () => {
     if (username.trim()) {
       setHasStarted(true); // ✅ ปิด StartModal
       setCountdown(5); // ✅ เริ่มนับถอยหลัง
-      setIsPaused(true); // ✅ ยังไม่เริ่มเกมจริง
+      ; // ✅ ยังไม่เริ่มเกมจริง
     }
   };
 
