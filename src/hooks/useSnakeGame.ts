@@ -40,16 +40,6 @@ export const useSnakeGame = () => {
   const inputBuffer = useRef<Direction>("RIGHT");
 
   useEffect(() => {
-    if (countdown === null || countdown <= 0) return;
-
-    const timer = setTimeout(() => {
-      setCountdown((prev) => (prev !== null ? prev - 1 : null));
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [countdown]);
-
-  useEffect(() => {
     if (countdown === 0) {
       startGame();
     }
@@ -283,13 +273,25 @@ export const useSnakeGame = () => {
   }, [direction]);
 
   useEffect(() => {
-    if (isPaused || isGameOver) return;
+    if (countdown === null || countdown <= 0) return setIsPaused(false);
+
+    const timer = setTimeout(() => {
+      setCountdown((prev) => {
+        if (prev === 1) return null; // ✅ จบแล้วเซตเป็น null
+        return prev !== null ? prev - 1 : null;
+      });
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
+  useEffect(() => {
+    if (isPaused || isGameOver || countdown !== null) return;
 
     setTriggerReset(false);
     const speed = isSpeedBurst ? SPEED / 2 : SPEED;
     const interval = setInterval(moveSnake, speed);
     return () => clearInterval(interval);
-  }, [moveSnake, isPaused, isGameOver, isSpeedBurst]);
+  }, [moveSnake, isPaused, isGameOver, isSpeedBurst, countdown]);
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -327,7 +329,6 @@ export const useSnakeGame = () => {
     setSpeedBurst(getSafeRandomPos(exclude));
     setScore(0);
     setIsGameOver(false);
-    setIsPaused(false);
     setIsEnergyShield(false);
     setIsSpeedBurst(false);
     setTriggerReset(true);
@@ -337,16 +338,22 @@ export const useSnakeGame = () => {
   }, [bomb, energyShield, food, snake, speedBurst]);
 
   const onStart = () => {
-  if (username.trim()) {
-    setHasStarted(true);      // ✅ ปิด StartModal
-    setCountdown(5);          // ✅ เริ่มนับถอยหลัง
-    setIsPaused(true);        // ✅ ยังไม่เริ่มเกมจริง
-  }
-};
+    if (username.trim()) {
+      setHasStarted(true); // ✅ ปิด StartModal
+      setCountdown(5); // ✅ เริ่มนับถอยหลัง
+      setIsPaused(true); // ✅ ยังไม่เริ่มเกมจริง
+    }
+  };
 
   const onPauseToggle = () => {
     setIsPaused((prev) => !prev);
   };
+
+  const onLangToggle = (lang: "th" | "en") => {
+  setLanguage(lang);
+  setIsPaused(true);
+};
+
 
   return {
     snake,
@@ -373,8 +380,8 @@ export const useSnakeGame = () => {
     onStart,
     onPauseToggle,
     language,
-    onLangToggle: (lang: "th" | "en") => setLanguage(lang),
+    onLangToggle,
     startGame,
-    countdown
+    countdown,
   };
 };
