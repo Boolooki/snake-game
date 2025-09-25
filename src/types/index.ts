@@ -46,6 +46,7 @@ export type PropsBoard = {
   isGameOver: boolean;
   isPaused: boolean;
   language: 'th' | 'en';
+  countdown:  number | null;
 };
 
 export type PropsLanguage = {

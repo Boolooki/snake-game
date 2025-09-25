@@ -11,7 +11,7 @@ import StartModal from "../components/ui/StartModal";
 import LanguageSelector from "@/components/ui/LanguageSelector";
 import GameInstructions from "@/components/ui/GameInstructions";
 import LeaderboardScore from "@/components/leaderbaord/Leaderboard";
-
+import CountdownOverlay from "@/components/ui/CountdownOverlay";
 
 export default function Home() {
   const game = useSnakeGame();
@@ -26,6 +26,10 @@ export default function Home() {
         language={game.language}
         onLangToggle={game.onLangToggle}
       />
+
+      {game.hasStarted && game.countdown !== null && game.countdown > 0 && (
+        <CountdownOverlay count={game.countdown} />
+      )}
 
       <h1 className="text-3xl font-bold">
         {game.language === "th" ? "เกมงูกินหรรม" : "Snake Game"}
@@ -43,13 +47,14 @@ export default function Home() {
       </div>
 
       <div className="flex items-center space-x-4">
-      <ControlButtons
-        isGameOver={game.isGameOver}
-        isPaused={game.isPaused}
-        resetGame={game.resetGame}
-        onPauseToggle={game.onPauseToggle}
-      />
-      <LeaderboardScore language={game.language} /></div>
+        <ControlButtons
+          isGameOver={game.isGameOver}
+          isPaused={game.isPaused}
+          resetGame={game.resetGame}
+          onPauseToggle={game.onPauseToggle}
+        />
+        <LeaderboardScore language={game.language} />
+      </div>
 
       <Board
         snake={game.snake}
@@ -62,10 +67,11 @@ export default function Home() {
         isPaused={game.isPaused}
         isSpeedBurst={game.isSpeedBurst}
         language={game.language}
+        countdown={game.countdown}
       />
 
       <div className="mt-5">
-        <GameInstructions language={game.language}/>
+        <GameInstructions language={game.language} />
       </div>
 
       <BuffStatus

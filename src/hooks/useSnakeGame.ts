@@ -18,6 +18,7 @@ import {
 export const useSnakeGame = () => {
   const [direction, setDirection] = useState<Direction>("RIGHT");
   const [snake, setSnake] = useState<Position[]>(INITIAL_SNAKE);
+  const [countdown, setCountdown] = useState<number | null>(3);
 
   const [food, setFood] = useState<Position>(INITIAL_FOOD);
   const [energyShield, setEnergyShield] =
@@ -37,6 +38,28 @@ export const useSnakeGame = () => {
   const [language, setLanguage] = useState<"th" | "en">("th");
 
   const inputBuffer = useRef<Direction>("RIGHT");
+
+  useEffect(() => {
+    if (countdown === null || countdown <= 0) return;
+
+    const timer = setTimeout(() => {
+      setCountdown((prev) => (prev !== null ? prev - 1 : null));
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
+  useEffect(() => {
+    if (countdown === 0) {
+      startGame();
+    }
+  }, [countdown]);
+
+  const startGame = useCallback(() => {
+    setIsPaused(false);
+    setIsGameOver(false);
+    setTriggerReset(true);
+  }, []);
 
   const spawnBombs = useCallback((exclude: Position[]) => {
     const count = Math.floor(Math.random() * 5) + 1; // 1–5 ลูก
@@ -271,15 +294,9 @@ export const useSnakeGame = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
-    if (
-      !isGameOver ||
-      isPaused ||
-      score === 0 ||
-      playTime < 3 ||
-      hasSubmitted
-    )
+    if (!isGameOver || isPaused || score === 0 || playTime < 3 || hasSubmitted)
       return;
-      
+
     setHasSubmitted(true);
 
     fetch("/api/submitScore", {
@@ -292,7 +309,7 @@ export const useSnakeGame = () => {
         powerupsUsed: "test",
       }),
     });
-  }, [isGameOver, isPaused, score, playTime, hasSubmitted ,username]);
+  }, [isGameOver, isPaused, score, playTime, hasSubmitted, username]);
 
   const resetGame = useCallback(() => {
     const exclude: Position[] = [
@@ -316,14 +333,16 @@ export const useSnakeGame = () => {
     setTriggerReset(true);
     setHasSubmitted(false);
     spawnBombs(exclude);
+    onStart();
   }, [bomb, energyShield, food, snake, speedBurst]);
 
   const onStart = () => {
-    if (username.trim()) {
-      setHasStarted(true);
-      setIsPaused(false);
-    }
-  };
+  if (username.trim()) {
+    setHasStarted(true);      // ✅ ปิด StartModal
+    setCountdown(5);          // ✅ เริ่มนับถอยหลัง
+    setIsPaused(true);        // ✅ ยังไม่เริ่มเกมจริง
+  }
+};
 
   const onPauseToggle = () => {
     setIsPaused((prev) => !prev);
@@ -354,6 +373,8 @@ export const useSnakeGame = () => {
     onStart,
     onPauseToggle,
     language,
-    onLangToggle: (lang: "th" | "en") => setLanguage(lang)
+    onLangToggle: (lang: "th" | "en") => setLanguage(lang),
+    startGame,
+    countdown
   };
 };

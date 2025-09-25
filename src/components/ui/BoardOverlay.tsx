@@ -17,11 +17,14 @@ export default function BoardOverlay({
   isGameOver,
   isPaused,
   language,
+  countdown,
 }: {
   isGameOver: boolean;
   isPaused: boolean;
   language: Language;
+  countdown: number | null;
 }) {
+  if (countdown !== null && countdown > 0) return null;
   if (!isGameOver && !isPaused) return null;
 
   const safeLanguage = messages[language] ? language : fallbackLanguage;
