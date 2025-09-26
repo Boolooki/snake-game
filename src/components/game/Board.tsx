@@ -11,7 +11,7 @@ import BoardOverlay from "../ui/BoardOverlay";
 export default function Board(game: PropsBoard) {
   return (
     <div
-      className={`grid grid-cols-${GRID_SIZE} grid-rows-${GRID_SIZE}  border-2 border-black w-[400px] h-[400px] bg-white relative rounded-[20]`}
+      className={`grid grid-cols-${GRID_SIZE} grid-rows-${GRID_SIZE}  border-2 border-black w-[300px] h-[300px] bg-white relative rounded-[20]`}
     >
       <Snake
         segments={game.snake}

@@ -21,13 +21,13 @@ export const useSnakeGame = () => {
   const [countdown, setCountdown] = useState<number | null>(600);
 
   const [food, setFood] = useState<Position>(INITIAL_FOOD);
-  const [energyShield, setEnergyShield] =
-    useState<Position>(INITIAL_ENERGYSHIELD);
+  const [energyShield, setEnergyShield] = useState<Position>(INITIAL_ENERGYSHIELD);
   const [speedBurst, setSpeedBurst] = useState<Position>(INITIAL_SPEEDBURST);
   const [bomb, setBomb] = useState<Position[]>(INITIAL_BOMBS);
   const [score, setScore] = useState<number>(0);
   const [playTime, setPlayTime] = useState(0);
   const [username, setUsername] = useState("");
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   const [isPaused, setIsPaused] = useState<boolean>(true);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
@@ -263,7 +263,7 @@ export const useSnakeGame = () => {
         inputBuffer.current = newDir;
       }
 
-      if (e.key === " " ) {
+      if (e.key === " ") {
         setIsPaused((prev) => !prev);
       }
     };
@@ -277,7 +277,7 @@ export const useSnakeGame = () => {
 
     const timer = setTimeout(() => {
       setCountdown((prev) => {
-        if (prev === 1) return null ; // ✅ จบแล้วเซตเป็น null
+        if (prev === 1) return null; // ✅ จบแล้วเซตเป็น null
         return prev !== null ? prev - 1 : null;
       });
     }, 1000);
@@ -340,8 +340,7 @@ export const useSnakeGame = () => {
   const onStart = () => {
     if (username.trim()) {
       setHasStarted(true); // ✅ ปิด StartModal
-      setCountdown(5); // ✅ เริ่มนับถอยหลัง
-      ; // ✅ ยังไม่เริ่มเกมจริง
+      setCountdown(5); // ✅ เริ่มนับถอยหลัง // ✅ ยังไม่เริ่มเกมจริง
     }
   };
 
@@ -350,10 +349,17 @@ export const useSnakeGame = () => {
   };
 
   const onLangToggle = (lang: "th" | "en") => {
-  setLanguage(lang);
-  setIsPaused(true);
-};
+    setLanguage(lang);
+    setIsPaused(true);
+  };
 
+  useEffect(() => {
+    if (isGameOver) {
+      setTimeout(() => {
+        setShowLeaderboard(true);
+      }, 1000);
+    }
+  }, [isGameOver]);
 
   return {
     snake,
@@ -383,5 +389,7 @@ export const useSnakeGame = () => {
     onLangToggle,
     startGame,
     countdown,
+    setShowLeaderboard,
+    showLeaderboard
   };
 };

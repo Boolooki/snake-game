@@ -53,7 +53,7 @@ export default function Home() {
           resetGame={game.resetGame}
           onPauseToggle={game.onPauseToggle}
         />
-        <LeaderboardScore language={game.language} />
+        <LeaderboardScore language={game.language}  showboard={game.showLeaderboard} onOpen={() => game.setShowLeaderboard(true)} onClose={() => game.setShowLeaderboard(false)}/>
       </div>
 
       <Board
@@ -70,15 +70,15 @@ export default function Home() {
         countdown={game.countdown}
       />
 
-      <div className="mt-5">
-        <GameInstructions language={game.language} />
-      </div>
-
       <BuffStatus
         isEnergyShield={game.isEnergyShield}
         isSpeedBurst={game.isSpeedBurst}
         language={game.language}
       />
+
+      <div className="mt-5">
+        <GameInstructions language={game.language}/>
+      </div>
       <div className="mt-3">
         <LanguageSelector
           language={game.language}
