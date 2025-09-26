@@ -19,7 +19,7 @@ export default function LeaderboardScore({ language, showboard, onOpen, onClose 
     <>
       <button
         onClick={() => onOpen(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
+        className="bg-green-400 hover:bg-orange-600 text-white px-4 py-2 rounded transition duration-300  "
       >
         {messages[language].leaderboard}
       </button>

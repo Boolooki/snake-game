@@ -46,14 +46,23 @@ export default function Home() {
         />
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex mt-5 mb-5 space-x-5">
         <ControlButtons
           isGameOver={game.isGameOver}
           isPaused={game.isPaused}
           resetGame={game.resetGame}
           onPauseToggle={game.onPauseToggle}
         />
-        <LeaderboardScore language={game.language}  showboard={game.showLeaderboard} onOpen={() => game.setShowLeaderboard(true)} onClose={() => game.setShowLeaderboard(false)}/>
+        <LeaderboardScore
+          language={game.language}
+          showboard={game.showLeaderboard}
+          onOpen={() => game.setShowLeaderboard(true)}
+          onClose={() => game.setShowLeaderboard(false)}
+        />
+        <LanguageSelector
+          language={game.language}
+          onLangToggle={game.onLangToggle}
+        />
       </div>
 
       <Board
@@ -77,13 +86,7 @@ export default function Home() {
       />
 
       <div className="mt-5">
-        <GameInstructions language={game.language}/>
-      </div>
-      <div className="mt-3">
-        <LanguageSelector
-          language={game.language}
-          onLangToggle={game.onLangToggle}
-        />
+        <GameInstructions language={game.language} />
       </div>
     </div>
   );
