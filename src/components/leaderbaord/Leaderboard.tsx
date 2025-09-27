@@ -11,15 +11,15 @@ type LeaderboardScoreProps = {
 
 export default function LeaderboardScore({ language, showboard, onOpen, onClose }: LeaderboardScoreProps) {
   const messages = {
-    th: { leaderboard: "กระดานคะแนน" },
-    en: { leaderboard: "Leaderboard" },
+    th: { leaderboard: "อันดับ" },
+    en: { leaderboard: "Ranking" },
   };
 
   return (
     <>
       <button
         onClick={() => onOpen(true)}
-        className="bg-green-400 hover:bg-orange-600 text-white px-4 py-2 rounded transition duration-300  "
+        className="bg-green-400 hover:bg-orange-600 text-white px-4 py-2 rounded transition duration-300 text-sm  "
       >
         {messages[language].leaderboard}
       </button>

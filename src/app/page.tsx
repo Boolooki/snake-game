@@ -27,10 +27,6 @@ export default function Home() {
         onLangToggle={game.onLangToggle}
       />
 
-      {game.hasStarted && game.countdown !== null && game.countdown > 0 && (
-        <CountdownOverlay count={game.countdown} />
-      )}
-
       <h1 className="text-3xl font-bold">
         {game.language === "th" ? "เกมงูกินหรรม" : "Snake Game"}
       </h1>
@@ -64,20 +60,24 @@ export default function Home() {
           onLangToggle={game.onLangToggle}
         />
       </div>
-
-      <Board
-        snake={game.snake}
-        food={game.food}
-        energyShield={game.energyShield}
-        bomb={game.bomb}
-        speedBurst={game.speedBurst}
-        isEnergyShield={game.isEnergyShield}
-        isGameOver={game.isGameOver}
-        isPaused={game.isPaused}
-        isSpeedBurst={game.isSpeedBurst}
-        language={game.language}
-        countdown={game.countdown}
-      />
+      <div className="relative">
+        <Board
+          snake={game.snake}
+          food={game.food}
+          energyShield={game.energyShield}
+          bomb={game.bomb}
+          speedBurst={game.speedBurst}
+          isEnergyShield={game.isEnergyShield}
+          isGameOver={game.isGameOver}
+          isPaused={game.isPaused}
+          isSpeedBurst={game.isSpeedBurst}
+          language={game.language}
+          countdown={game.countdown}
+        />
+        {game.hasStarted && game.countdown !== null && game.countdown > 0 && (
+          <CountdownOverlay count={game.countdown} />
+        )}
+      </div>
 
       <BuffStatus
         isEnergyShield={game.isEnergyShield}

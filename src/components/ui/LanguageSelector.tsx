@@ -12,7 +12,7 @@ export default function LanguageSelector({ language, onLangToggle }: PropsLangua
       onClick={toggleLanguage}
       className="px-4 py-2 rounded-full bg-white shadow-soft hover:bg-primary hover:text-blue-500 transition-all"
     >
-      🌐 {language === "th" ? "ไทย" : "English"}
+      🌐 {language === "th" ? "ไทย" : "Eng"}
     </button>
   );
 }
