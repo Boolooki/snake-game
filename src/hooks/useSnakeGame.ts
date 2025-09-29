@@ -179,17 +179,10 @@ export const useSnakeGame = () => {
       }
 
       if (head.x === energyShield.x && head.y === energyShield.y) {
-        const newFood = getSafeRandomPos([
-          ...newSnake,
-          ...snake,
-          energyShield,
-          speedBurst,
-          ...bomb,
-        ]);
         const newExclude = [
           ...newSnake,
           ...snake,
-          newFood,
+          food,
           energyShield,
           speedBurst,
         ];
@@ -199,17 +192,10 @@ export const useSnakeGame = () => {
       }
 
       if (head.x === speedBurst.x && head.y === speedBurst.y) {
-        const newFood = getSafeRandomPos([
-          ...newSnake,
-          ...snake,
-          energyShield,
-          speedBurst,
-          ...bomb,
-        ]);
         const newExclude = [
           ...newSnake,
           ...snake,
-          newFood,
+          food,
           energyShield,
           speedBurst,
         ];
@@ -417,5 +403,8 @@ export const useSnakeGame = () => {
     upgradeQueue,
     setUpgradeQueue,
     applyStatus,
+    isDoubleScore,
+    isExtendedBurst,
+
   };
 };

@@ -3,7 +3,7 @@ export type Position = {
   y: number;
 };
 
-export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
+export type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 
 export type Language = "th" | "en";
 
@@ -19,7 +19,7 @@ export type PropsStartModal = {
   setUsername: (name: string) => void;
   onStart: () => void;
   hasStarted: boolean;
-  language: 'th' | 'en';
+  language: "th" | "en";
   onLangToggle: (lang: "th" | "en") => void;
 };
 
@@ -33,6 +33,8 @@ export type PropsControlButton = {
 export type PropsBuffStatus = {
   isEnergyShield: boolean;
   isSpeedBurst: boolean;
+  isDoubleScore: boolean;
+  isExtendedBurst: boolean;
 };
 
 export type PropsBoard = {
@@ -45,12 +47,11 @@ export type PropsBoard = {
   isSpeedBurst: boolean;
   isGameOver: boolean;
   isPaused: boolean;
-  language: 'th' | 'en';
-  countdown:  number | null;
+  language: "th" | "en";
+  countdown: number | null;
 };
 
 export type PropsLanguage = {
-  language: 'th' | 'en';
+  language: "th" | "en";
   onLangToggle: (lang: "th" | "en") => void;
 };
-

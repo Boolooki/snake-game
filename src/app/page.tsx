@@ -84,6 +84,8 @@ export default function Home() {
       <BuffStatus
         isEnergyShield={game.isEnergyShield}
         isSpeedBurst={game.isSpeedBurst}
+        isDoubleScore={game.isDoubleScore}
+        isExtendedBurst={game.isExtendedBurst}
         language={game.language}
       />
 
