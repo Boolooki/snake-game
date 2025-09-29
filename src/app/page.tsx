@@ -42,7 +42,7 @@ export default function Home() {
         />
       </div>
 
-      <div className="flex mt-5 mb-5 space-x-5">
+      <div className="relative flex mt-5 mb-5 space-x-5">
         <ControlButtons
           isGameOver={game.isGameOver}
           isPaused={game.isPaused}
@@ -60,6 +60,7 @@ export default function Home() {
           onLangToggle={game.onLangToggle}
         />
       </div>
+      
       <div className="relative">
         <Board
           snake={game.snake}

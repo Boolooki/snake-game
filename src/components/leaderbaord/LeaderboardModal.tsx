@@ -4,11 +4,11 @@ import { useState } from "react";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 
 export default function LeaderboardModal({ onClose }: { onClose: () => void }) {
-  const [ refreshKey, setRefreshKey ] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0);
   const { data, loading, error } = useLeaderboard(refreshKey);
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center z-50">
+    <div className="absolute flex justify-center items-center z-50">
       <div className="bg-green-200 p-6 rounded shadow-lg w-80">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Leaderboard</h2>
@@ -16,7 +16,7 @@ export default function LeaderboardModal({ onClose }: { onClose: () => void }) {
             onClick={() => setRefreshKey((prev) => prev + 1)}
             className="px-2 py-1 rounded text-xs"
           >
-            <ArrowPathIcon className="w-5 h-5"/>
+            <ArrowPathIcon className="w-5 h-5" />
           </button>
           <button
             onClick={onClose}
