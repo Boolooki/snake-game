@@ -12,6 +12,7 @@ import LanguageSelector from "@/components/ui/LanguageSelector";
 import GameInstructions from "@/components/ui/GameInstructions";
 import LeaderboardScore from "@/components/leaderbaord/Leaderboard";
 import CountdownOverlay from "@/components/ui/CountdownOverlay";
+import SpecialStatusSelector from "@/components/game/SpecialStatusSelector";
 
 export default function Home() {
   const game = useSnakeGame();
@@ -60,7 +61,7 @@ export default function Home() {
           onLangToggle={game.onLangToggle}
         />
       </div>
-      
+
       <div className="relative">
         <Board
           snake={game.snake}
@@ -89,6 +90,16 @@ export default function Home() {
       <div className="mt-5">
         <GameInstructions language={game.language} />
       </div>
+
+      {game.upgradeQueue && (
+        <SpecialStatusSelector
+          onSelect={(status) => {
+            game.applyStatus(status);
+            game.setUpgradeQueue(false);
+            game.setIsPaused(false);
+          }}
+        />
+      )}
     </div>
   );
 }

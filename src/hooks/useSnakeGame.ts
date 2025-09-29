@@ -14,6 +14,7 @@ import {
   isOutOfBounds,
   getSafePositionsArray,
 } from "../utils/gameUtils";
+import { useSpecialStatus } from "../hooks/useSpecialStatus";
 
 export const useSnakeGame = () => {
   const [direction, setDirection] = useState<Direction>("RIGHT");
@@ -21,13 +22,17 @@ export const useSnakeGame = () => {
   const [countdown, setCountdown] = useState<number | null>(600);
 
   const [food, setFood] = useState<Position>(INITIAL_FOOD);
-  const [energyShield, setEnergyShield] = useState<Position>(INITIAL_ENERGYSHIELD);
+  const [energyShield, setEnergyShield] =
+    useState<Position>(INITIAL_ENERGYSHIELD);
   const [speedBurst, setSpeedBurst] = useState<Position>(INITIAL_SPEEDBURST);
   const [bomb, setBomb] = useState<Position[]>(INITIAL_BOMBS);
   const [score, setScore] = useState<number>(0);
   const [playTime, setPlayTime] = useState(0);
   const [username, setUsername] = useState("");
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+
+  const [level, setLevel] = useState(0);
+  const [upgradeQueue, setUpgradeQueue] = useState(false);
 
   const [isPaused, setIsPaused] = useState<boolean>(true);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
@@ -38,6 +43,17 @@ export const useSnakeGame = () => {
   const [language, setLanguage] = useState<"th" | "en">("th");
 
   const inputBuffer = useRef<Direction>("RIGHT");
+  const { status, applyStatus, isDoubleScore, isExtendedBurst, resetStatus } =
+    useSpecialStatus();
+
+  useEffect(() => {
+    const thresholds = [10, 30];
+    if (thresholds.includes(score)) {
+      setLevel((prev) => prev + 1);
+      setUpgradeQueue(true); // เปิด UI ให้เลือกสถานะ
+      setIsPaused(true);
+    }
+  }, [score]);
 
   useEffect(() => {
     if (countdown === 0) {
@@ -158,7 +174,7 @@ export const useSnakeGame = () => {
           speedBurst,
         ];
         spawnBombs(newExclude);
-        setScore((prev) => prev + 1);
+        setScore((prev) => prev + (isDoubleScore ? 2 : 1));
         return newSnake;
       }
 
@@ -198,10 +214,9 @@ export const useSnakeGame = () => {
           speedBurst,
         ];
         setSpeedBurst(getSafeRandomPos(newExclude));
+        const burstDuration = isExtendedBurst ? 6000 : 3000;
         setIsSpeedBurst(true);
-        setTimeout(() => {
-          setIsSpeedBurst(false);
-        }, 3000); // เร่ง 3 วินาที
+        setTimeout(() => setIsSpeedBurst(false), burstDuration);
         return utilSnake;
       }
 
@@ -284,14 +299,19 @@ export const useSnakeGame = () => {
     return () => clearTimeout(timer);
   }, [countdown]);
 
+  const speedy = (() => {
+    if (isSpeedBurst) return SPEED / 2; // เร็วขึ้น
+    if (isDoubleScore) return SPEED * 1.5; // ช้าลง
+    return SPEED; // ปกติ
+  })();
+
   useEffect(() => {
     if (isPaused || isGameOver || countdown !== null) return;
 
     setTriggerReset(false);
-    const speed = isSpeedBurst ? SPEED / 2 : SPEED;
-    const interval = setInterval(moveSnake, speed);
+    const interval = setInterval(moveSnake, speedy);
     return () => clearInterval(interval);
-  }, [moveSnake, isPaused, isGameOver, isSpeedBurst, countdown]);
+  }, [moveSnake, isPaused, isGameOver, isSpeedBurst, countdown,speedy]);
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -334,6 +354,7 @@ export const useSnakeGame = () => {
     setTriggerReset(true);
     setHasSubmitted(false);
     spawnBombs(exclude);
+    resetStatus();
     onStart();
   }, [bomb, energyShield, food, snake, speedBurst]);
 
@@ -390,6 +411,11 @@ export const useSnakeGame = () => {
     startGame,
     countdown,
     setShowLeaderboard,
-    showLeaderboard
+    showLeaderboard,
+    level,
+    setLevel,
+    upgradeQueue,
+    setUpgradeQueue,
+    applyStatus,
   };
 };
