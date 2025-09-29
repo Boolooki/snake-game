@@ -33,10 +33,10 @@ export default function BoardOverlay({
     : messages[safeLanguage].paused;
 
   const color = isGameOver ? "text-red-500" : "text-orange-500";
-  const bgpaused = isPaused ? "bg-yellow-100 animate-[fadeIn_0.75s_ease-out_backwards]" : ""
+  const bgpaused = isPaused ? "bg-yellow-100" : "bg-red-100"
 
   return (
-    <div className={`absolute ${color} text-xl font-bold flex justify-center items-center w-full h-full ${bgpaused} rounded-[20]`}>
+    <div className={`absolute ${color} text-xl animate-[fadeIn_0.75s_ease-out_backwards] font-bold flex justify-center items-center w-full h-full ${bgpaused} rounded-[20]`}>
       {message}
     </div>
   );
