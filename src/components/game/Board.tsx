@@ -26,7 +26,7 @@ export default function Board(game: PropsBoard) {
       <EnergyShield position={game.energyShield} />
       <SpeedBurst position={game.speedBurst} />
       {game.bomb.map((b, index) => (
-        <Bomb key={index} position={b} />
+        <Bomb key={`${b.x}-${b.y}`} position={b} />
       ))}
 
       <BoardOverlay

@@ -26,14 +26,14 @@ export default function SpecialStatusSelector({ onSelect }: Props) {
   ];
 
   return (
-    <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-100">
+    <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-100 animate-[fadeIn_1s_ease-out_forwards]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] max-w-md space-y-4">
         <h2 className="text-xl font-bold text-center text-gray-800">เลือกสถานะพิเศษ</h2>
         <ul className="space-y-3">
           {options.map((opt) => (
             <li
               key={opt.key}
-              className="border border-gray-300 rounded p-3 hover:bg-yellow-100 cursor-pointer transition duration-300"
+              className="border border-gray-300 rounded p-3 hover:bg-yellow-100 cursor-pointer transition duration-300 animate-fadeIn"
               onClick={() => onSelect(opt.key)}
             >
               <p className="font-semibold text-gray-700">{opt.label}</p>

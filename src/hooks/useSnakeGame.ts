@@ -47,7 +47,7 @@ export const useSnakeGame = () => {
     useSpecialStatus();
 
   useEffect(() => {
-    const thresholds = [10, 30];
+    const thresholds = [2, 30];
     if (thresholds.includes(score)) {
       setLevel((prev) => prev + 1);
       setUpgradeQueue(true); // เปิด UI ให้เลือกสถานะ

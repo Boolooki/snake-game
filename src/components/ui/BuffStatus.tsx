@@ -34,7 +34,7 @@ export default function BuffStatus({
         <ArrowTrendingUpIcon className="w-5 h-5 text-purple-500" />
       )}
       {isExtendedBurst && <ClockIcon className="w-5 h-5 text-orange-400" />}
-      {!isEnergyShield && !isSpeedBurst && !isDoubleScore && (
+      {!isEnergyShield && !isSpeedBurst && !isDoubleScore && !isExtendedBurst && (
         <span>{messages[language].none}</span>
       )}
     </div>

@@ -4,7 +4,7 @@ import { Position } from '../../types';
 export default function Food({ position }: { position: Position }) {
   return (
     <div
-      className="bg-green-400 rounded-full"
+      className="bg-green-400 rounded-full animate-[fadeIn_0.5s_ease-out_backwards]"
       style={{
         gridColumnStart: position.x,
         gridRowStart: position.y,
