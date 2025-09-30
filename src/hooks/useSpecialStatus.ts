@@ -5,6 +5,7 @@ export type SpecialStatusFlags = {
   doubleScore: boolean;
   extendedSpeedBurst: boolean;
   slowSpeed: boolean;
+  moreProduceMoretribute: boolean;
 };
 
 export const useSpecialStatus = () => {
@@ -12,6 +13,7 @@ export const useSpecialStatus = () => {
     doubleScore: false,
     extendedSpeedBurst: false,
     slowSpeed: false,
+    moreProduceMoretribute: false,
   });
 
   const applyStatus = (selected: keyof SpecialStatusFlags) => {
@@ -26,6 +28,7 @@ export const useSpecialStatus = () => {
       doubleScore: false,
       extendedSpeedBurst: false,
       slowSpeed: false,
+      moreProduceMoretribute: false,
     });
   };
 
@@ -36,5 +39,6 @@ export const useSpecialStatus = () => {
     isDoubleScore: status.doubleScore,
     isExtendedBurst: status.extendedSpeedBurst,
     isSlowSpeed: status.slowSpeed,
+    isMoreProduceMoretribute: status.moreProduceMoretribute,
   };
 };

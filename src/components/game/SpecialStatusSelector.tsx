@@ -7,7 +7,11 @@ type Props = {
 };
 
 export default function SpecialStatusSelector({ onSelect }: Props) {
-  const options: { key: keyof SpecialStatusFlags; label: string; description: string }[] = [
+  const options: {
+    key: keyof SpecialStatusFlags;
+    label: string;
+    description: string;
+  }[] = [
     {
       key: "doubleScore",
       label: "แต้ม x2",
@@ -23,11 +27,11 @@ export default function SpecialStatusSelector({ onSelect }: Props) {
       label: "งูช้าลง",
       description: "ลดความเร็วของงูลง",
     },
-    // {
-    //   key: "moreProduceMoretribute",
-    //   label: "เกิดอาหารมากขึ้น ระเบิดสุ่มจำนวนเยอะขึ้น",
-    //   description: "อาหารเกิดมากขึ้น 1->2 ระเบิดสูงสุดมีได้ +3 ลูก",
-    // },
+    {
+      key: "moreProduceMoretribute",
+      label: "เกิดอาหารและระเบิดมากขึ้น",
+      description: "อาหารเกิดมากขึ้น +1 อัน การสุ่มระเบิดจะสุ่มจาก 3-10 ลูกแทน",
+    },
     // {
     //   key: "safeHeaven",
     //   label: "ระเบิดสุ่มจำนวนน้อยลง",
@@ -48,12 +52,13 @@ export default function SpecialStatusSelector({ onSelect }: Props) {
     //   label: "เกมเร็วเท่าเดิมแต่เวลาเดินช้าลง",
     //   description: "เวลาเดินช้าลง แต่เกมยังคงเร็วปกติ และการบันทึกผลจะยึดจากเวลาที่ช้าลงเช่นกัน",
     // },
-
   ];
   return (
     <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-100 animate-[fadeIn_1s_ease-out_forwards]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] max-w-md space-y-4">
-        <h2 className="text-xl font-bold text-center text-gray-800">เลือกสถานะพิเศษ</h2>
+        <h2 className="text-xl font-bold text-center text-gray-800">
+          เลือกสถานะพิเศษ
+        </h2>
         <ul className="space-y-3">
           {options.map((opt) => (
             <li

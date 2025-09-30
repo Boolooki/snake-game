@@ -4,6 +4,8 @@ import {
   BoltIcon,
   ArrowTrendingUpIcon,
   ClockIcon,
+  ChevronDoubleDownIcon,
+  SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Language } from "@/types"; // ถ้าคุณแยก type ไว้
 
@@ -23,6 +25,8 @@ export default function BuffStatus({
   isSpeedBurst,
   isDoubleScore,
   isExtendedBurst,
+  isSlowSpeed,
+  isMoreProduceMoretribute,
   language,
 }: PropsBuffStatus & { language: Language }) {
   return (
@@ -30,11 +34,11 @@ export default function BuffStatus({
       <span>{messages[language].buffpanel}</span>
       {isEnergyShield && <ShieldCheckIcon className="w-5 h-5 text-blue-500" />}
       {isSpeedBurst && <BoltIcon className="w-5 h-5 text-yellow-400" />}
-      {isDoubleScore && (
-        <ArrowTrendingUpIcon className="w-5 h-5 text-purple-500" />
-      )}
+      {isDoubleScore && (<ArrowTrendingUpIcon className="w-5 h-5 text-purple-500" />)}
       {isExtendedBurst && <ClockIcon className="w-5 h-5 text-orange-400" />}
-      {!isEnergyShield && !isSpeedBurst && !isDoubleScore && !isExtendedBurst && (
+      {isSlowSpeed && <ChevronDoubleDownIcon className="w-5 h-5 text-orange-400" />}
+      {isMoreProduceMoretribute && <SquaresPlusIcon className="w-5 h-5 text-orange-400" />}
+      {!isEnergyShield && !isSpeedBurst && !isDoubleScore && !isExtendedBurst && !isSlowSpeed && !isMoreProduceMoretribute && (
         <span>{messages[language].none}</span>
       )}
     </div>

@@ -35,11 +35,13 @@ export type PropsBuffStatus = {
   isSpeedBurst: boolean;
   isDoubleScore: boolean;
   isExtendedBurst: boolean;
+  isSlowSpeed: boolean;
+  isMoreProduceMoretribute: boolean;
 };
 
 export type PropsBoard = {
   snake: Position[];
-  food: Position;
+  foods: Position[];
   energyShield: Position;
   bomb: Position[];
   speedBurst: Position;

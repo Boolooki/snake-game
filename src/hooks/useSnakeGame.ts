@@ -21,7 +21,7 @@ export const useSnakeGame = () => {
   const [snake, setSnake] = useState<Position[]>(INITIAL_SNAKE);
   const [countdown, setCountdown] = useState<number | null>(600);
 
-  const [food, setFood] = useState<Position>(INITIAL_FOOD);
+  const [foods, setFoods] = useState<Position[]>(INITIAL_FOOD);
   const [energyShield, setEnergyShield] =
     useState<Position>(INITIAL_ENERGYSHIELD);
   const [speedBurst, setSpeedBurst] = useState<Position>(INITIAL_SPEEDBURST);
@@ -49,12 +49,13 @@ export const useSnakeGame = () => {
   isSlowSpeed,
   applyStatus,
   resetStatus,
+  isMoreProduceMoretribute,
 
 } = useSpecialStatus();
 
 
   useEffect(() => {
-    const thresholds = [2, 4];
+    const thresholds = [2, 4, 6, 8];
     if (thresholds.includes(score)) {
       setLevel((prev) => prev + 1);
       setUpgradeQueue(true); // เปิด UI ให้เลือกสถานะ
@@ -75,10 +76,31 @@ export const useSnakeGame = () => {
   }, []);
 
   const spawnBombs = useCallback((exclude: Position[]) => {
-    const count = Math.floor(Math.random() * 5) + 1; // 1–5 ลูก
+    const count = Math.floor(Math.random() * (isMoreProduceMoretribute ? 8 : 5)) + (isMoreProduceMoretribute ? 3 : 1); // T=1–5 F=3-10 ลูก
+    console.log("count:" ,count ,"Math.random():")
     const newBombs = getSafePositionsArray(exclude, count);
     setBomb(newBombs);
   }, []);
+
+  const spawnFoods = useCallback(
+  (count: number) => {
+    const exclude: Position[] = [...snake, ...bomb, energyShield, speedBurst];
+    const newFoods: Position[] = [];
+
+    for (let i = 0; i < count; i++) {
+      newFoods.push(getSafeRandomPos([...exclude, ...newFoods]));
+    }
+    setFoods(newFoods);
+  },
+  [snake, bomb, energyShield, speedBurst]
+);
+
+useEffect(() => {
+  const count = isMoreProduceMoretribute ? 2 : 1;
+  spawnFoods(count);
+}, [isMoreProduceMoretribute]);
+
+
 
   useEffect(() => {
     let touchStartX = 0;
@@ -164,19 +186,12 @@ export const useSnakeGame = () => {
         }
       });
 
-      if (head.x === food.x && head.y === food.y) {
-        const newFood = getSafeRandomPos([
-          ...newSnake,
-          ...snake,
-          energyShield,
-          speedBurst,
-          ...bomb,
-        ]);
-        setFood(newFood);
+      if (foods.some((b) => b.x === head.x && b.y === head.y)) {
+        spawnFoods(isMoreProduceMoretribute ? 2 : 1);
         const newExclude = [
           ...newSnake,
           ...snake,
-          newFood,
+          ...foods,
           energyShield,
           speedBurst,
         ];
@@ -189,7 +204,7 @@ export const useSnakeGame = () => {
         const newExclude = [
           ...newSnake,
           ...snake,
-          food,
+          ...foods,
           energyShield,
           speedBurst,
         ];
@@ -202,7 +217,7 @@ export const useSnakeGame = () => {
         const newExclude = [
           ...newSnake,
           ...snake,
-          food,
+          ...foods,
           energyShield,
           speedBurst,
         ];
@@ -219,7 +234,7 @@ export const useSnakeGame = () => {
         const newExclude = [
           ...newSnake,
           ...snake,
-          food,
+          ...foods,
           energyShield,
           speedBurst,
         ];
@@ -230,7 +245,7 @@ export const useSnakeGame = () => {
 
       return [head, ...prevSnake.slice(0, -1)];
     });
-  }, [food, energyShield, bomb, isEnergyShield, snake, spawnBombs, speedBurst]);
+  }, [foods, energyShield, bomb, isEnergyShield, snake, spawnBombs, speedBurst]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -322,7 +337,7 @@ export const useSnakeGame = () => {
   const resetGame = useCallback(() => {
     const exclude: Position[] = [
       ...snake,
-      food,
+      ...foods,
       energyShield,
       speedBurst,
       ...bomb,
@@ -331,7 +346,7 @@ export const useSnakeGame = () => {
     setEnergyShield(getSafeRandomPos(exclude));
     setDirection("RIGHT");
     inputBuffer.current = "RIGHT";
-    setFood(getSafeRandomPos(exclude));
+    spawnFoods(isMoreProduceMoretribute ? 2 : 1);
     setSpeedBurst(getSafeRandomPos(exclude));
     setScore(0);
     setIsGameOver(false);
@@ -342,7 +357,7 @@ export const useSnakeGame = () => {
     spawnBombs(exclude);
     resetStatus();
     onStart();
-  }, [bomb, energyShield, food, snake, speedBurst]);
+  }, [bomb, energyShield, foods, snake, speedBurst]);
 
   const onStart = () => {
     if (username.trim()) {
@@ -370,7 +385,7 @@ export const useSnakeGame = () => {
 
   return {
     snake,
-    food,
+    foods,
     score,
     isPaused,
     isGameOver,
@@ -406,6 +421,7 @@ export const useSnakeGame = () => {
     isDoubleScore,
     isExtendedBurst,
     isSlowSpeed,
+    isMoreProduceMoretribute,
 
   };
 };

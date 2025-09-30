@@ -65,7 +65,7 @@ export default function Home() {
       <div className="relative">
         <Board
           snake={game.snake}
-          food={game.food}
+          foods={game.foods}
           energyShield={game.energyShield}
           bomb={game.bomb}
           speedBurst={game.speedBurst}
@@ -86,6 +86,8 @@ export default function Home() {
         isSpeedBurst={game.isSpeedBurst}
         isDoubleScore={game.isDoubleScore}
         isExtendedBurst={game.isExtendedBurst}
+        isSlowSpeed={game.isSlowSpeed}
+        isMoreProduceMoretribute={game.isMoreProduceMoretribute}
         language={game.language}
       />
 
