@@ -99,9 +99,11 @@ export default function Home() {
         <SpecialStatusSelector
           onSelect={(status) => {
             game.applyStatus(status);
+            game.setSelectedStatuses((prev) => [...prev, status]);
             game.setUpgradeQueue(false);
             game.setIsPaused(false);
           }}
+          excludedKeys={game.selectedStatuses}
         />
       )}
     </div>

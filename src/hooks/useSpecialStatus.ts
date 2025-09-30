@@ -8,6 +8,8 @@ export type SpecialStatusFlags = {
   moreProduceMoretribute: boolean;
 };
 
+
+
 export const useSpecialStatus = () => {
   const [status, setStatus] = useState<SpecialStatusFlags>({
     doubleScore: false,
@@ -15,6 +17,8 @@ export const useSpecialStatus = () => {
     slowSpeed: false,
     moreProduceMoretribute: false,
   });
+
+  const [selectedStatuses, setSelectedStatuses] = useState<(keyof SpecialStatusFlags)[]>([]);
 
   const applyStatus = (selected: keyof SpecialStatusFlags) => {
     setStatus((prev) => ({
@@ -40,5 +44,7 @@ export const useSpecialStatus = () => {
     isExtendedBurst: status.extendedSpeedBurst,
     isSlowSpeed: status.slowSpeed,
     isMoreProduceMoretribute: status.moreProduceMoretribute,
+    selectedStatuses,
+    setSelectedStatuses,
   };
 };
