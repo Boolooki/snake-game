@@ -43,11 +43,18 @@ export const useSnakeGame = () => {
   const [language, setLanguage] = useState<"th" | "en">("th");
 
   const inputBuffer = useRef<Direction>("RIGHT");
-  const { status, applyStatus, isDoubleScore, isExtendedBurst, resetStatus } =
-    useSpecialStatus();
+  const {
+  isDoubleScore,
+  isExtendedBurst,
+  isSlowSpeed,
+  applyStatus,
+  resetStatus,
+
+} = useSpecialStatus();
+
 
   useEffect(() => {
-    const thresholds = [5, 40];
+    const thresholds = [2, 4];
     if (thresholds.includes(score)) {
       setLevel((prev) => prev + 1);
       setUpgradeQueue(true); // เปิด UI ให้เลือกสถานะ
@@ -209,17 +216,10 @@ export const useSnakeGame = () => {
       if (
         bomb.some((b) => b.x === head.x && b.y === head.y && isEnergyShield)
       ) {
-        const newFood = getSafeRandomPos([
-          ...newSnake,
-          ...snake,
-          energyShield,
-          speedBurst,
-          ...bomb,
-        ]);
         const newExclude = [
           ...newSnake,
           ...snake,
-          newFood,
+          food,
           energyShield,
           speedBurst,
         ];
@@ -286,8 +286,8 @@ export const useSnakeGame = () => {
   }, [countdown]);
 
   const speedy = (() => {
-    if (isSpeedBurst) return SPEED / 2; // เร็วขึ้น
-    if (isDoubleScore) return SPEED * 1.5; // ช้าลง
+    if (isSpeedBurst && !isSlowSpeed) return SPEED / 2; // เร็วขึ้น
+    if (!isSpeedBurst && isSlowSpeed) return SPEED * 2; // ช้าลง
     return SPEED; // ปกติ
   })();
 
@@ -405,6 +405,7 @@ export const useSnakeGame = () => {
     applyStatus,
     isDoubleScore,
     isExtendedBurst,
+    isSlowSpeed,
 
   };
 };

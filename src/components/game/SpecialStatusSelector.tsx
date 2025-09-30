@@ -1,17 +1,17 @@
 // components/ui/SpecialStatusSelector.tsx
 import React from "react";
-import { SpecialStatus } from "@/hooks/useSpecialStatus";
+import { SpecialStatusFlags } from "@/hooks/useSpecialStatus";
 
 type Props = {
-  onSelect: (status: SpecialStatus) => void;
+  onSelect: (status: keyof SpecialStatusFlags) => void;
 };
 
 export default function SpecialStatusSelector({ onSelect }: Props) {
-  const options: { key: SpecialStatus; label: string; description: string }[] = [
+  const options: { key: keyof SpecialStatusFlags; label: string; description: string }[] = [
     {
-      key: "doubleScoreSlowSpeed",
-      label: "แต้ม x2, งูช้าลง",
-      description: "ลดความเร็วของงูลง แต่ได้แต้มเพิ่มเป็นสองเท่าเมื่อกินอาหาร",
+      key: "doubleScore",
+      label: "แต้ม x2",
+      description: "ได้แต้มเพิ่มเป็นสองเท่าเมื่อกินอาหาร",
     },
     {
       key: "extendedSpeedBurst",
@@ -19,12 +19,37 @@ export default function SpecialStatusSelector({ onSelect }: Props) {
       description: "เมื่อเก็บ Speed Burst จะได้ระยะเวลาบัฟนานขึ้น 2 เท่า",
     },
     {
-      key: "none",
-      label: "ไม่เลือกตอนนี้",
-      description: "ข้ามการเลือกสถานะพิเศษในรอบนี้",
+      key: "slowSpeed",
+      label: "งูช้าลง",
+      description: "ลดความเร็วของงูลง",
     },
-  ];
+    // {
+    //   key: "moreProduceMoretribute",
+    //   label: "เกิดอาหารมากขึ้น ระเบิดสุ่มจำนวนเยอะขึ้น",
+    //   description: "อาหารเกิดมากขึ้น 1->2 ระเบิดสูงสุดมีได้ +3 ลูก",
+    // },
+    // {
+    //   key: "safeHeaven",
+    //   label: "ระเบิดสุ่มจำนวนน้อยลง",
+    //   description: "ระเบิดสูงสุดมีได้ -2 ลูก",
+    // },
+    // {
+    //   key: "passiveDeathWish",
+    //   label: "เหยียบระเบิดจะให้แต้ม",
+    //   description: "การเก็บระเบิดจะให้แต้ม +1",
+    // },
+    // {
+    //   key: "LeonidasProof",
+    //   label: "โล่จะสะสมได้",
+    //   description: "สามารถสะสมจำนวนโล่ได้",
+    // },
+    // {
+    //   key: "playingWithTime",
+    //   label: "เกมเร็วเท่าเดิมแต่เวลาเดินช้าลง",
+    //   description: "เวลาเดินช้าลง แต่เกมยังคงเร็วปกติ และการบันทึกผลจะยึดจากเวลาที่ช้าลงเช่นกัน",
+    // },
 
+  ];
   return (
     <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-100 animate-[fadeIn_1s_ease-out_forwards]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] max-w-md space-y-4">
