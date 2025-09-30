@@ -4,9 +4,13 @@ import { SpecialStatusFlags } from "@/hooks/useSpecialStatus";
 
 type Props = {
   onSelect: (status: keyof SpecialStatusFlags) => void;
+  excludedKeys?: (keyof SpecialStatusFlags)[];
 };
 
-export default function SpecialStatusSelector({ onSelect }: Props) {
+export default function SpecialStatusSelector({
+  onSelect,
+  excludedKeys,
+}: Props) {
   const options: {
     key: keyof SpecialStatusFlags;
     label: string;
@@ -53,6 +57,11 @@ export default function SpecialStatusSelector({ onSelect }: Props) {
     //   description: "เวลาเดินช้าลง แต่เกมยังคงเร็วปกติ และการบันทึกผลจะยึดจากเวลาที่ช้าลงเช่นกัน",
     // },
   ];
+
+  const filteredOptions = options.filter(
+    (opt) => !excludedKeys?.includes(opt.key)
+  );
+
   return (
     <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-100 animate-[fadeIn_1s_ease-out_forwards]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] max-w-md space-y-4">
@@ -60,7 +69,7 @@ export default function SpecialStatusSelector({ onSelect }: Props) {
           เลือกสถานะพิเศษ
         </h2>
         <ul className="space-y-3">
-          {options.map((opt) => (
+          {filteredOptions.map((opt) => (
             <li
               key={opt.key}
               className="border border-gray-300 rounded p-3 hover:bg-yellow-100 cursor-pointer transition duration-300 animate-fadeIn"
