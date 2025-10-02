@@ -36,11 +36,11 @@ export default function SpecialStatusSelector({
       label: "เกิดอาหารและระเบิดมากขึ้น",
       description: "อาหารเกิดมากขึ้น +1 อัน การสุ่มระเบิดจะสุ่มจาก 3-10 ลูกแทน",
     },
-    // {
-    //   key: "safeHeaven",
-    //   label: "ระเบิดสุ่มจำนวนน้อยลง",
-    //   description: "ระเบิดสูงสุดมีได้ -2 ลูก",
-    // },
+     {
+       key: "safeHeaven",
+       label: "ระเบิดสุ่มจำนวนน้อยลง",
+       description: "ระเบิดสูงสุดมีได้ -2 ลูก",
+     },
     // {
     //   key: "passiveDeathWish",
     //   label: "เหยียบระเบิดจะให้แต้ม",

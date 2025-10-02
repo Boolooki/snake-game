@@ -37,6 +37,7 @@ export type PropsBuffStatus = {
   isExtendedBurst: boolean;
   isSlowSpeed: boolean;
   isMoreProduceMoretribute: boolean;
+  isSafeHeaven: boolean;
 };
 
 export type PropsBoard = {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Position, Direction } from "../types";
+import { Position } from "../types";
 import { INITIAL_SNAKE, SPEED } from "../constants/gameConstants";
 import { isCollision, isOutOfBounds } from "../utils/gameUtils";
 import { useSpecialStatus } from "./useSpecialStatus";
@@ -12,11 +12,16 @@ export const useSnakeGame = () => {
 
   const { bombs, foods, energyShields, speedBursts, spawner } = useSpawning();
 
-  function getSpawnCounts(isBuffed: boolean) {
-    const countFoods = isBuffed ? 2 : 1;
-    const base = isBuffed ? 8 : 5;
-    const bonus = isBuffed ? 3 : 1;
-    const countBombs = Math.floor(Math.random() * base) + bonus;
+  function getSpawnCounts(
+    isMoreProduceMoretribute: boolean,
+    issafeHeaven: boolean
+  ) {
+    const countFoods = isMoreProduceMoretribute ? 2 : 1;
+    const base = isMoreProduceMoretribute ? 8 : 5;
+    const bonus = isMoreProduceMoretribute ? 3 : 1;
+    const countBombs =
+      Math.floor(Math.random() * base) + bonus - (issafeHeaven ? 2 : 0);
+
     const countES = 1;
     const countSB = 1;
 
@@ -27,9 +32,10 @@ export const useSnakeGame = () => {
     isDoubleScore,
     isExtendedBurst,
     isSlowSpeed,
+    isSafeHeaven,
+    isMoreProduceMoretribute,
     applyStatus,
     resetStatus,
-    isMoreProduceMoretribute,
     setSelectedStatuses,
     selectedStatuses,
   } = useSpecialStatus();
@@ -64,7 +70,8 @@ export const useSnakeGame = () => {
 
   useEffect(() => {
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
-      isMoreProduceMoretribute
+      isMoreProduceMoretribute,
+      isSafeHeaven
     );
     spawner(countFoods, countBombs, countES, countSB, snake);
   }, [isMoreProduceMoretribute]);
@@ -121,7 +128,8 @@ export const useSnakeGame = () => {
 
       if (foods.some((b) => b.x === head.x && b.y === head.y)) {
         const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
-          isMoreProduceMoretribute
+          isMoreProduceMoretribute,
+          isSafeHeaven
         );
         spawner(countFoods, countBombs, countES, countSB, snake);
         setScore((prev) => prev + (isDoubleScore ? 2 : 1));
@@ -130,7 +138,8 @@ export const useSnakeGame = () => {
 
       if (energyShields.some((b) => b.x === head.x && b.y === head.y)) {
         const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
-          isMoreProduceMoretribute
+          isMoreProduceMoretribute,
+          isSafeHeaven
         );
         spawner(countFoods, countBombs, countES, countSB, snake);
         setIsEnergyShield(true);
@@ -139,7 +148,8 @@ export const useSnakeGame = () => {
 
       if (speedBursts.some((b) => b.x === head.x && b.y === head.y)) {
         const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
-          isMoreProduceMoretribute
+          isMoreProduceMoretribute,
+          isSafeHeaven
         );
         spawner(countFoods, countBombs, countES, countSB, snake);
         const burstDuration = isExtendedBurst ? 6000 : 3000;
@@ -152,7 +162,8 @@ export const useSnakeGame = () => {
         bombs.some((b) => b.x === head.x && b.y === head.y && isEnergyShield)
       ) {
         const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
-          isMoreProduceMoretribute
+          isMoreProduceMoretribute,
+          isSafeHeaven
         );
         spawner(countFoods, countBombs, countES, countSB, snake);
         setIsEnergyShield(false);
@@ -232,6 +243,7 @@ export const useSnakeGame = () => {
     setSnake(INITIAL_SNAKE);
     resetInput();
     setScore(0);
+    setPlayTime(0);
     setIsGameOver(false);
     setIsEnergyShield(false);
     setIsSpeedBurst(false);
@@ -239,7 +251,8 @@ export const useSnakeGame = () => {
     setHasSubmitted(false);
     triggerCountdown();
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
-      isMoreProduceMoretribute
+      isMoreProduceMoretribute,
+      isSafeHeaven
     );
     spawner(countFoods, countBombs, countES, countSB, snake);
   }, [bombs, energyShields, foods, snake, speedBursts]);
