@@ -82,7 +82,9 @@ export default function Home() {
         isExtendedBurst={game.isExtendedBurst}
         isSlowSpeed={game.isSlowSpeed}
         isMoreProduceMoretribute={game.isMoreProduceMoretribute}
+        isSafeHeaven={game.isSafeHeaven}
         language={game.language}
+
       />
 
       <div className="mt-5">

@@ -328,6 +328,7 @@ export const useSnakeGame = () => {
     isExtendedBurst,
     isSlowSpeed,
     isMoreProduceMoretribute,
+    isSafeHeaven,
     selectedStatuses,
     setSelectedStatuses,
   };
