@@ -66,9 +66,9 @@ export default function Home() {
         <Board
           snake={game.snake}
           foods={game.foods}
-          energyShield={game.energyShield}
-          bomb={game.bomb}
-          speedBurst={game.speedBurst}
+          energyShields={game.energyShields}
+          bombs={game.bombs}
+          speedBursts={game.speedBursts}
           isEnergyShield={game.isEnergyShield}
           isGameOver={game.isGameOver}
           isPaused={game.isPaused}

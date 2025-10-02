@@ -1,13 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Position, Direction } from "../types";
-import {
-  INITIAL_SNAKE,
-  SPEED,
-  INITIAL_FOOD,
-  INITIAL_ENERGYSHIELD,
-  INITIAL_SPEEDBURST,
-  INITIAL_BOMBS,
-} from "../constants/gameConstants";
+import { INITIAL_SNAKE, SPEED } from "../constants/gameConstants";
 import {
   getSafeRandomPos,
   isCollision,
@@ -15,17 +8,26 @@ import {
   getSafePositionsArray,
 } from "../utils/gameUtils";
 import { useSpecialStatus } from "../hooks/useSpecialStatus";
+import { useSpawning } from "../hooks/useSpawning";
 
 export const useSnakeGame = () => {
   const [direction, setDirection] = useState<Direction>("RIGHT");
   const [snake, setSnake] = useState<Position[]>(INITIAL_SNAKE);
   const [countdown, setCountdown] = useState<number | null>(600);
 
-  const [foods, setFoods] = useState<Position[]>(INITIAL_FOOD);
-  const [energyShield, setEnergyShield] =
-    useState<Position>(INITIAL_ENERGYSHIELD);
-  const [speedBurst, setSpeedBurst] = useState<Position>(INITIAL_SPEEDBURST);
-  const [bomb, setBomb] = useState<Position[]>(INITIAL_BOMBS);
+  const { bombs, foods, energyShields, speedBursts, spawner } = useSpawning();
+
+  function getSpawnCounts(isBuffed: boolean) {
+    const countFoods = isBuffed ? 2 : 1;
+    const base = isBuffed ? 8 : 5;
+    const bonus = isBuffed ? 3 : 1;
+    const countBombs = Math.floor(Math.random() * base) + bonus;
+    const countES = 1;
+    const countSB = 1;
+
+    return { countFoods, countBombs, countES, countSB };
+  }
+
   const [score, setScore] = useState<number>(0);
   const [playTime, setPlayTime] = useState(0);
   const [username, setUsername] = useState("");
@@ -64,6 +66,13 @@ export const useSnakeGame = () => {
   }, [score]);
 
   useEffect(() => {
+    const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
+      isMoreProduceMoretribute
+    );
+    spawner(countFoods, countBombs, countES, countSB, snake);
+  }, [isMoreProduceMoretribute]);
+
+  useEffect(() => {
     if (countdown === 0) {
       startGame();
     }
@@ -74,41 +83,6 @@ export const useSnakeGame = () => {
     setIsGameOver(false);
     setTriggerReset(true);
   }, []);
-
-  const spawnBombs = useCallback(
-    (exclude: Position[]) => {
-      const count =
-        Math.floor(Math.random() * (isMoreProduceMoretribute ? 8 : 5)) +
-        (isMoreProduceMoretribute ? 3 : 1); // T=1–5 F=3-10 ลูก
-      console.log(
-        "count:",
-        count,
-        "isMoreProduceMoretribute:",
-        isMoreProduceMoretribute
-      );
-      const newBombs = getSafePositionsArray(exclude, count);
-      setBomb(newBombs);
-    },
-    [isMoreProduceMoretribute]
-  );
-
-  const spawnFoods = useCallback(
-    (count: number) => {
-      const exclude: Position[] = [...snake, ...bomb, energyShield, speedBurst];
-      const newFoods: Position[] = [];
-
-      for (let i = 0; i < count; i++) {
-        newFoods.push(getSafeRandomPos([...exclude, ...newFoods]));
-      }
-      setFoods(newFoods);
-    },
-    [snake, bomb, energyShield, speedBurst]
-  );
-
-  useEffect(() => {
-    const count = isMoreProduceMoretribute ? 2 : 1;
-    spawnFoods(count);
-  }, [isMoreProduceMoretribute]);
 
   useEffect(() => {
     let touchStartX = 0;
@@ -188,48 +162,35 @@ export const useSnakeGame = () => {
           setIsEnergyShield(false);
         }
         if (
-          bomb.some((b) => b.x === head.x && b.y === head.y && !isEnergyShield)
+          bombs.some((b) => b.x === head.x && b.y === head.y && !isEnergyShield)
         ) {
           setIsGameOver(true);
         }
       });
 
       if (foods.some((b) => b.x === head.x && b.y === head.y)) {
-        spawnFoods(isMoreProduceMoretribute ? 2 : 1);
-        const newExclude = [
-          ...newSnake,
-          ...snake,
-          ...foods,
-          energyShield,
-          speedBurst,
-        ];
-        spawnBombs(newExclude);
+        const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
+          isMoreProduceMoretribute
+        );
+        spawner(countFoods, countBombs, countES, countSB, snake);
         setScore((prev) => prev + (isDoubleScore ? 2 : 1));
         return newSnake;
       }
 
-      if (head.x === energyShield.x && head.y === energyShield.y) {
-        const newExclude = [
-          ...newSnake,
-          ...snake,
-          ...foods,
-          energyShield,
-          speedBurst,
-        ];
-        setEnergyShield(getSafeRandomPos(newExclude));
+      if (energyShields.some((b) => b.x === head.x && b.y === head.y)) {
+        const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
+          isMoreProduceMoretribute
+        );
+        spawner(countFoods, countBombs, countES, countSB, snake);
         setIsEnergyShield(true);
         return utilSnake;
       }
 
-      if (head.x === speedBurst.x && head.y === speedBurst.y) {
-        const newExclude = [
-          ...newSnake,
-          ...snake,
-          ...foods,
-          energyShield,
-          speedBurst,
-        ];
-        setSpeedBurst(getSafeRandomPos(newExclude));
+      if (speedBursts.some((b) => b.x === head.x && b.y === head.y)) {
+        const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
+          isMoreProduceMoretribute
+        );
+        spawner(countFoods, countBombs, countES, countSB, snake);
         const burstDuration = isExtendedBurst ? 6000 : 3000;
         setIsSpeedBurst(true);
         setTimeout(() => setIsSpeedBurst(false), burstDuration);
@@ -237,16 +198,12 @@ export const useSnakeGame = () => {
       }
 
       if (
-        bomb.some((b) => b.x === head.x && b.y === head.y && isEnergyShield)
+        bombs.some((b) => b.x === head.x && b.y === head.y && isEnergyShield)
       ) {
-        const newExclude = [
-          ...newSnake,
-          ...snake,
-          ...foods,
-          energyShield,
-          speedBurst,
-        ];
-        spawnBombs(newExclude);
+        const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
+          isMoreProduceMoretribute
+        );
+        spawner(countFoods, countBombs, countES, countSB, snake);
         setIsEnergyShield(false);
         return utilSnake;
       }
@@ -255,12 +212,12 @@ export const useSnakeGame = () => {
     });
   }, [
     foods,
-    energyShield,
-    bomb,
+    energyShields,
+    bombs,
     isEnergyShield,
     snake,
-    spawnBombs,
-    speedBurst,
+    spawner,
+    speedBursts,
     isMoreProduceMoretribute,
   ]);
 
@@ -355,17 +312,14 @@ export const useSnakeGame = () => {
     const exclude: Position[] = [
       ...snake,
       ...foods,
-      energyShield,
-      speedBurst,
-      ...bomb,
+      ...energyShields,
+      ...speedBursts,
+      ...bombs,
     ];
     resetStatus();
     setSnake(INITIAL_SNAKE);
-    setEnergyShield(getSafeRandomPos(exclude));
     setDirection("RIGHT");
     inputBuffer.current = "RIGHT";
-    spawnFoods(isMoreProduceMoretribute ? 2 : 1);
-    setSpeedBurst(getSafeRandomPos(exclude));
     setScore(0);
     setIsGameOver(false);
     setIsEnergyShield(false);
@@ -373,8 +327,11 @@ export const useSnakeGame = () => {
     setTriggerReset(true);
     setHasSubmitted(false);
     onStart();
-    spawnBombs(exclude);
-  }, [bomb, energyShield, foods, snake, speedBurst]);
+    const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
+      isMoreProduceMoretribute
+    );
+    spawner(countFoods, countBombs, countES, countSB, snake);
+  }, [bombs, energyShields, foods, snake, speedBursts]);
 
   const onStart = () => {
     if (username.trim()) {
@@ -408,11 +365,11 @@ export const useSnakeGame = () => {
     isGameOver,
     resetGame,
     setIsPaused,
-    energyShield,
+    energyShields,
     isEnergyShield,
-    speedBurst,
+    speedBursts,
     isSpeedBurst,
-    bomb,
+    bombs,
     position: snake[0],
     direction,
     inputBuffer, // ถ้าใช้ ref

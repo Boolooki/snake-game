@@ -42,9 +42,9 @@ export type PropsBuffStatus = {
 export type PropsBoard = {
   snake: Position[];
   foods: Position[];
-  energyShield: Position;
-  bomb: Position[];
-  speedBurst: Position;
+  energyShields: Position[];
+  bombs: Position[];
+  speedBursts: Position[];
   isEnergyShield: boolean;
   isSpeedBurst: boolean;
   isGameOver: boolean;
