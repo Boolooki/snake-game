@@ -17,7 +17,7 @@ export type LeaderboardEntry = {
 export type PropsStartModal = {
   username: string;
   setUsername: (name: string) => void;
-  onStart: () => void;
+  triggerCountdown: () => void;
   hasStarted: boolean;
   language: "th" | "en";
   onLangToggle: (lang: "th" | "en") => void;

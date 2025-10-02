@@ -19,7 +19,7 @@ const messages = {
 export default function StartModal({
   username,
   setUsername,
-  onStart,
+  triggerCountdown,
   hasStarted,
   language,
   onLangToggle,
@@ -45,7 +45,7 @@ export default function StartModal({
           <p className="text-xs text-red-600 mb-2">{messages[language].toomuchtext}</p>
         )}
           <button
-            onClick={onStart}
+            onClick={triggerCountdown}
             className="bg-green-400 text-white px-4 py-2 rounded hover:bg-green-600 hover:text-black transition-all font-bold"
           >
             {messages[language].startbut}

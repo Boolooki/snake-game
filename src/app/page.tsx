@@ -22,7 +22,7 @@ export default function Home() {
       <StartModal
         username={game.username}
         setUsername={game.setUsername}
-        onStart={game.onStart}
+        triggerCountdown={game.triggerCountdown}
         hasStarted={game.hasStarted}
         language={game.language}
         onLangToggle={game.onLangToggle}
@@ -34,13 +34,7 @@ export default function Home() {
 
       <div className="flex mt-2 space-x-4">
         <Score value={game.score} language={game.language} />
-        <Timer
-          isGameOver={game.isGameOver}
-          isPaused={game.isPaused}
-          triggerReset={game.triggerReset}
-          language={game.language}
-          onTimeUpdate={(sec) => game.setPlayTime(sec)}
-        />
+        <Timer seconds={game.playTime} language={game.language} />
       </div>
 
       <div className="relative flex mt-5 mb-5 space-x-5">
