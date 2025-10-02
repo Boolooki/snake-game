@@ -41,6 +41,7 @@ export const useSnakeGame = () => {
   } = useSpecialStatus();
 
   const [score, setScore] = useState<number>(0);
+  const [passedThresholds, setPassedThresholds] = useState<number[]>([]);
   const [playTime, setPlayTime] = useState(0);
   const [username, setUsername] = useState("");
   const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -60,13 +61,18 @@ export const useSnakeGame = () => {
   const [language, setLanguage] = useState<"th" | "en">("th");
 
   useEffect(() => {
-    const thresholds = [5, 20, 50, 100];
-    if (thresholds.includes(score)) {
-      setLevel((prev) => prev + 1);
-      setUpgradeQueue(true); // เปิด UI ให้เลือกสถานะ
-      setIsPaused(true);
-    }
-  }, [score]);
+  const thresholds = [5, 20, 50, 100];
+  const nextThreshold = thresholds.find(
+    (t) => score >= t && !passedThresholds.includes(t)
+  );
+
+  if (nextThreshold !== undefined) {
+    setPassedThresholds((prev) => [...prev, nextThreshold]);
+    setLevel((prev) => prev + 1);
+    setUpgradeQueue(true);
+    setIsPaused(true);
+  }
+}, [score, passedThresholds]);
 
   useEffect(() => {
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
@@ -250,6 +256,7 @@ export const useSnakeGame = () => {
     setTriggerReset(true);
     setHasSubmitted(false);
     triggerCountdown();
+    setPassedThresholds([]);
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
       isMoreProduceMoretribute,
       isSafeHeaven
