@@ -40,7 +40,7 @@ export const useSpawning = () => {
       setEnergyShields(newES);
       setSpeedBursts(newSB);
     },
-    [bombs, energyShields, speedBursts]
+    []
   );
 
   return {

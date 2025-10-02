@@ -32,14 +32,35 @@ export default function BuffStatus({
   language,
 }: PropsBuffStatus & { language: Language }) {
   const activeBuffs = [
-    isEnergyShield && <ShieldCheckIcon className="w-5 h-5 text-blue-500" />,
-    isSpeedBurst && <BoltIcon className="w-5 h-5 text-yellow-400" />,
-    isDoubleScore && (<ArrowTrendingUpIcon className="w-5 h-5 text-purple-500" />),
-    isExtendedBurst && <ClockIcon className="w-5 h-5 text-orange-400" />,
-    isSlowSpeed && (<ChevronDoubleDownIcon className="w-5 h-5 text-orange-400" />),
-    isMoreProduceMoretribute && (<SquaresPlusIcon className="w-5 h-5 text-orange-400" />),
-    isSafeHeaven && <NoSymbolIcon className="w-5 h-5 text-orange-400" />,
+    isEnergyShield && (
+      <ShieldCheckIcon key="energyShield" className="w-5 h-5 text-blue-500" />
+    ),
+    isSpeedBurst && (
+      <BoltIcon key="speedBurst" className="w-5 h-5 text-yellow-400" />
+    ),
+    isDoubleScore && (
+      <ArrowTrendingUpIcon
+        key="doubleScore"
+        className="w-5 h-5 text-purple-500"
+      />
+    ),
+    isExtendedBurst && (
+      <ClockIcon key="extendedBurst" className="w-5 h-5 text-orange-400" />
+    ),
+    isSlowSpeed && (
+      <ChevronDoubleDownIcon
+        key="slowSpeed"
+        className="w-5 h-5 text-orange-400"
+      />
+    ),
+    isMoreProduceMoretribute && (
+      <SquaresPlusIcon key="moreProduce" className="w-5 h-5 text-orange-400" />
+    ),
+    isSafeHeaven && (
+      <NoSymbolIcon key="safeHeaven" className="w-5 h-5 text-orange-400" />
+    ),
   ].filter(Boolean);
+
   return (
     <div className="text-sm text-gray-600 mt-5 flex items-center gap-2">
       <span>{messages[language].buffpanel}</span>

@@ -1,15 +1,17 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { Position } from "../types";
+import { useState, useEffect, useCallback } from "react";
+import { Position, Language } from "../types";
 import { INITIAL_SNAKE, SPEED } from "../constants/gameConstants";
 import { isCollision, isOutOfBounds } from "../utils/gameUtils";
 import { useSpecialStatus } from "./useSpecialStatus";
 import { useSpawning } from "./useSpawning";
 import { useInputSystem } from "./useInputSystem";
+import { usePlayTimeTracker } from "./usePlayTimeTracker";
+import { useLevelProgression } from "./useLevelProgression";
+import { useScoreSubmission } from "./useScoreSubmission";
+import { useCountdownTimer } from "./useCountdownTimer";
 
 export const useSnakeGame = () => {
   const [snake, setSnake] = useState<Position[]>(INITIAL_SNAKE);
-  const [countdown, setCountdown] = useState<number | null>(600);
-
   const { bombs, foods, energyShields, speedBursts, spawner } = useSpawning();
 
   function getSpawnCounts(
@@ -40,39 +42,43 @@ export const useSnakeGame = () => {
     selectedStatuses,
   } = useSpecialStatus();
 
-  const [score, setScore] = useState<number>(0);
-  const [passedThresholds, setPassedThresholds] = useState<number[]>([]);
-  const [playTime, setPlayTime] = useState(0);
   const [username, setUsername] = useState("");
   const [showLeaderboard, setShowLeaderboard] = useState(false);
 
-  const [level, setLevel] = useState(0);
-  const [upgradeQueue, setUpgradeQueue] = useState(false);
-
   const [isPaused, setIsPaused] = useState<boolean>(true);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [triggerReset, setTriggerReset] = useState<boolean>(false);
+  const [language, setLanguage] = useState<Language>("th");
+  const { countdown, triggerCountdown } = useCountdownTimer({
+    setIsPaused,
+    setHasStarted,
+    username,
+  });
+  const { playTime, resetPlayTime } = usePlayTimeTracker({
+    isPaused,
+    isGameOver,
+    countdown,
+  });
+
   const { direction, setDirection, inputBuffer, resetInput } = useInputSystem({
     setIsPaused,
   });
+  const [score, setScore] = useState<number>(0);
+  const { hasSubmitted, resetSubmission } = useScoreSubmission({
+    score,
+    playTime,
+    isGameOver,
+    isPaused,
+    username,
+  });
+  const { level, upgradeQueue, setUpgradeQueue, resetProgression } =
+    useLevelProgression({
+      score,
+      setIsPaused,
+    });
   const [isEnergyShield, setIsEnergyShield] = useState<boolean>(false);
   const [isSpeedBurst, setIsSpeedBurst] = useState<boolean>(false);
-  const [triggerReset, setTriggerReset] = useState<boolean>(false);
-  const [hasStarted, setHasStarted] = useState(false);
-  const [language, setLanguage] = useState<"th" | "en">("th");
-
-  useEffect(() => {
-  const thresholds = [5, 20, 50, 100];
-  const nextThreshold = thresholds.find(
-    (t) => score >= t && !passedThresholds.includes(t)
-  );
-
-  if (nextThreshold !== undefined) {
-    setPassedThresholds((prev) => [...prev, nextThreshold]);
-    setLevel((prev) => prev + 1);
-    setUpgradeQueue(true);
-    setIsPaused(true);
-  }
-}, [score, passedThresholds]);
 
   useEffect(() => {
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
@@ -93,6 +99,7 @@ export const useSnakeGame = () => {
     setIsGameOver(false);
     setTriggerReset(true);
     resetInput();
+    resetProgression();
   }, []);
 
   const moveSnake = useCallback(() => {
@@ -123,7 +130,6 @@ export const useSnakeGame = () => {
       requestAnimationFrame(() => {
         if (isCollision(prevSnake, head) || isOutOfBounds(head)) {
           setIsGameOver(true);
-          setIsEnergyShield(false);
         }
         if (
           bombs.some((b) => b.x === head.x && b.y === head.y && !isEnergyShield)
@@ -189,18 +195,6 @@ export const useSnakeGame = () => {
     isMoreProduceMoretribute,
   ]);
 
-  useEffect(() => {
-    if (countdown === null || countdown <= 0) return setIsPaused(false);
-
-    const timer = setTimeout(() => {
-      setCountdown((prev) => {
-        if (prev === 1) return null; // ✅ จบแล้วเซตเป็น null
-        return prev !== null ? prev - 1 : null;
-      });
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [countdown]);
-
   const speedy = (() => {
     if (isSpeedBurst && !isSlowSpeed) return SPEED / 2; // เร็วขึ้น
     if (!isSpeedBurst && isSlowSpeed) return SPEED * 2; // ช้าลง
@@ -214,49 +208,20 @@ export const useSnakeGame = () => {
     const interval = setInterval(moveSnake, speedy);
     return () => clearInterval(interval);
   }, [moveSnake, isPaused, isGameOver, isSpeedBurst, countdown, speedy]);
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-
-  useEffect(() => {
-    if (isPaused || isGameOver || countdown !== null) return;
-
-    const timer = setInterval(() => {
-      setPlayTime((prev) => prev + 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [isPaused, isGameOver, countdown]);
-
-  useEffect(() => {
-    if (!isGameOver || isPaused || score === 0 || playTime < 3 || hasSubmitted)
-      return;
-
-    setHasSubmitted(true);
-
-    fetch("/api/submitScore", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: username || "Anonymous",
-        score,
-        duration: playTime,
-        powerupsUsed: "test",
-      }),
-    });
-  }, [isGameOver, isPaused, score, playTime, hasSubmitted, username]);
 
   const resetGame = useCallback(() => {
     resetStatus();
     setSnake(INITIAL_SNAKE);
     resetInput();
     setScore(0);
-    setPlayTime(0);
+    resetPlayTime();
     setIsGameOver(false);
     setIsEnergyShield(false);
     setIsSpeedBurst(false);
     setTriggerReset(true);
-    setHasSubmitted(false);
+    resetSubmission();
     triggerCountdown();
-    setPassedThresholds([]);
+    resetProgression();
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
       isMoreProduceMoretribute,
       isSafeHeaven
@@ -264,18 +229,11 @@ export const useSnakeGame = () => {
     spawner(countFoods, countBombs, countES, countSB, snake);
   }, [bombs, energyShields, foods, snake, speedBursts]);
 
-  const triggerCountdown = () => {
-    if (username.trim()) {
-      setHasStarted(true); // ✅ ปิด StartModal
-      setCountdown(5); // ✅ เริ่มนับถอยหลัง // ✅ ยังไม่เริ่มเกมจริง
-    }
-  };
-
   const onPauseToggle = () => {
     if (isGameOver) return;
     setIsPaused((prev) => {
       if (prev) {
-        triggerCountdown(); // ✅ resume ด้วย countdown
+        triggerCountdown();
       }
       return !prev;
     });
@@ -312,7 +270,7 @@ export const useSnakeGame = () => {
     direction,
     inputBuffer, // ถ้าใช้ ref
     triggerReset,
-    setPlayTime,
+    resetPlayTime,
     playTime,
     username,
     setUsername,
@@ -327,9 +285,9 @@ export const useSnakeGame = () => {
     setShowLeaderboard,
     showLeaderboard,
     level,
-    setLevel,
     upgradeQueue,
     setUpgradeQueue,
+    resetProgression,
     applyStatus,
     isDoubleScore,
     isExtendedBurst,
@@ -338,5 +296,6 @@ export const useSnakeGame = () => {
     isSafeHeaven,
     selectedStatuses,
     setSelectedStatuses,
+    hasSubmitted,
   };
 };

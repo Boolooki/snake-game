@@ -9,8 +9,6 @@ export type SpecialStatusFlags = {
   safeHeaven: boolean;
 };
 
-
-
 export const useSpecialStatus = () => {
   const [status, setStatus] = useState<SpecialStatusFlags>({
     doubleScore: false,
@@ -37,6 +35,7 @@ export const useSpecialStatus = () => {
       moreProduceMoretribute: false,
       safeHeaven: false,
     });
+    setSelectedStatuses([]);
   };
 
   return {
