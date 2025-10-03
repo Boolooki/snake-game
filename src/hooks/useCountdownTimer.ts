@@ -4,12 +4,11 @@ import { useState, useEffect } from "react";
 export const useCountdownTimer = ({
   setIsPaused,
   setHasStarted,
-  username
+  username,
 }: {
   setIsPaused: React.Dispatch<React.SetStateAction<boolean>>;
   setHasStarted: React.Dispatch<React.SetStateAction<boolean>>;
   username: string;
-
 }) => {
   const [countdown, setCountdown] = useState<number | null>(600);
 
@@ -27,10 +26,11 @@ export const useCountdownTimer = ({
 
   const triggerCountdown = () => {
     if (username.trim()) {
+      console.log("[triggerCountdown] called");
       setHasStarted(true); // ✅ ปิด StartModal
       setCountdown(5); // ✅ เริ่มนับถอยหลัง // ✅ ยังไม่เริ่มเกมจริง
     }
   };
 
-  return { countdown, triggerCountdown };
+  return { countdown, triggerCountdown, setCountdown };
 };

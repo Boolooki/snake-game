@@ -198,6 +198,7 @@ export const useSnakeGame = () => {
   }, [moveSnake, isPaused, isGameOver, isSpeedBurst, countdown, speedy]);
 
   const resetGame = useCallback(() => {
+    triggerCountdown();
     resetStatus();
     setSnake(INITIAL_SNAKE);
     resetInput();
@@ -208,14 +209,23 @@ export const useSnakeGame = () => {
     setIsSpeedBurst(false);
     setTriggerReset(true);
     resetSubmission();
-    triggerCountdown();
     resetProgression();
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
       isMoreProduceMoretribute,
       isSafeHeaven
     );
     spawner(countFoods, countBombs, countES, countSB, INITIAL_SNAKE);
-  }, []);
+  }, [
+  triggerCountdown,
+  resetStatus,
+  resetInput,
+  resetPlayTime,
+  resetSubmission,
+  resetProgression,
+  isMoreProduceMoretribute,
+  isSafeHeaven,
+  spawner,
+]);
 
   const onPauseToggle = () => {
     if (isGameOver) return;
