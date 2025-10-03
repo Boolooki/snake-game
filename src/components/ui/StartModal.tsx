@@ -59,7 +59,7 @@ export default function StartModal({
       </div>
 
       {/* Modal Card */}
-      <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 p-8 w-full max-w-md">
+      <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 p-10 w-full max-w-md">
         {/* Language Toggle */}
         <div className="absolute top-4 right-4 flex gap-2">
           <button

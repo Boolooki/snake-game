@@ -81,6 +81,12 @@ export const useSnakeGame = () => {
 
   useEffect(() => {
     if (upgradeQueue) {
+      setIsPaused(true);
+    }
+  }, [upgradeQueue]);
+
+  useEffect(() => {
+    if (!upgradeQueue) {
       triggerCountdown();
     }
   }, [upgradeQueue]);
@@ -222,16 +228,16 @@ export const useSnakeGame = () => {
     );
     spawner(countFoods, countBombs, countES, countSB, INITIAL_SNAKE);
   }, [
-  triggerCountdown,
-  resetStatus,
-  resetInput,
-  resetPlayTime,
-  resetSubmission,
-  resetProgression,
-  isMoreProduceMoretribute,
-  isSafeHeaven,
-  spawner,
-]);
+    triggerCountdown,
+    resetStatus,
+    resetInput,
+    resetPlayTime,
+    resetSubmission,
+    resetProgression,
+    isMoreProduceMoretribute,
+    isSafeHeaven,
+    spawner,
+  ]);
 
   const onPauseToggle = () => {
     if (isGameOver) return;
