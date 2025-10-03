@@ -11,8 +11,8 @@ import BoardOverlay from "../ui/BoardOverlay";
 export default function Board(game: PropsBoard) {
   return (
     <div
-      className={`grid grid-cols-${GRID_SIZE} grid-rows-${GRID_SIZE} w-[80vw] h-[80vw] lg:w-[25vw] lg:h-[25vw] relative transition duration-300 
-      bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-black/20 p-6
+      className={`grid grid-cols-${GRID_SIZE} grid-rows-${GRID_SIZE} w-[85vw] h-[85vw] lg:w-[25vw] lg:h-[25vw] relative transition duration-300 
+      bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-black/20
       ${
         game.isSpeedBurst
           ? "bg-yellow-50 border-yellow-400 shadow-[0_0_20px_0px_#fff200]"

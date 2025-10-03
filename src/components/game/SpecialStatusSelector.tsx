@@ -59,13 +59,13 @@ export default function SpecialStatusSelector({
   const { selectedIndex } = useArrowKeySelector(optionKeys, onSelect, true);
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center z-50 animate-[fadeIn_0.3s_ease-out_forwards]">
-      <div className="bg-white p-6 rounded-lg shadow-2xl w-[90vw] max-w-md space-y-4">
+    <div className="fixed inset-0 flex justify-center items-center z-50 animate-[fadeIn_0.3s_ease-out_forwards]  ">
+      <div className="bg-white p-6 rounded-lg shadow-2xl w-[90vw] max-w-md space-y-4 bg-white backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-black/20">
         <h2 className="text-2xl font-bold text-center text-gray-800">
           เลือกสถานะพิเศษ
         </h2>
         <p className="text-center text-sm text-gray-500">
-          ใช้ ↑↓ เพื่อเลือก, Enter เพื่อยืนยัน
+          
         </p>
         <ul className="space-y-3 max-h-[60vh] overflow-y-auto scrollbar-hide">
           {filteredOptions.map((opt, idx) => (
@@ -82,7 +82,7 @@ export default function SpecialStatusSelector({
               `}
               onClick={() => onSelect(opt.key)}
             >
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 ">
                 {opt.emoji && (
                   <span className="text-2xl flex-shrink-0">{opt.emoji}</span>
                 )}
@@ -104,7 +104,7 @@ export default function SpecialStatusSelector({
           ))}
         </ul>
         <p className="text-center text-xs text-gray-400 mt-4">
-          หรือคลิกเพื่อเลือกได้เลย
+          ใช้ ↑↓ , Enter หรือคลิกเพื่อเลือกได้เลย
         </p>
       </div>
     </div>
