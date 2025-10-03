@@ -1,5 +1,5 @@
 // hooks/useSpecialStatus.ts
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export type SpecialStatusFlags = {
   doubleScore: boolean;
@@ -18,7 +18,10 @@ export const useSpecialStatus = () => {
     safeHeaven: false,
   });
 
-  const [selectedStatuses, setSelectedStatuses] = useState<(keyof SpecialStatusFlags)[]>([]);
+  const [selectedStatuses, setSelectedStatuses] = useState<
+    (keyof SpecialStatusFlags)[]
+  >([]);
+  
 
   const applyStatus = (selected: keyof SpecialStatusFlags) => {
     setStatus((prev) => ({

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Position, Language } from "../types";
 import { INITIAL_SNAKE, SPEED } from "../constants/gameConstants";
-import { isCollision, isOutOfBounds } from "../utils/gameUtils";
+import { isCollision, isOutOfBounds, getSpawnCounts } from "../utils/gameUtils";
 import { useSpecialStatus } from "./useSpecialStatus";
 import { useSpawning } from "./useSpawning";
 import { useInputSystem } from "./useInputSystem";
@@ -13,22 +13,7 @@ import { useCountdownTimer } from "./useCountdownTimer";
 export const useSnakeGame = () => {
   const [snake, setSnake] = useState<Position[]>(INITIAL_SNAKE);
   const { bombs, foods, energyShields, speedBursts, spawner } = useSpawning();
-
-  function getSpawnCounts(
-    isMoreProduceMoretribute: boolean,
-    issafeHeaven: boolean
-  ) {
-    const countFoods = isMoreProduceMoretribute ? 2 : 1;
-    const base = isMoreProduceMoretribute ? 8 : 5;
-    const bonus = isMoreProduceMoretribute ? 3 : 1;
-    const countBombs =
-      Math.floor(Math.random() * base) + bonus - (issafeHeaven ? 2 : 0);
-
-    const countES = 1;
-    const countSB = 1;
-
-    return { countFoods, countBombs, countES, countSB };
-  }
+  // ใน useSnakeGame.ts
 
   const {
     isDoubleScore,
@@ -130,11 +115,13 @@ export const useSnakeGame = () => {
       requestAnimationFrame(() => {
         if (isCollision(prevSnake, head) || isOutOfBounds(head)) {
           setIsGameOver(true);
+          return prevSnake;
         }
         if (
           bombs.some((b) => b.x === head.x && b.y === head.y && !isEnergyShield)
         ) {
           setIsGameOver(true);
+          return prevSnake;
         }
       });
 
@@ -192,7 +179,13 @@ export const useSnakeGame = () => {
     snake,
     spawner,
     speedBursts,
+    getSpawnCounts,
     isMoreProduceMoretribute,
+    inputBuffer, // เพิ่ม
+    setDirection, // เพิ่ม
+    isDoubleScore, // เพิ่ม
+    isExtendedBurst, // เพิ่ม
+    isSafeHeaven, // เพิ่ม
   ]);
 
   const speedy = (() => {
@@ -226,8 +219,8 @@ export const useSnakeGame = () => {
       isMoreProduceMoretribute,
       isSafeHeaven
     );
-    spawner(countFoods, countBombs, countES, countSB, snake);
-  }, [bombs, energyShields, foods, snake, speedBursts]);
+    spawner(countFoods, countBombs, countES, countSB, INITIAL_SNAKE);
+  }, []);
 
   const onPauseToggle = () => {
     if (isGameOver) return;

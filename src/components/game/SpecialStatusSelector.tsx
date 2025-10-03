@@ -1,6 +1,7 @@
 // components/ui/SpecialStatusSelector.tsx
 import React from "react";
 import { SpecialStatusFlags } from "@/hooks/useSpecialStatus";
+import { useArrowKeySelector } from "@/hooks/useArrowKeySelector";
 
 type Props = {
   onSelect: (status: keyof SpecialStatusFlags) => void;
@@ -15,71 +16,96 @@ export default function SpecialStatusSelector({
     key: keyof SpecialStatusFlags;
     label: string;
     description: string;
+    emoji?: string;
   }[] = [
     {
       key: "doubleScore",
-      label: "แต้ม x2",
+      label: "เติบโตสมบูรณ์",
       description: "ได้แต้มเพิ่มเป็นสองเท่าเมื่อกินอาหาร",
+      emoji: "⭐",
     },
     {
       key: "extendedSpeedBurst",
-      label: "Speed Burst นานขึ้น",
-      description: "เมื่อเก็บ Speed Burst จะได้ระยะเวลาบัฟนานขึ้น 2 เท่า",
+      label: "เร่งราวี",
+      description: "Speed Burst ยาวนานขึ้น 2 เท่า",
+      emoji: "⚡",
     },
     {
       key: "slowSpeed",
-      label: "งูช้าลง",
-      description: "ลดความเร็วของงูลง",
+      label: "เยื่องเท้า",
+      description: "ลดความเร็วของงูลงเท่าตัว",
+      emoji: "🐢",
     },
     {
       key: "moreProduceMoretribute",
-      label: "เกิดอาหารและระเบิดมากขึ้น",
-      description: "อาหารเกิดมากขึ้น +1 อัน การสุ่มระเบิดจะสุ่มจาก 3-10 ลูกแทน",
+      label: "มากโภชนาการมากบรรณาการ",
+      description: "อาหารเกิดมากขึ้น +1 อัน การสุ่มระเบิดจะสุ่มจาก 3-10 ลูกแทน ( จากเดิม 1-5 ลูก )",
+      emoji: "🍎",
     },
-     {
-       key: "safeHeaven",
-       label: "ระเบิดสุ่มจำนวนน้อยลง",
-       description: "ระเบิดสูงสุดมีได้ -2 ลูก",
-     },
-    // {
-    //   key: "passiveDeathWish",
-    //   label: "เหยียบระเบิดจะให้แต้ม",
-    //   description: "การเก็บระเบิดจะให้แต้ม +1",
-    // },
-    // {
-    //   key: "LeonidasProof",
-    //   label: "โล่จะสะสมได้",
-    //   description: "สามารถสะสมจำนวนโล่ได้",
-    // },
-    // {
-    //   key: "playingWithTime",
-    //   label: "เกมเร็วเท่าเดิมแต่เวลาเดินช้าลง",
-    //   description: "เวลาเดินช้าลง แต่เกมยังคงเร็วปกติ และการบันทึกผลจะยึดจากเวลาที่ช้าลงเช่นกัน",
-    // },
+    {
+      key: "safeHeaven",
+      label: "สวรรค์ปัดป้อง",
+      description: "สุ่มได้ระเบิดเท่าไรจำนวนสุดท้ายจะ-2ลูก",
+      emoji: "🛡️",
+    },
   ];
 
   const filteredOptions = options.filter(
     (opt) => !excludedKeys?.includes(opt.key)
   );
 
+  const optionKeys = filteredOptions.map((opt) => opt.key);
+
+  const { selectedIndex } = useArrowKeySelector(optionKeys, onSelect, true);
+
   return (
-    <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-100 animate-[fadeIn_1s_ease-out_forwards]">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] max-w-md space-y-4">
-        <h2 className="text-xl font-bold text-center text-gray-800">
+    <div className="fixed inset-0 flex justify-center items-center z-50 animate-[fadeIn_0.3s_ease-out_forwards]">
+      <div className="bg-white p-6 rounded-lg shadow-2xl w-[90vw] max-w-md space-y-4">
+        <h2 className="text-2xl font-bold text-center text-gray-800">
           เลือกสถานะพิเศษ
         </h2>
-        <ul className="space-y-3">
-          {filteredOptions.map((opt) => (
+        <p className="text-center text-sm text-gray-500">
+          ใช้ ↑↓ เพื่อเลือก, Enter เพื่อยืนยัน
+        </p>
+        <ul className="space-y-3 max-h-[60vh] overflow-y-auto scrollbar-hide">
+          {filteredOptions.map((opt, idx) => (
             <li
               key={opt.key}
-              className="border border-gray-300 rounded p-3 hover:bg-yellow-100 cursor-pointer transition duration-300 animate-fadeIn"
+              className={`
+                border rounded-lg p-4 cursor-pointer 
+                transition-all duration-200 ease-in-out
+                ${
+                  idx === selectedIndex
+                    ? "bg-yellow-200 border-yellow-500 scale-105 shadow-lg"
+                    : "border-gray-300 hover:bg-yellow-50 hover:border-yellow-300"
+                }
+              `}
               onClick={() => onSelect(opt.key)}
             >
-              <p className="font-semibold text-gray-700">{opt.label}</p>
-              <p className="text-sm text-gray-500">{opt.description}</p>
+              <div className="flex items-start gap-3">
+                {opt.emoji && (
+                  <span className="text-2xl flex-shrink-0">{opt.emoji}</span>
+                )}
+                <div className="flex-1">
+                  <p className="font-semibold text-gray-800 mb-1">
+                    {opt.label}
+                  </p>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {opt.description}
+                  </p>
+                </div>
+                {idx === selectedIndex && (
+                  <span className="text-yellow-500 flex-shrink-0 text-xl">
+                    ▶
+                  </span>
+                )}
+              </div>
             </li>
           ))}
         </ul>
+        <p className="text-center text-xs text-gray-400 mt-4">
+          หรือคลิกเพื่อเลือกได้เลย
+        </p>
       </div>
     </div>
   );

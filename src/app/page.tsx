@@ -85,7 +85,6 @@ export default function Home() {
         isMoreProduceMoretribute={game.isMoreProduceMoretribute}
         isSafeHeaven={game.isSafeHeaven}
         language={game.language}
-
       />
 
       <div className="mt-5">
