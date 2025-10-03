@@ -13,7 +13,7 @@ const messages = {
 
 export default function GameInstructions({ language }: { language: Language }) {
   return (
-    <div className="text-sm text-gray-600">
+    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-6 max-w-2xl text-sm text-gray-600">
       <div>{messages[language].move}</div>
       <div>{messages[language].shield}</div>
     </div>

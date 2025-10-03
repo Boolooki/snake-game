@@ -181,11 +181,6 @@ export const useSnakeGame = () => {
     speedBursts,
     getSpawnCounts,
     isMoreProduceMoretribute,
-    inputBuffer, // เพิ่ม
-    setDirection, // เพิ่ม
-    isDoubleScore, // เพิ่ม
-    isExtendedBurst, // เพิ่ม
-    isSafeHeaven, // เพิ่ม
   ]);
 
   const speedy = (() => {

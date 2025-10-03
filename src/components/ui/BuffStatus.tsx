@@ -62,13 +62,15 @@ export default function BuffStatus({
   ].filter(Boolean);
 
   return (
-    <div className="text-sm text-gray-600 mt-5 flex items-center gap-2">
-      <span>{messages[language].buffpanel}</span>
-      {activeBuffs.length > 0 ? (
-        activeBuffs
-      ) : (
-        <span>{messages[language].none}</span>
-      )}
+    <div className="">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 mb-6 overflow-hidden text-sm text-gray-600 mt-5 flex items-center gap-2 p-5">
+        <span>{messages[language].buffpanel}</span>
+        {activeBuffs.length > 0 ? (
+          activeBuffs
+        ) : (
+          <span>{messages[language].none}</span>
+        )}
+      </div>
     </div>
   );
 }

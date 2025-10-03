@@ -76,3 +76,22 @@ html, body {
     scrollbar-width: none;
   }
 }
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0.3;
+  }
+  33% {
+    transform: translateY(-30px) translateX(20px) rotate(120deg);
+    opacity: 0.5;
+  }
+  66% {
+    transform: translateY(-10px) translateX(-20px) rotate(240deg);
+    opacity: 0.4;
+  }
+}
+
+.animate-float {
+  animation: float ease-in-out infinite;
+}

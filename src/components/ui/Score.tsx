@@ -18,8 +18,8 @@ export default function Score({
   language: Language;
 }) {
   return (
-    <div className="text-xl font-bold text-center mt-4">
-      <div>{messages[language].score}{value}</div>
+    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden p-2">
+      {messages[language].score}{value}
     </div>
   );
 }

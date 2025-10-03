@@ -1,4 +1,3 @@
-//page.tsx
 "use client";
 
 import React from "react";
@@ -19,7 +18,8 @@ export default function Home() {
   const game = useSnakeGame();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-green-100 p-4">
+    <div className="relative flex flex-col items-center justify-start min-h-screen p-4 py-8 overflow-hidden">
+      {/* Start Modal */}
       <StartModal
         username={game.username}
         setUsername={game.setUsername}
@@ -29,16 +29,16 @@ export default function Home() {
         onLangToggle={game.onLangToggle}
       />
 
-      <h1 className="text-3xl font-bold">
+      <h1 className="text-4xl font-bold mb-6 bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
         {game.language === "th" ? "เกมงูกินหรรม" : "Snake Game"}
       </h1>
 
-      <div className="flex mt-2 space-x-4">
+      <div className="flex gap-4 mb-6">
         <Score value={game.score} language={game.language} />
         <Timer seconds={game.playTime} language={game.language} />
       </div>
 
-      <div className="relative flex mt-5 mb-5 space-x-5">
+      <div className="flex gap-3 mb-6">
         <ControlButtons
           isGameOver={game.isGameOver}
           isPaused={game.isPaused}
@@ -57,7 +57,8 @@ export default function Home() {
         />
       </div>
 
-      <div className="relative">
+      {/* Game Board */}
+      <div className="relative mb-6">
         <Board
           snake={game.snake}
           foods={game.foods}
@@ -71,26 +72,31 @@ export default function Home() {
           language={game.language}
           countdown={game.countdown}
         />
+
+        {/* Countdown Overlay */}
         {game.hasStarted && game.countdown !== null && game.countdown > 0 && (
           <CountdownOverlay count={game.countdown} />
         )}
+
+        {/* Decorative blur elements */}
+        <div className="absolute -top-4 -left-4 w-32 h-32 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-full blur-3xl -z-10" />
+        <div className="absolute -bottom-4 -right-4 w-40 h-40 bg-gradient-to-br from-teal-400 to-cyan-400 rounded-full blur-3xl -z-10" />
       </div>
 
-      <BuffStatus
-        isEnergyShield={game.isEnergyShield}
-        isSpeedBurst={game.isSpeedBurst}
-        isDoubleScore={game.isDoubleScore}
-        isExtendedBurst={game.isExtendedBurst}
-        isSlowSpeed={game.isSlowSpeed}
-        isMoreProduceMoretribute={game.isMoreProduceMoretribute}
-        isSafeHeaven={game.isSafeHeaven}
-        language={game.language}
-      />
+        <BuffStatus
+          isEnergyShield={game.isEnergyShield}
+          isSpeedBurst={game.isSpeedBurst}
+          isDoubleScore={game.isDoubleScore}
+          isExtendedBurst={game.isExtendedBurst}
+          isSlowSpeed={game.isSlowSpeed}
+          isMoreProduceMoretribute={game.isMoreProduceMoretribute}
+          isSafeHeaven={game.isSafeHeaven}
+          language={game.language}
+        />
 
-      <div className="mt-5">
         <GameInstructions language={game.language} />
-      </div>
 
+      {/* Special Status Selector */}
       {game.upgradeQueue && (
         <SpecialStatusSelector
           onSelect={(status) => {

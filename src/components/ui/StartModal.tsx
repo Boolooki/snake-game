@@ -1,20 +1,30 @@
 import { PropsStartModal } from "@/types";
-import LanguageSelector from "./LanguageSelector";
 
 const messages = {
   th: {
-    Mass: "🕹️ พร้อมเล่นยัง? 🐍",
-    placeho: "ระบุชื่อของคุณ",
-    startbut: "▶ เริ่มเลย",
-    toomuchtext: "ใส่อักษรได้แค่10ตัวนะ",
+    title: "Snake Game",
+    subtitle: "เริ่มต้นการผจญภัย",
+    placeholder: "ชื่อผู้เล่น",
+    startButton: "เริ่มเกม",
   },
   en: {
-    Mass: "🕹️ Ready to Play? 🐍",
-    placeho: "Enter your name",
-    startbut: "▶ Start Game",
-    toomuchtext: "Max 10 characters allowed",
+    title: "Snake Game",
+    subtitle: "Start Your Adventure",
+    placeholder: "Player Name",
+    startButton: "Start Game",
   },
 };
+
+const BACKGROUND_CIRCLES = [
+  { size: 120, left: 10, top: 15, delay: 0, duration: 20 },
+  { size: 150, left: 80, top: 25, delay: 2, duration: 18 },
+  { size: 100, left: 20, top: 70, delay: 4, duration: 22 },
+  { size: 130, left: 85, top: 60, delay: 1, duration: 19 },
+  { size: 110, left: 45, top: 10, delay: 3, duration: 21 },
+  { size: 140, left: 60, top: 80, delay: 5, duration: 17 },
+  { size: 90, left: 5, top: 45, delay: 2.5, duration: 23 },
+  { size: 125, left: 90, top: 85, delay: 4.5, duration: 16 },
+];
 
 export default function StartModal({
   username,
@@ -26,31 +36,101 @@ export default function StartModal({
 }: PropsStartModal) {
   if (hasStarted) return null;
 
-  return (
-    <div className="fixed inset-0 bg-green-300 bg-opacity-60 flex items-center justify-center z-50">
-      <div className="bg-gradient-to-br from-green-300 to-blue-300 p-6 rounded-xl shadow-2xl border-4 border-white w-[320px] font-arcade text-center transform scale-95 opacity-0 animate-[fadeIn_1s_ease-out_forwards]">
-        <h2 className="text-2xl mb-4 text-black drop-shadow">
-          {messages[language].Mass}
-        </h2>
+  const t = messages[language];
 
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          maxLength={10}
-          className="px-4 py-2 border-2 border-black rounded bg-green-100 text-center w-full mb-2 font-bold"
-          placeholder={messages[language].placeho}
-        />
-        {username.length >= 10 && (
-          <p className="text-xs text-red-600 mb-2">{messages[language].toomuchtext}</p>
-        )}
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+      {/* Animated Background with floating circles */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 overflow-hidden">
+        {BACKGROUND_CIRCLES.map((circle, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-gradient-to-br from-emerald-400/30 to-teal-400/30 animate-float"
+            style={{
+              width: `${circle.size}px`,
+              height: `${circle.size}px`,
+              left: `${circle.left}%`,
+              top: `${circle.top}%`,
+              animationDelay: `${circle.delay}s`,
+              animationDuration: `${circle.duration}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Modal Card */}
+      <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 p-8 w-full max-w-md">
+        {/* Language Toggle */}
+        <div className="absolute top-4 right-4 flex gap-2">
           <button
-            onClick={() => triggerCountdown()}
-            className="bg-green-400 text-white px-4 py-2 rounded hover:bg-green-600 hover:text-black transition-all font-bold"
+            onClick={() => onLangToggle("th")}
+            className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+              language === "th"
+                ? "bg-emerald-500 text-white shadow-lg"
+                : "bg-white/50 text-gray-600 hover:bg-white/80"
+            }`}
           >
-            {messages[language].startbut}
+            TH
           </button>
-          <LanguageSelector language={language} onLangToggle={onLangToggle} />
+          <button
+            onClick={() => onLangToggle("en")}
+            className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+              language === "en"
+                ? "bg-emerald-500 text-white shadow-lg"
+                : "bg-white/50 text-gray-600 hover:bg-white/80"
+            }`}
+          >
+            EN
+          </button>
+        </div>
+
+        {/* Snake Icon */}
+        <div className="flex justify-center mb-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
+            <span className="text-4xl">🐍</span>
+          </div>
+        </div>
+
+        {/* Title */}
+        <h1 className="text-3xl font-bold text-center bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+          {t.title}
+        </h1>
+        <p className="text-center text-gray-500 text-sm mb-8">
+          {t.subtitle}
+        </p>
+
+        {/* Input Field */}
+        <div className="relative mb-6">
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            maxLength={10}
+            className="w-full px-6 py-4 bg-white/60 backdrop-blur-sm border-2 border-gray-200 rounded-2xl text-center text-lg font-medium transition-all duration-300 focus:outline-none focus:border-emerald-400 focus:shadow-lg focus:shadow-emerald-200/50"
+            placeholder={t.placeholder}
+          />
+          <div className="absolute -bottom-5 right-2 text-xs text-gray-400">
+            {username.length}/10
+          </div>
+        </div>
+
+        {/* Start Button */}
+        <button
+          onClick={triggerCountdown}
+          disabled={!username}
+          className="w-full mt-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-300 group"
+        >
+          <span className="flex items-center justify-center gap-2">
+            {t.startButton}
+            <span className="transform group-hover:translate-x-1 transition-transform">
+              →
+            </span>
+          </span>
+        </button>
+
+        {/* Decorative blur elements */}
+        <div className="absolute -top-4 -left-4 w-24 h-24 bg-gradient-to-br from-emerald-400/20 to-teal-400/20 rounded-full blur-2xl -z-10" />
+        <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-gradient-to-br from-teal-400/20 to-cyan-400/20 rounded-full blur-2xl -z-10" />
       </div>
     </div>
   );

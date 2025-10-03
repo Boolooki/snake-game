@@ -18,7 +18,7 @@ export default function Timer({
   language: Language;
 }) {
   return (
-    <div className="text-xl font-bold text-center mt-4">
+    <div className="p-2 bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden">
       {messages[language].timeelap}
       {formatTime(seconds)}
     </div>

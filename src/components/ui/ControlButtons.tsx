@@ -13,12 +13,12 @@ export default function ControlButtons({
   onPauseToggle,
 }: PropsControlButton) {
   return (
-    <div className= "flex space-x-4">
+    <div className= "flex space-x-4 bg-white/80 backdrop-blur-md rounded-xl shadow-lg border border-white/40 overflow-hidden">
       <button className="px-4 py-2 rounded" onClick={resetGame}>
         <ArrowPathIcon className="h-5 w-5" />
       </button>
       <button className="px-4 py-2 rounded" onClick={onPauseToggle}>
-        {(isPaused || !isGameOver) ? (
+        {(isPaused || isGameOver) ? (
           <PlayIcon className="w-5 h-5" />
         ) : (
           <PauseIcon className="w-5 h-5" />

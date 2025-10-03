@@ -25,7 +25,7 @@ export default function LeaderboardScore({ language, showboard, onOpen, onClose 
       </button>
 
       {showboard && (
-        <LeaderboardModal onClose={() => onClose(false)} />
+        <LeaderboardModal onClose={() => onClose(false)} language={language} />
       )}
     </>
   );
