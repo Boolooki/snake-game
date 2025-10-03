@@ -79,6 +79,12 @@ export const useSnakeGame = () => {
     }
   }, [countdown]);
 
+  useEffect(() => {
+    if (upgradeQueue) {
+      triggerCountdown();
+    }
+  }, [upgradeQueue]);
+
   const startGame = useCallback(() => {
     setIsPaused(false);
     setIsGameOver(false);
