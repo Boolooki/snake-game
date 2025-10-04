@@ -1,5 +1,5 @@
 // hooks/useSpecialStatus.ts
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 export type SpecialStatusFlags = {
   doubleScore: boolean;
@@ -33,7 +33,7 @@ export const useSpecialStatus = () => {
     );
 
     // ถ้าเหลือน้อยกว่า 4 ก็เอาทั้งหมด
-    const count = Math.min(4, availableKeys.length);
+    const count = Math.min(3, availableKeys.length);
 
     // Shuffle และเอาแค่ 4 ตัวแรก
     const shuffled = [...availableKeys].sort(() => Math.random() - 0.5);
