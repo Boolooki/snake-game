@@ -1,5 +1,5 @@
 // hooks/useSpecialStatus.ts
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 
 export type SpecialStatusFlags = {
   doubleScore: boolean;
@@ -21,7 +21,26 @@ export const useSpecialStatus = () => {
   const [selectedStatuses, setSelectedStatuses] = useState<
     (keyof SpecialStatusFlags)[]
   >([]);
-  
+  // สุ่ม 4 ตัวเลือกที่ยังไม่เคยเลือก
+  const [randomOptions, setRandomOptions] = useState<
+    (keyof SpecialStatusFlags)[]
+  >([]);
+
+  const generateRandomOptions = () => {
+    const allKeys = Object.keys(status) as (keyof SpecialStatusFlags)[];
+    const availableKeys = allKeys.filter(
+      (key) => !selectedStatuses.includes(key)
+    );
+
+    // ถ้าเหลือน้อยกว่า 4 ก็เอาทั้งหมด
+    const count = Math.min(4, availableKeys.length);
+
+    // Shuffle และเอาแค่ 4 ตัวแรก
+    const shuffled = [...availableKeys].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, count);
+
+    setRandomOptions(selected);
+  };
 
   const applyStatus = (selected: keyof SpecialStatusFlags) => {
     setStatus((prev) => ({
@@ -39,6 +58,7 @@ export const useSpecialStatus = () => {
       safeHeaven: false,
     });
     setSelectedStatuses([]);
+    setRandomOptions([]);
   };
 
   return {
@@ -47,6 +67,8 @@ export const useSpecialStatus = () => {
     resetStatus,
     selectedStatuses,
     setSelectedStatuses,
+    randomOptions,
+    generateRandomOptions,
     isDoubleScore: status.doubleScore,
     isExtendedBurst: status.extendedSpeedBurst,
     isSlowSpeed: status.slowSpeed,

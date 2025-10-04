@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #00C2FF;
-  --color-secondary: #E6F4F1;
-  --color-accent: #FFD6E8;
+  --color-primary: #00c2ff;
+  --color-secondary: #e6f4f1;
+  --color-accent: #ffd6e8;
 
-  --font-sans: 'Geist', 'Inter', sans-serif;
+  --font-sans: "Geist", "Inter", sans-serif;
   --radius-default: 12px;
   --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
@@ -32,7 +32,6 @@
   background-color: #0090cc;
 }
 
-
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -52,50 +51,69 @@
 }
 
 @keyframes overlayFadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
-        @keyframes gameOverDramatic {
-          0% {
-            opacity: 0;
-            transform: scale(0.3) translateY(-100px);
-            filter: blur(20px);
-          }
-          60% {
-            transform: scale(1.1) translateY(0);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            filter: blur(0);
-          }
-        }
+@keyframes gameOverDramatic {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-100px);
+    filter: blur(20px);
+  }
+  60% {
+    transform: scale(1.1) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
 
-        @keyframes pausedSmooth {
-          from {
-            opacity: 0;
-            transform: scale(0.8);
-            filter: blur(10px);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-            filter: blur(0);
-          }
-        }
+@keyframes pausedSmooth {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
 
-        @keyframes expandWidth {
-          from {
-            width: 0;
-       }
-    to {
-   width: 200px;
- }
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 200px;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 @keyframes gameOverReveal {
@@ -111,7 +129,8 @@
   }
 }
 
-html, body {
+html,
+body {
   overscroll-behavior: contain;
   touch-action: none;
   background: var(--background);
@@ -130,7 +149,7 @@ html, body {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-  
+
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -138,7 +157,8 @@ html, body {
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) translateX(0) rotate(0deg);
     opacity: 0.3;
   }

@@ -1,9 +1,8 @@
 //useCountdownTimer.ts
-import { useState, useEffect } from "react";
+import { useState, useEffect ,useCallback} from "react";
 
 export const useCountdownTimer = ({
   setIsPaused,
-  setHasStarted,
   username,
 }: {
   setIsPaused: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +10,7 @@ export const useCountdownTimer = ({
   username: string;
 }) => {
   const [countdown, setCountdown] = useState<number | null>(600);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (countdown === null || countdown <= 0) return setIsPaused(false);
@@ -24,13 +24,16 @@ export const useCountdownTimer = ({
     return () => clearTimeout(timer);
   }, [countdown]);
 
-  const triggerCountdown = () => {
-    if (username.trim()) {
-      console.log("[triggerCountdown] called");
-      setHasStarted(true); // ✅ ปิด StartModal
+  const triggerCountdown = useCallback(() => {
+      console.log("Trigger is called")
       setCountdown(5); // ✅ เริ่มนับถอยหลัง // ✅ ยังไม่เริ่มเกมจริง
-    }
-  };
+    }, []);
 
-  return { countdown, triggerCountdown, setCountdown };
+  return {
+    countdown,
+    triggerCountdown,
+    setCountdown,
+    setIsLoading,
+    isLoading
+  };
 };

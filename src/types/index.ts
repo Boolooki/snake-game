@@ -17,7 +17,7 @@ export type LeaderboardEntry = {
 export type PropsStartModal = {
   username: string;
   setUsername: (name: string) => void;
-  triggerCountdown: () => void;
+  gameStart: () => void;
   hasStarted: boolean;
   language: "th" | "en";
   onLangToggle: (lang: "th" | "en") => void;
@@ -28,7 +28,6 @@ export type PropsControlButton = {
   isGameOver: boolean;
   resetGame: () => void;
   onPauseToggle: () => void;
-  countdown: number | null; // เพิ่ม
 };
 
 export type PropsBuffStatus = {

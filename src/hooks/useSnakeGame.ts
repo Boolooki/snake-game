@@ -13,6 +13,7 @@ import { useCountdownTimer } from "./useCountdownTimer";
 export const useSnakeGame = () => {
   const [snake, setSnake] = useState<Position[]>(INITIAL_SNAKE);
   const { bombs, foods, energyShields, speedBursts, spawner } = useSpawning();
+
   // ใน useSnakeGame.ts
 
   const {
@@ -25,6 +26,8 @@ export const useSnakeGame = () => {
     resetStatus,
     setSelectedStatuses,
     selectedStatuses,
+    randomOptions,
+    generateRandomOptions,
   } = useSpecialStatus();
 
   const [username, setUsername] = useState("");
@@ -35,11 +38,12 @@ export const useSnakeGame = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [triggerReset, setTriggerReset] = useState<boolean>(false);
   const [language, setLanguage] = useState<Language>("th");
-  const { countdown, triggerCountdown } = useCountdownTimer({
-    setIsPaused,
-    setHasStarted,
-    username,
-  });
+  const { countdown, triggerCountdown, setCountdown, setIsLoading, isLoading } =
+    useCountdownTimer({
+      setIsPaused,
+      setHasStarted,
+      username,
+    });
   const { playTime, resetPlayTime } = usePlayTimeTracker({
     isPaused,
     isGameOver,
@@ -61,6 +65,7 @@ export const useSnakeGame = () => {
     useLevelProgression({
       score,
       setIsPaused,
+      generateRandomOptions,
     });
   const [isEnergyShield, setIsEnergyShield] = useState<boolean>(false);
   const [isSpeedBurst, setIsSpeedBurst] = useState<boolean>(false);
@@ -90,6 +95,12 @@ export const useSnakeGame = () => {
       triggerCountdown();
     }
   }, [upgradeQueue]);
+
+  const gameStart = useCallback(() => {
+    console.log("gameStart is called")
+    setHasStarted(true);
+    setIsLoading(true);
+    }, []);
 
   const startGame = useCallback(() => {
     setIsPaused(false);
@@ -307,5 +318,10 @@ export const useSnakeGame = () => {
     selectedStatuses,
     setSelectedStatuses,
     hasSubmitted,
+    randomOptions,
+    setCountdown,
+    isLoading,
+    setIsLoading,
+    gameStart
   };
 };

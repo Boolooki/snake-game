@@ -19,7 +19,7 @@ const messages = {
 export default function StartModal({
   username,
   setUsername,
-  triggerCountdown,
+  gameStart,
   hasStarted,
   language,
   onLangToggle,
@@ -106,7 +106,7 @@ export default function StartModal({
 
         {/* Start Button */}
         <button
-          onClick={triggerCountdown}
+          onClick={gameStart}
           disabled={!username}
           className="w-full mt-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-300 group"
         >
