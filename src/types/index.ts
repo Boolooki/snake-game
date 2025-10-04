@@ -28,6 +28,7 @@ export type PropsControlButton = {
   isGameOver: boolean;
   resetGame: () => void;
   onPauseToggle: () => void;
+  countdown: number | null;
 };
 
 export type PropsBuffStatus = {

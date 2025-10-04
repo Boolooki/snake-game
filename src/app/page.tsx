@@ -77,6 +77,7 @@ export default function Home() {
           isPaused={game.isPaused}
           resetGame={game.resetGame}
           onPauseToggle={game.onPauseToggle}
+          countdown={game.countdown}
         />
         <LeaderboardScore
           language={game.language}
