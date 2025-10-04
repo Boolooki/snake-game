@@ -45,7 +45,7 @@ export default function Home() {
         {game.language === "th" ? "เกมงูกินหรรม" : "Snake Game"}
       </h1>
 
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 overflow-hidden pointer-events-none">
         {BACKGROUND_CIRCLES.map((circle, i) => (
           <div
             key={i}
@@ -74,6 +74,7 @@ export default function Home() {
           isPaused={game.isPaused}
           resetGame={game.resetGame}
           onPauseToggle={game.onPauseToggle}
+          countdown={game.countdown}
         />
         <LeaderboardScore
           language={game.language}

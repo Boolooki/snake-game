@@ -11,13 +11,18 @@ export default function ControlButtons({
   isGameOver,
   resetGame,
   onPauseToggle,
+  countdown,
 }: PropsControlButton) {
+  const isCountingDown = countdown !== null && countdown > 0;
   return (
     <div className= "flex space-x-4 bg-white/80 backdrop-blur-md rounded-xl shadow-lg border border-white/40 overflow-hidden">
       <button className="px-4 py-2 rounded" onClick={resetGame}>
         <ArrowPathIcon className="h-5 w-5" />
       </button>
-      <button className="px-4 py-2 rounded" onClick={onPauseToggle}>
+      <button 
+      className="px-4 py-2 rounded" 
+      onClick={onPauseToggle}
+      disabled={isGameOver || isCountingDown}>
         {(isPaused || isGameOver) ? (
           <PlayIcon className="w-5 h-5" />
         ) : (

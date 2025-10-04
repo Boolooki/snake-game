@@ -1,5 +1,5 @@
 import LeaderboardModal from "./LeaderboardModal";
-import type { Language } from "@/types"; // ถ้าคุณแยก type ไว้
+import type { Language } from "@/types";
 
 
 type LeaderboardScoreProps = {

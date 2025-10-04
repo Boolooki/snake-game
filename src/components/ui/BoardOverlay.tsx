@@ -1,4 +1,5 @@
 import type { Language } from "@/types";
+import { BACKGROUND_CIRCLES } from "@/constants/gameConstants";
 
 const messages = {
   th: {
@@ -12,17 +13,6 @@ const messages = {
 };
 
 const fallbackLanguage: Language = "en";
-
-const BACKGROUND_CIRCLES = [
-  { size: 120, left: 10, top: 15, delay: 0, duration: 20 },
-  { size: 150, left: 80, top: 25, delay: 2, duration: 18 },
-  { size: 100, left: 20, top: 70, delay: 4, duration: 22 },
-  { size: 130, left: 85, top: 60, delay: 1, duration: 19 },
-  { size: 110, left: 45, top: 10, delay: 3, duration: 21 },
-  { size: 140, left: 60, top: 80, delay: 5, duration: 17 },
-  { size: 90, left: 5, top: 45, delay: 2.5, duration: 23 },
-  { size: 125, left: 90, top: 85, delay: 4.5, duration: 16 },
-];
 
 export default function BoardOverlay({
   isGameOver,
@@ -43,28 +33,50 @@ export default function BoardOverlay({
     ? messages[safeLanguage].gameover
     : messages[safeLanguage].paused;
 
-  const color = isGameOver ? "text-ruby-500" : "text-ruby-500";
-  const bgpaused = isPaused ? "bg-emerald-100" : "bg-emerald-200";
-
   return (
-    <div className={`absolute ${color} text-xl animate-[fadeIn_1s] font-bold flex justify-center items-center w-full h-full ${bgpaused} rounded-[20]`}>
-      {message}
-      <div className="opacity-50 absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 overflow-hidden">
-        {BACKGROUND_CIRCLES.map((circle, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-br from-emerald-400/30 to-teal-400/30 animate-float"
-            style={{
-              width: `${circle.size}px`,
-              height: `${circle.size}px`,
-              left: `${circle.left}%`,
-              top: `${circle.top}%`,
-              animationDelay: `${circle.delay}s`,
-              animationDuration: `${circle.duration}s`,
-            }}
-          />
-        ))}
+    <>
+      {/* Background Overlay with Blur Effect */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-[overlayFadeIn_0.5s_ease-out_forwards] rounded-[20px] overflow-hidden">
+        {/* Animated Circles */}
+        <div className="absolute inset-0 opacity-30">
+          {BACKGROUND_CIRCLES.map((circle, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-gradient-to-br from-emerald-400/40 to-teal-400/40 animate-float"
+              style={{
+                width: `${circle.size}px`,
+                height: `${circle.size}px`,
+                left: `${circle.left}%`,
+                top: `${circle.top}%`,
+                animationDelay: `${circle.delay}s`,
+                animationDuration: `${circle.duration}s`,
+              }}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* Message Container */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+        {isGameOver ? (
+          // Game Over - Dramatic entrance
+          <div className="animate-[gameOverDramatic_0.8s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">
+            <h1 className="text-6xl font-black text-white drop-shadow-[0_0_20px_rgba(239,68,68,0.8)] mb-4">
+              {message}
+            </h1>
+            <div className="h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent animate-[expandWidth_0.6s_ease-out_0.3s_forwards] w-0 mx-auto" />
+          </div>
+        ) : (
+          // Paused - Smooth fade with scale
+          <div className="animate-[pausedSmooth_0.4s_ease-out_forwards]">
+            <div className="bg-white/90 backdrop-blur-md px-8 py-4 rounded-2xl shadow-2xl border border-white/50">
+              <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">
+                {message}
+              </h2>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
