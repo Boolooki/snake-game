@@ -66,6 +66,7 @@ export const useSnakeGame = () => {
       score,
       setIsPaused,
       generateRandomOptions,
+      onComplete: triggerCountdown,
     });
   const [isEnergyShield, setIsEnergyShield] = useState<boolean>(false);
   const [isSpeedBurst, setIsSpeedBurst] = useState<boolean>(false);
@@ -87,12 +88,6 @@ export const useSnakeGame = () => {
   useEffect(() => {
     if (upgradeQueue) {
       setIsPaused(true);
-    }
-  }, [upgradeQueue]);
-
-  useEffect(() => {
-    if (!upgradeQueue) {
-      triggerCountdown();
     }
   }, [upgradeQueue]);
 

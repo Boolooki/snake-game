@@ -25,7 +25,6 @@ export const useCountdownTimer = ({
   }, [countdown]);
 
   const triggerCountdown = useCallback(() => {
-      console.log("Trigger is called")
       setCountdown(5); // ✅ เริ่มนับถอยหลัง // ✅ ยังไม่เริ่มเกมจริง
     }, []);
 
