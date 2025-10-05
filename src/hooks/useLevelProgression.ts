@@ -1,3 +1,4 @@
+// hooks/useLevelProgression.ts
 import { useState, useEffect, useRef } from "react";
 
 export const useLevelProgression = ({
@@ -16,6 +17,7 @@ export const useLevelProgression = ({
   const [level, setLevel] = useState(0);
   const [passedThresholds, setPassedThresholds] = useState<number[]>([]);
   const [upgradeQueue, setUpgradeQueue] = useState(false);
+  const [showLevelUpNotification, setShowLevelUpNotification] = useState(false);
 
   const wasUpgradeActive = useRef(false);
 
@@ -28,18 +30,24 @@ export const useLevelProgression = ({
       setPassedThresholds((prev) => [...prev, next]);
       setLevel((prev) => prev + 1);
 
-      // สุ่มตัวเลือกก่อนแสดง popup
-      generateRandomOptions();
-
-      // แสดง popup และหยุดเกม
-      setUpgradeQueue(true);
+      // หยุดเกมก่อน
       setIsPaused(true);
+
+      // แสดง Level Up notification
+      setShowLevelUpNotification(true);
     }
-  }, [score, passedThresholds, generateRandomOptions, setIsPaused, thresholds]);
+  }, [score, passedThresholds, setIsPaused, thresholds]);
+
+  // เมื่อ notification จบ → สุ่มตัวเลือกและแสดง popup
+  const handleNotificationComplete = () => {
+    setShowLevelUpNotification(false);
+    generateRandomOptions();
+    setUpgradeQueue(true);
+  };
 
   useEffect(() => {
     if (wasUpgradeActive.current && !upgradeQueue) {
-      onComplete(); // ✅ เรียกเมื่อเคย active แล้วกลับมา false
+      onComplete();
     }
     wasUpgradeActive.current = upgradeQueue;
   }, [upgradeQueue, onComplete]);
@@ -48,8 +56,17 @@ export const useLevelProgression = ({
     setLevel(0);
     setPassedThresholds([]);
     setUpgradeQueue(false);
+    setShowLevelUpNotification(false);
     wasUpgradeActive.current = false;
   };
 
-  return { level, upgradeQueue, setUpgradeQueue, resetProgression };
+  return {
+    level,
+    upgradeQueue,
+    setUpgradeQueue,
+    resetProgression,
+    showLevelUpNotification,
+    handleNotificationComplete,
+    thresholds
+  };
 };

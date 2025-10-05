@@ -17,7 +17,7 @@ const ALL_OPTIONS = {
   extendedSpeedBurst: {
     label: "เร่งราวี",
     description: "Speed Burst ยาวนานขึ้น 2 เท่า",
-    emoji: "⚡",
+    emoji: "🔥",
   },
   slowSpeed: {
     label: "เยื่องเท้า",
@@ -26,7 +26,8 @@ const ALL_OPTIONS = {
   },
   moreProduceMoretribute: {
     label: "มากโภชนาการมากบรรณาการ",
-    description: "อาหารเกิดมากขึ้น +1 อัน การสุ่มระเบิดจะสุ่มจาก 3-10 ลูกแทน (จากเดิม 1-5 ลูก)",
+    description:
+      "อาหารเกิดมากขึ้น +1 อัน การสุ่มระเบิดจะสุ่มจาก 3-10 ลูกแทน (จากเดิม 1-5 ลูก)",
     emoji: "🍎",
   },
   safeHeaven: {
@@ -53,7 +54,11 @@ export default function SpecialStatusSelector({
     ...ALL_OPTIONS[key],
   }));
 
-  const { selectedIndex } = useArrowKeySelector(availableOptions, onSelect, true);
+  const { selectedIndex } = useArrowKeySelector(
+    availableOptions,
+    onSelect,
+    true
+  );
 
   return (
     <div
@@ -138,28 +143,30 @@ export default function SpecialStatusSelector({
             `}
             style={{ transitionDelay: "0.35s" }}
           >
-            ใช้{" "}
-            <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">↑↓</kbd> และ{" "}
+            ใช้ <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">↑↓</kbd>{" "}
+            และ{" "}
             <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Enter</kbd>{" "}
             หรือคลิกเพื่อเลือก
           </p>
         </div>
 
         {/* Options List */}
-        <ul className="space-y-3 max-h-[55vh] overflow-y-auto scrollbar-hide pr-2">
+        <ul className="space-y-3 max-h-[55vh] overflow-y-auto scrollbar-hide pr-2 px-1">
+          {" "}
+          {/* เพิ่ม px-1 */}
           {options.map((opt, idx) => (
             <li
               key={opt.key}
               onClick={() => onSelect(opt.key)}
               className={`
-                relative bg-white/60 backdrop-blur-sm rounded-2xl p-4 cursor-pointer 
-                border-2 transition-all duration-200 ease-out
-                ${
-                  idx === selectedIndex
-                    ? "border-purple-500 bg-gradient-to-r from-purple-50 to-pink-50 scale-[1.02] shadow-lg shadow-purple-200/50"
-                    : "border-gray-200 hover:border-purple-300 hover:bg-purple-50/50"
-                }
-              `}
+        relative bg-white/60 backdrop-blur-sm rounded-2xl p-4 cursor-pointer 
+        border-2 transition-all duration-200 ease-out
+        ${
+          idx === selectedIndex
+            ? "border-purple-500 bg-gradient-to-r from-purple-50 to-pink-50 scale-[1.01] shadow-lg shadow-purple-200/50"
+            : "border-gray-200 hover:border-purple-300 hover:bg-purple-50/50"
+        }
+      `}
               style={{
                 animation: isVisible
                   ? `slideInUp 0.4s ease-out ${0.4 + idx * 0.1}s both`
@@ -209,7 +216,11 @@ export default function SpecialStatusSelector({
           className={`
             mt-6 text-center
             transition-all duration-500 ease-out
-            ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}
+            ${
+              isVisible
+                ? "translate-y-0 opacity-100"
+                : "translate-y-8 opacity-0"
+            }
           `}
           style={{ transitionDelay: `${0.4 + options.length * 0.1}s` }}
         >

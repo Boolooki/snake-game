@@ -1,4 +1,5 @@
-export const GRID_SIZE = 20;
+export const GRID_SIZECOLUMS = 20;
+export const GRID_SIZEROWS = 30;
 export const INITIAL_SNAKE = [{ x: 10, y: 10 }];
 export const INITIAL_FOOD = [{ x: 5, y: 5 }];
 export const SPEED = 150;

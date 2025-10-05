@@ -1,3 +1,4 @@
+// components/game/BoardOverlay.tsx
 import type { Language } from "@/types";
 import { BACKGROUND_CIRCLES } from "@/constants/gameConstants";
 
@@ -19,14 +20,19 @@ export default function BoardOverlay({
   isPaused,
   language,
   countdown,
+  isLevelingUp, // เพิ่ม prop นี้
 }: {
   isGameOver: boolean;
   isPaused: boolean;
   language: Language;
   countdown: number | null;
+  isLevelingUp?: boolean; // เพิ่ม
 }) {
   if (countdown !== null && countdown > 0) return null;
   if (!isGameOver && !isPaused) return null;
+  
+  // ซ่อนถ้ากำลัง level up
+  if (isLevelingUp) return null;
 
   const safeLanguage = messages[language] ? language : fallbackLanguage;
   const message = isGameOver
@@ -61,7 +67,7 @@ export default function BoardOverlay({
         {isGameOver ? (
           // Game Over - Dramatic entrance
           <div className="animate-[gameOverDramatic_0.8s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">
-            <h1 className="text-6xl font-black text-white drop-shadow-[0_0_20px_rgba(239,68,68,0.8)] mb-4">
+            <h1 className="text-5xl text-center font-black text-white drop-shadow-[0_0_20px_rgba(239,68,68,0.8)] mb-4">
               {message}
             </h1>
             <div className="h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent animate-[expandWidth_0.6s_ease-out_0.3s_forwards] w-0 mx-auto" />

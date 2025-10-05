@@ -53,6 +53,9 @@ export type PropsBoard = {
   isPaused: boolean;
   language: "th" | "en";
   countdown: number | null;
+  showLevelUpNotification: boolean;
+  upgradeQueue: boolean;
+
 };
 
 export type PropsLanguage = {

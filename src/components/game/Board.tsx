@@ -4,20 +4,24 @@ import Food from "./Food";
 import Bomb from "./Bomb";
 import EnergyShield from "./Energyshield";
 import SpeedBurst from "./Speedburst";
-import { GRID_SIZE } from "../../constants/gameConstants";
+import { GRID_SIZECOLUMS,GRID_SIZEROWS } from "../../constants/gameConstants";
 import { PropsBoard } from "../../types";
 import BoardOverlay from "../ui/BoardOverlay";
 
 export default function Board(game: PropsBoard) {
   return (
     <div
-      className={`grid grid-cols-${GRID_SIZE} grid-rows-${GRID_SIZE} w-[85vw] h-[85vw] lg:w-[25vw] lg:h-[25vw] relative transition duration-300 
-      bg-white/80 rounded-3xl shadow-2xl
+      className={`relative w-[85vw] h-[120vw] lg:w-[25vw] lg:h-[25vw] bg-white/80 rounded-3xl shadow-2xl
       ${
         game.isSpeedBurst
           ? "bg-yellow-50 border-yellow-400 shadow-[0_0_20px_0px_#fff200]"
           : "bg-white border-black"
       }`}
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${GRID_SIZECOLUMS}, minmax(0, 1fr))`,
+        gridTemplateRows: `repeat(${GRID_SIZEROWS}, minmax(0, 1fr))`,
+      }}
     >
       <Snake
         segments={game.snake}
@@ -42,6 +46,7 @@ export default function Board(game: PropsBoard) {
         isPaused={game.isPaused}
         language={game.language}
         countdown={game.countdown}
+        isLevelingUp={game.showLevelUpNotification || game.upgradeQueue}
       />
     </div>
   );

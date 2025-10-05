@@ -61,13 +61,20 @@ export const useSnakeGame = () => {
     isPaused,
     username,
   });
-  const { level, upgradeQueue, setUpgradeQueue, resetProgression } =
-    useLevelProgression({
-      score,
-      setIsPaused,
-      generateRandomOptions,
-      onComplete: triggerCountdown,
-    });
+  const {
+    level,
+    upgradeQueue,
+    setUpgradeQueue,
+    resetProgression,
+    thresholds,
+    showLevelUpNotification,
+    handleNotificationComplete,
+  } = useLevelProgression({
+    score,
+    setIsPaused,
+    generateRandomOptions,
+    onComplete: triggerCountdown,
+  });
   const [isEnergyShield, setIsEnergyShield] = useState<boolean>(false);
   const [isSpeedBurst, setIsSpeedBurst] = useState<boolean>(false);
 
@@ -92,10 +99,10 @@ export const useSnakeGame = () => {
   }, [upgradeQueue]);
 
   const gameStart = useCallback(() => {
-    console.log("gameStart is called")
+    console.log("gameStart is called");
     setHasStarted(true);
     setIsLoading(true);
-    }, []);
+  }, []);
 
   const startGame = useCallback(() => {
     setIsPaused(false);
@@ -317,6 +324,9 @@ export const useSnakeGame = () => {
     setCountdown,
     isLoading,
     setIsLoading,
-    gameStart
+    gameStart,
+    thresholds,
+    showLevelUpNotification,
+    handleNotificationComplete,
   };
 };
