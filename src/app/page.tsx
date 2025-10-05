@@ -17,7 +17,6 @@ import { BACKGROUND_CIRCLES } from "@/constants/gameConstants";
 import LoadingTransition from "@/components/ui/LoadingTransition";
 import ExpBar from "@/components/ui/ExpBar";
 import LevelUpNotification from "@/components/ui/LevelUpNotification";
-import ExpandableButtons from "@/components/ui/ExpandButton";
 
 export default function Home() {
   const game = useSnakeGame();
