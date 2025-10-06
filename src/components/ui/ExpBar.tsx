@@ -53,7 +53,7 @@ export default function ExpBar({
   }, [score, level, thresholds]);
 
   return (
-    <div className="w-full">
+    <div className="w-full lg:w-[25vw]">
       {/* Level Display */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
