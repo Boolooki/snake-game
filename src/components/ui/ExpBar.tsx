@@ -66,7 +66,7 @@ export default function ExpBar({
       settriggerBarExp(false);
     }, 3000);
     }
-    if (Math.round(progress) == 0 ){
+    if (Math.round(progress) <= 50 ){
       hasTriggeredbarexp.current = false;
     }
   }, [progress]);

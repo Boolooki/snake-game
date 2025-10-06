@@ -129,11 +129,16 @@ export default function Home() {
       </div>
       <div
         className={`
-          fixed z-29 bottom-[5vh]
+          fixed z-49 bottom-[5vh]
           transition-all duration-500 ease-out
           flex space-x-4
           ${
-            shouldShowUI
+            (!game.countdown &&
+              game.isPaused &&
+              !game.upgradeQueue &&
+              !game.showLevelUpNotification) ||
+            game.isGameOver ||
+            game.triggerBuffPanel
               ? "translate-x-0 opacity-100"
               : "-translate-x-full opacity-0"
           }

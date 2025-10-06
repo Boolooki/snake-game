@@ -78,7 +78,7 @@ export const useSnakeGame = () => {
   const [isEnergyShield, setIsEnergyShield] = useState<boolean>(false);
   const [isSpeedBurst, setIsSpeedBurst] = useState<boolean>(false);
   const [triggerBarExp, settriggerBarExp] = useState<boolean>(false);
-  
+  const [triggerBuffPanel, setTriggerBuffPanel] = useState<boolean>(false);
 
   useEffect(() => {
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
@@ -99,6 +99,16 @@ export const useSnakeGame = () => {
       setIsPaused(true);
     }
   }, [upgradeQueue]);
+
+  useEffect(() => {
+    if (isEnergyShield || isSpeedBurst) {
+      setTriggerBuffPanel(true);
+
+      setTimeout(() => {
+        setTriggerBuffPanel(false);
+      }, 3000);
+    }
+  }, [isEnergyShield, isSpeedBurst]);
 
   const gameStart = useCallback(() => {
     console.log("gameStart is called");
@@ -332,5 +342,7 @@ export const useSnakeGame = () => {
     handleNotificationComplete,
     settriggerBarExp,
     triggerBarExp,
+    triggerBuffPanel,
+    setTriggerBuffPanel,
   };
 };

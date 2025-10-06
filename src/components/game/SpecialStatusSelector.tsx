@@ -63,7 +63,7 @@ export default function SpecialStatusSelector({
   return (
     <div
       className={`
-        fixed inset-0 flex justify-center items-center z-50 p-4
+        fixed inset-0 flex justify-center items-center z-48 p-4
         transition-all duration-500 ease-out
         ${isVisible ? "opacity-100" : "opacity-0"}
       `}
