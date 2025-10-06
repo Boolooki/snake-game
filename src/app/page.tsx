@@ -27,7 +27,7 @@ export default function Home() {
     !game.hasStarted || game.isPaused || game.isGameOver || isUIVisible;
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen p-2 overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-screen p-5 overflow-hidden">
       {/* Background */}
       <div className="fixed inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 -z-20">
         <div className="absolute w-32 h-32 bg-emerald-400/10 rounded-full top-10 left-10 blur-3xl" />
@@ -88,7 +88,7 @@ export default function Home() {
 
       <div
         className={`
-          absolute left-[10vw] top-[10vw] z-30 
+          absolute left-[15vw] top-[5vh] z-30 
           transition-all duration-500 ease-out
           flex space-x-4
           ${
@@ -103,7 +103,7 @@ export default function Home() {
       </div>
       <div
         className={`
-          absolute z-30 bottom-[50vw]
+          absolute z-30 bottom-[40vh]
           transition-all duration-500 ease-out
           flex space-x-4
           ${
@@ -129,7 +129,7 @@ export default function Home() {
       </div>
       <div
         className={`
-          fixed z-29 bottom-[5vw]
+          fixed z-29 bottom-[5vh]
           transition-all duration-500 ease-out
           flex space-x-4
           ${
@@ -161,7 +161,7 @@ export default function Home() {
 
       <div
         className={`
-          fixed z-29 w-[80vw] top-[50vw]
+          fixed z-29 w-[80vw] top-[30vh]
           transition-all duration-500 ease-out
           flex space-x-4
           ${

@@ -15,7 +15,11 @@ export default function ControlButtons({
 }: PropsControlButton) {
   const isCountingDown = countdown !== null && countdown > 0;
   return (
-    <div className="absolute z-30 top-[10vw] right-[10vw] flex space-x-4 opacity-25">
+    <div
+      className={`absolute z-30 top-[5vh] right-[15vw] flex space-x-4 ${
+        isPaused || isGameOver ? "opacity-100" : "opacity-25"
+      }`}
+    >
       <div className="bg-white/80 backdrop-blur-md rounded-xl shadow-lg border border-white/40 overflow-hidden">
         <button className="px-4 py-2 rounded" onClick={resetGame}>
           <ArrowPathIcon className="h-5 w-5" />
