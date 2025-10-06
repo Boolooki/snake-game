@@ -77,6 +77,8 @@ export const useSnakeGame = () => {
   });
   const [isEnergyShield, setIsEnergyShield] = useState<boolean>(false);
   const [isSpeedBurst, setIsSpeedBurst] = useState<boolean>(false);
+  const [triggerBarExp, settriggerBarExp] = useState<boolean>(false);
+  
 
   useEffect(() => {
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
@@ -328,5 +330,7 @@ export const useSnakeGame = () => {
     thresholds,
     showLevelUpNotification,
     handleNotificationComplete,
+    settriggerBarExp,
+    triggerBarExp,
   };
 };

@@ -169,7 +169,8 @@ export default function Home() {
               game.isPaused &&
               !game.upgradeQueue &&
               !game.showLevelUpNotification) ||
-            game.isGameOver
+            game.isGameOver ||
+            game.triggerBarExp 
               ? "translate-x-0 opacity-100"
               : "-translate-x-full opacity-0"
           }
@@ -180,6 +181,7 @@ export default function Home() {
           level={game.level}
           thresholds={game.thresholds}
           language={game.language}
+          settriggerBarExp={game.settriggerBarExp}
         />
       </div>
 

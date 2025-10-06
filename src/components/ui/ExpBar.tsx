@@ -1,11 +1,12 @@
 // components/ui/ExpBar.tsx
-import { useMemo } from "react";
+import { useMemo,useEffect,useRef } from "react";
 
 type Props = {
   score: number;
   level: number;
   thresholds?: number[];
   language: "th" | "en";
+  settriggerBarExp: (value: boolean) => void;
 };
 
 const messages = {
@@ -24,6 +25,7 @@ export default function ExpBar({
   level,
   thresholds = [5, 20, 50, 100],
   language,
+  settriggerBarExp,
 }: Props) {
   // คำนวณ progress
   const { currentThreshold, nextThreshold, progress, isMaxLevel } = useMemo(() => {
@@ -51,6 +53,23 @@ export default function ExpBar({
       isMaxLevel: false,
     };
   }, [score, level, thresholds]);
+
+  
+  const hasTriggeredbarexp = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (!hasTriggeredbarexp.current && Math.round(progress) >= 50) {
+      settriggerBarExp(true);
+      hasTriggeredbarexp.current = true; // ป้องกันไม่ให้ trigger ซ้ำ
+
+      setTimeout(() => {
+      settriggerBarExp(false);
+    }, 3000);
+    }
+    if (Math.round(progress) == 0 ){
+      hasTriggeredbarexp.current = false;
+    }
+  }, [progress]);
 
   return (
     <div className="w-full lg:w-[25vw]">
