@@ -67,7 +67,7 @@ export default function BoardOverlay({
         {isGameOver ? (
           // Game Over - Dramatic entrance
           <div className="animate-[gameOverDramatic_0.8s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">
-            <h1 className="text-5xl text-center font-black text-white drop-shadow-[0_0_20px_rgba(239,68,68,0.8)] mb-4">
+            <h1 className="text-5xl md:text-6xl text-center font-black text-white drop-shadow-[0_0_20px_rgba(239,68,68,0.8)] mb-4">
               {message}
             </h1>
             <div className="h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent animate-[expandWidth_0.6s_ease-out_0.3s_forwards] w-0 mx-auto" />
@@ -76,7 +76,7 @@ export default function BoardOverlay({
           // Paused - Smooth fade with scale
           <div className="animate-[pausedSmooth_0.4s_ease-out_forwards]">
             <div className="bg-white/90 backdrop-blur-md px-8 py-4 rounded-2xl shadow-2xl border border-white/50">
-              <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">
+              <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">
                 {message}
               </h2>
             </div>

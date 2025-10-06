@@ -85,9 +85,9 @@ export default function BuffStatus({
   ].filter(Boolean) as (keyof typeof buffConfig)[];
 
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-3 mb-6">
+    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-3 mb-6 md:p-6">
       {/* Header */}
-      <h3 className="text-sm font-semibold text-gray-600 mb-2">
+      <h3 className="text-sm md:text-xl font-semibold text-gray-600 mb-2">
         {messages[language].buffpanel}
       </h3>
 
@@ -104,21 +104,21 @@ export default function BuffStatus({
                 {/* Gradient Card */}
                 <div
                   className={`
-                    w-10 h-10 bg-gradient-to-br ${buff.gradient} 
+                    w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br ${buff.gradient} 
                     rounded-2xl flex items-center justify-center shadow-lg
                     transition-all duration-300 ease-out
                     group-hover:scale-110 group-hover:shadow-2xl
                     animate-[fadeIn_0.4s_ease-out]
                   `}
                 >
-                  <span className="text-xl">{buff.emoji}</span>
+                  <span className="text-xl md:text-3xl">{buff.emoji}</span>
                 </div>
 
                 {/* Tooltip on Hover */}
                 <div
                   className="
                     absolute -bottom-8 left-1/2 -translate-x-1/2
-                    bg-gray-800 text-white text-xs px-2 py-1 rounded
+                    bg-gray-800 text-white text-xs md:text-xl px-2 py-1 rounded
                     opacity-0 group-hover:opacity-100
                     transition-opacity duration-200
                     whitespace-nowrap pointer-events-none

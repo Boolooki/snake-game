@@ -27,7 +27,7 @@ export default function Home() {
     !game.hasStarted || game.isPaused || game.isGameOver || isUIVisible;
 
   return (
-    <div className="relative flex flex-col items-center justify-start min-h-screen p-4 py-6 overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-screen p-2 overflow-hidden">
       {/* Background */}
       <div className="fixed inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 -z-20">
         <div className="absolute w-32 h-32 bg-emerald-400/10 rounded-full top-10 left-10 blur-3xl" />
@@ -69,9 +69,26 @@ export default function Home() {
         ))}
       </div>
 
+      {/* Game Board */}
+      <Board
+        snake={game.snake}
+        foods={game.foods}
+        energyShields={game.energyShields}
+        bombs={game.bombs}
+        speedBursts={game.speedBursts}
+        isEnergyShield={game.isEnergyShield}
+        isGameOver={game.isGameOver}
+        isPaused={game.isPaused}
+        isSpeedBurst={game.isSpeedBurst}
+        language={game.language}
+        countdown={game.countdown}
+        showLevelUpNotification={game.showLevelUpNotification} // เพิ่ม
+        upgradeQueue={game.upgradeQueue} // เพิ่ม
+      />
+
       <div
         className={`
-          fixed top-[10vw] left-[10vw] right-0 z-30 
+          absolute left-[10vw] top-[10vw] z-30 
           transition-all duration-500 ease-out
           flex space-x-4
           ${
@@ -86,17 +103,20 @@ export default function Home() {
       </div>
       <div
         className={`
-          fixed top-[105vw] z-30 
+          absolute z-30 bottom-[50vw]
           transition-all duration-500 ease-out
           flex space-x-4
           ${
-            !game.countdown && game.isPaused && !game.upgradeQueue && !game.showLevelUpNotification || game.isGameOver
+            (!game.countdown &&
+              game.isPaused &&
+              !game.upgradeQueue &&
+              !game.showLevelUpNotification) ||
+            game.isGameOver
               ? "translate-y-0 opacity-100"
               : "-translate-y-full opacity-0"
           }
         `}
       >
-        <div className="flex gap-4">
           <LanguageSelector
             language={game.language}
             onLangToggle={game.onLangToggle}
@@ -106,7 +126,6 @@ export default function Home() {
             showboard={game.showLeaderboard}
             onOpen={() => game.setShowLeaderboard(true)}
           />
-        </div>
       </div>
       <div
         className={`
@@ -131,6 +150,7 @@ export default function Home() {
           language={game.language}
         />
       </div>
+
       <ControlButtons
         isGameOver={game.isGameOver}
         isPaused={game.isPaused}
@@ -140,52 +160,37 @@ export default function Home() {
       />
 
       <div
-          className={`
+        className={`
           fixed z-29 w-[80vw] top-[50vw]
           transition-all duration-500 ease-out
           flex space-x-4
           ${
-            !game.countdown && game.isPaused && !game.upgradeQueue && !game.showLevelUpNotification || game.isGameOver
+            (!game.countdown &&
+              game.isPaused &&
+              !game.upgradeQueue &&
+              !game.showLevelUpNotification) ||
+            game.isGameOver
               ? "translate-x-0 opacity-100"
               : "-translate-x-full opacity-0"
           }
         `}
-        >
-          <ExpBar
-            score={game.score}
-            level={game.level}
-            thresholds={game.thresholds}
-            language={game.language}
-          />
-        </div>
-
-      {/* Game Board */}
-      <div className="relative mb-6">
-        <Board
-          snake={game.snake}
-          foods={game.foods}
-          energyShields={game.energyShields}
-          bombs={game.bombs}
-          speedBursts={game.speedBursts}
-          isEnergyShield={game.isEnergyShield}
-          isGameOver={game.isGameOver}
-          isPaused={game.isPaused}
-          isSpeedBurst={game.isSpeedBurst}
+      >
+        <ExpBar
+          score={game.score}
+          level={game.level}
+          thresholds={game.thresholds}
           language={game.language}
-          countdown={game.countdown}
-          showLevelUpNotification={game.showLevelUpNotification} // เพิ่ม
-          upgradeQueue={game.upgradeQueue} // เพิ่ม
         />
-
-        {/* Countdown Overlay */}
-        {game.hasStarted && game.countdown !== null && game.countdown > 0 && (
-          <CountdownOverlay count={game.countdown} />
-        )}
-
-        {/* Decorative blur elements */}
-        <div className="absolute -top-4 -left-4 w-32 h-32 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-full blur-3xl -z-10" />
-        <div className="absolute -bottom-4 -right-4 w-40 h-40 bg-gradient-to-br from-teal-400 to-cyan-400 rounded-full blur-3xl -z-10" />
       </div>
+
+      {/* Countdown Overlay */}
+      {game.hasStarted && game.countdown !== null && game.countdown > 0 && (
+        <CountdownOverlay count={game.countdown} />
+      )}
+
+      {/* Decorative blur elements */}
+      <div className="absolute -top-4 -left-4 w-32 h-32 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-full blur-3xl -z-10" />
+      <div className="absolute -bottom-4 -right-4 w-40 h-40 bg-gradient-to-br from-teal-400 to-cyan-400 rounded-full blur-3xl -z-10" />
 
       {/* Level Up Notification */}
       {game.showLevelUpNotification && (
@@ -196,7 +201,10 @@ export default function Home() {
       )}
       {/* showboard Up Notification */}
       {game.showLeaderboard && (
-        <LeaderboardModal onClose={() => game.setShowLeaderboard(false)} language={game.language} />
+        <LeaderboardModal
+          onClose={() => game.setShowLeaderboard(false)}
+          language={game.language}
+        />
       )}
 
       {/* Special Status Selector */}

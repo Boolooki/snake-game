@@ -53,20 +53,20 @@ export default function ExpBar({
   }, [score, level, thresholds]);
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full">
       {/* Level Display */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-gray-600">
+          <span className="text-sm md:text-xl font-semibold text-gray-600">
             {messages[language].level} {level}
           </span>
           {!isMaxLevel && (
-            <span className="text-xs text-white">
+            <span className="text-xs md:text-xl text-white">
               {score}/{nextThreshold}
             </span>
           )}
           {isMaxLevel && (
-            <span className="text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-orange-500">
+            <span className="text-xs md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-orange-500">
               {messages[language].max}
             </span>
           )}
@@ -74,12 +74,12 @@ export default function ExpBar({
 
         {/* Next Level Preview */}
         {!isMaxLevel && (
-          <span className="text-xs text-gray-400">{Math.round(progress)}%</span>
+          <span className="text-xs md:text-xl text-gray-400">{Math.round(progress)}%</span>
         )}
       </div>
 
       {/* Progress Bar */}
-      <div className="relative h-3 bg-white/60 backdrop-blur-sm rounded-full overflow-hidden shadow-inner border border-white/40">
+      <div className="relative h-3 md:h-6 bg-white/60 backdrop-blur-sm rounded-full overflow-hidden shadow-inner border border-white/40">
         {/* Background gradient glow */}
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20" />
 
@@ -114,7 +114,7 @@ export default function ExpBar({
       {/* Level up indicator */}
       {progress === 100 && !isMaxLevel && (
         <div className="mt-1 text-center animate-pulse">
-          <span className="text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
+          <span className="text-xs md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
             ✨ พร้อมเลเวลอัพ!
           </span>
         </div>
