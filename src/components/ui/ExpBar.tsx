@@ -61,7 +61,7 @@ export default function ExpBar({
             {messages[language].level} {level}
           </span>
           {!isMaxLevel && (
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-white">
               {score}/{nextThreshold}
             </span>
           )}

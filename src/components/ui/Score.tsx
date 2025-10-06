@@ -18,7 +18,7 @@ export default function Score({
   language: Language;
 }) {
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden p-2">
+    <div className="bg-white/80 backdrop-blur-md rounded-xl shadow-lg border border-white/40 overflow-hidden p-1">
       {messages[language].score}{value}
     </div>
   );

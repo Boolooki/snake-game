@@ -34,7 +34,7 @@ export default function LeaderboardModal({ onClose, language }: Props) {
   const t = messages[language]
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+    <div className="fixed h-full bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 p-4">
       {/* Modal Card */}
       <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-6 w-full max-w-md">
         {/* Header */}
