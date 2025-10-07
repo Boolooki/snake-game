@@ -88,7 +88,7 @@ export default function Home() {
 
       <div
         className={`
-          absolute left-[10vw] top-[5vh] z-30 
+          absolute left-[10vw] top-[5dvh] z-30 
           transition-all duration-500 ease-out
           flex space-x-4
           ${
@@ -103,7 +103,7 @@ export default function Home() {
       </div>
       <div
         className={`
-          absolute z-30 bottom-[35vh]
+          absolute z-30 bottom-[35dvh]
           transition-all duration-500 ease-out
           flex space-x-4
           ${
@@ -129,7 +129,7 @@ export default function Home() {
       </div>
       <div
         className={`
-          fixed z-49 bottom-[5vh]
+          fixed z-49 bottom-[5dvh]
           transition-all duration-500 ease-out
           flex space-x-4
           ${
@@ -166,7 +166,7 @@ export default function Home() {
 
       <div
         className={`
-          fixed z-29 w-[80vw] top-[20vh]
+          fixed z-29 w-[80vw] top-[20dvh]
           transition-all duration-500 ease-out
           flex space-x-4
           ${

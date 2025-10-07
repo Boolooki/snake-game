@@ -16,7 +16,7 @@ export default function ControlButtons({
   const isCountingDown = countdown !== null && countdown > 0;
   return (
     <div
-      className={`absolute z-30 top-[5vh] right-[10vw] flex space-x-4 ${
+      className={`absolute z-30 top-[5dvh] right-[10vw] flex space-x-4 ${
         isPaused || isGameOver ? "opacity-100" : "opacity-25"
       }`}
     >

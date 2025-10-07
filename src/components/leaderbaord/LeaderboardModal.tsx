@@ -82,7 +82,7 @@ export default function LeaderboardModal({ onClose, language }: Props) {
 
         {/* Leaderboard List */}
         {!loading && !error && (
-          <div className="space-y-2 max-h-[60vh] overflow-y-auto scrollbar-hide">
+          <div className="space-y-2 max-h-[60dvh] overflow-y-auto scrollbar-hide">
             {data && data.length > 0 ? (
               data.map((entry, i) => (
                 <div

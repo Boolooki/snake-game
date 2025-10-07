@@ -151,7 +151,7 @@ export default function SpecialStatusSelector({
         </div>
 
         {/* Options List */}
-        <ul className="space-y-3 max-h-[55vh] overflow-y-auto scrollbar-hide pr-2 px-1">
+        <ul className="space-y-3 max-h-[55dvh] overflow-y-auto scrollbar-hide pr-2 px-1">
           {" "}
           {/* เพิ่ม px-1 */}
           {options.map((opt, idx) => (
