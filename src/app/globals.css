@@ -1,13 +1,102 @@
 @import "tailwindcss";
 
+/* Custom Variables */
 :root {
   --color-primary: #00c2ff;
   --color-secondary: #e6f4f1;
   --color-accent: #ffd6e8;
-
   --font-sans: "Geist", "Inter", sans-serif;
   --radius-default: 12px;
   --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* Global Styles */
+html,
+body {
+  overscroll-behavior: contain;
+  touch-action: none;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%; /* fallback */
+  height: -webkit-fill-available; /* Chrome บน iOS */
+  min-height: 100dvh; /* ใช้ dvh เป็น fallback */
+  overflow: hidden; /* ป้องกัน scroll */
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding-top: env(safe-area-inset-top); /* รองรับ Dynamic Island */
+  padding-bottom: env(safe-area-inset-bottom); /* รองรับแถบด้านล่าง */
+}
+
+#game,
+canvas {
+  width: 100%;
+  height: 100%;
+  max-height: -webkit-fill-available;
+  flex: 1; /* ครอบคลุมพื้นที่ที่เหลือ */
+}
+
+/* Orientation-based Styles */
+@media (orientation: landscape) {
+  .landscape\:text-sm {
+    font-size: 0.875rem;
+  }
+  
+  .landscape\:px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  .landscape\:py-1\.5 {
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+  
+  .landscape\:w-12 {
+    width: 3rem;
+  }
+  
+  .landscape\:h-12 {
+    height: 3rem;
+  }
+
+  body {
+    overflow: auto;
+  }
+}
+
+@media (orientation: portrait) {
+  .game {
+    width: 80vw;
+    height: 90dvh;
+  }
+
+  body {
+    overflow: auto;
+  }
+}
+
+/* Component Styles */
+.game {
+  width: 100%;
+  height: 100%;
+  max-width: 90vw;
+  max-height: 90dvh;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--grid-rows), minmax(0, 1fr));
 }
 
 .card {
@@ -32,13 +121,7 @@
   background-color: #0090cc;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -68,141 +151,8 @@
   }
 }
 
-
-
 .animate-shimmer {
   animation: shimmer 2s infinite;
-}
-
-@keyframes gameOverDramatic {
-  0% {
-    opacity: 0;
-    transform: scale(0.3) translateY(-100px);
-    filter: blur(20px);
-  }
-  60% {
-    transform: scale(1.1) translateY(0);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    filter: blur(0);
-  }
-}
-
-@keyframes pausedSmooth {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-    filter: blur(10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-    filter: blur(0);
-  }
-}
-
-@keyframes expandWidth {
-  from {
-    width: 0;
-  }
-  to {
-    width: 200px;
-  }
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-@keyframes gameOverReveal {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-    filter: blur(4px);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-html,
-body {
-  overscroll-behavior: contain;
-  touch-action: none;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-  padding: 0;
-  height: 100%; /* fallback สำหรับเบราว์เซอร์ที่ไม่รองรับ */
-  height: -webkit-fill-available; /* สำหรับ Chrome บน iOS */
-  min-height: 100dvh; /* ใช้ dvh เป็น fallback */
-  overflow: hidden; /* ป้องกัน scroll ที่ไม่ต้องการ */
-  box-sizing: border-box;
-}
-
-/* ซ่อนเกมเมื่ออยู่ใน portrait mode */
-@media screen and (orientation: portrait) {
-  body {
-    overflow: hidden;
-  }
-}
-
-/* ปรับ layout เมื่ออยู่ใน landscape */
-@media screen and (orientation: landscape) {
-  body {
-    overflow: auto;
-  }
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  padding-top: env(safe-area-inset-top); /* รองรับ Dynamic Island */
-  padding-bottom: env(safe-area-inset-bottom); /* รองรับแถบด้านล่าง */
-}
-
-#game, canvas {
-  width: 100%;
-  height: 100%;
-  max-height: -webkit-fill-available;
-  flex: 1; /* ทำให้ครอบคลุมพื้นที่ที่เหลือ */
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(20, 1fr);
-  grid-template-rows: repeat(20, 1fr);
-}
-
-@layer utilities {
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
 }
 
 @keyframes float {
@@ -223,4 +173,16 @@ body {
 
 .animate-float {
   animation: float ease-in-out infinite;
+}
+
+/* Utility Classes */
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

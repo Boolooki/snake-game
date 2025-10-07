@@ -1,12 +1,12 @@
 import { Position } from "../types";
 import { GRID_SIZECOLUMS,GRID_SIZEROWS } from "../constants/gameConstants";
 
-export function getSafeRandomPos(exclude: Position[]): Position {
+export function getSafeRandomPos(exclude: Position[], gridSize: { columns: number; rows: number }): Position {
   const maxAttempts = 1000;
   for (let i = 0; i < maxAttempts; i++) {
     const pos = {
-      x: Math.floor(Math.random() * GRID_SIZECOLUMS) + 1,
-      y: Math.floor(Math.random() * GRID_SIZEROWS) + 1,
+      x: Math.floor(Math.random() * gridSize.columns),
+      y: Math.floor(Math.random() * gridSize.rows),
     };
 
     const isConflict = exclude.some((p) => p.x === pos.x && p.y === pos.y);
@@ -54,9 +54,11 @@ export function isCollision(snake: Position[], head: Position): boolean {
   return snake.some((segment) => segment.x === head.x && segment.y === head.y);
 }
 
-export function isOutOfBounds(head?: Position): boolean {
-  if (!head) return false; // หรือ true ถ้าจะถือว่า undefined = out of bounds
-  return head.x < 1 || head.x > GRID_SIZECOLUMS || head.y < 1 || head.y > GRID_SIZEROWS;
+export function isOutOfBounds(head?: Position, gridSize?: { columns: number; rows: number }): boolean {
+  if (!head || !gridSize) return true; // ถ้าไม่มี head หรือ gridSize ถือว่า out of bounds
+  const { x, y } = head;
+  const { columns, rows } = gridSize;
+  return x < 0 || x >= columns || y < 0 || y >= rows;
 }
 
 export function formatTime(sec: number) {

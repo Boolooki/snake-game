@@ -71,6 +71,7 @@ export default function Home() {
 
       {/* Game Board */}
       <Board
+        gridSize={game.gridSize}
         snake={game.snake}
         foods={game.foods}
         energyShields={game.energyShields}
@@ -88,7 +89,7 @@ export default function Home() {
 
       <div
         className={`
-          absolute left-[10vw] top-[5dvh] z-30 
+          absolute left-[10vw] top-[10dvh] z-30 
           transition-all duration-500 ease-out
           flex space-x-4
           ${
@@ -105,7 +106,7 @@ export default function Home() {
         className={`
           absolute z-30 bottom-[35dvh]
           transition-all duration-500 ease-out
-          flex space-x-4
+          flex space-x-4 landscape:space-x-[50vw]
           ${
             (!game.countdown &&
               game.isPaused &&
@@ -113,19 +114,18 @@ export default function Home() {
               !game.showLevelUpNotification) ||
             game.isGameOver
               ? "translate-y-0 opacity-100"
-              : "-translate-y-full opacity-0"
+              : "-translate-y-full opacity-0 pointer-events-none"
           }
         `}
       >
-          <LanguageSelector
-            language={game.language}
-            onLangToggle={game.onLangToggle}
-          />
-          <LeaderboardScore
-            language={game.language}
-            showboard={game.showLeaderboard}
-            onOpen={() => game.setShowLeaderboard(true)}
-          />
+        <LanguageSelector
+          language={game.language}
+          onLangToggle={game.onLangToggle}
+        />
+        <LeaderboardScore
+          language={game.language}
+          onOpen={() => game.setShowLeaderboard(true)}
+        />
       </div>
       <div
         className={`
@@ -175,7 +175,7 @@ export default function Home() {
               !game.upgradeQueue &&
               !game.showLevelUpNotification) ||
             game.isGameOver ||
-            game.triggerBarExp 
+            game.triggerBarExp
               ? "translate-x-0 opacity-100"
               : "-translate-x-full opacity-0"
           }

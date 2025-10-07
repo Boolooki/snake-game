@@ -72,7 +72,7 @@ export default function ExpBar({
   }, [progress]);
 
   return (
-    <div className="w-full lg:w-[25vw]">
+    <div className="w-full">
       {/* Level Display */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">

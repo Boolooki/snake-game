@@ -4,14 +4,13 @@ import Food from "./Food";
 import Bomb from "./Bomb";
 import EnergyShield from "./Energyshield";
 import SpeedBurst from "./Speedburst";
-import { GRID_SIZECOLUMS,GRID_SIZEROWS } from "../../constants/gameConstants";
 import { PropsBoard } from "../../types";
 import BoardOverlay from "../ui/BoardOverlay";
 
-export default function Board(game: PropsBoard) {
+export default function Board({ gridSize, ...game }: PropsBoard) {
   return (
     <div
-      className={`game relative w-[80vw] h-[90dvh] lg:w-[25vw] bg-white/80 rounded-3xl shadow-2xl
+      className={`game relative w-full h-full max-w-[90vw] max-h-[90dvh] lg:max-w-[25vw] lg:max-h-[90dvh] landscape:max-w-[90vw] portrait:max-w-[80vw] bg-white/80 rounded-3xl shadow-2xl
       ${
         game.isSpeedBurst
           ? "bg-yellow-50 border-yellow-400 shadow-[0_0_20px_0px_#fff200]"
@@ -19,8 +18,8 @@ export default function Board(game: PropsBoard) {
       }`}
       style={{
         display: "grid",
-        gridTemplateColumns: `repeat(${GRID_SIZECOLUMS}, minmax(0, 1fr))`,
-        gridTemplateRows: `repeat(${GRID_SIZEROWS}, minmax(0, 1fr))`,
+        gridTemplateColumns: `repeat(${gridSize.columns}, minmax(0, 1fr))`,
+        gridTemplateRows: `repeat(${gridSize.rows}, minmax(0, 1fr))`,
       }}
     >
       <Snake

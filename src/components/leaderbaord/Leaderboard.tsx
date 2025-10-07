@@ -3,11 +3,10 @@ import type { Language } from "@/types";
 
 type LeaderboardScoreProps = {
   language: Language;
-  showboard: boolean;
   onOpen: (show: boolean) => void;
 };
 
-export default function LeaderboardScore({ language, showboard, onOpen, }: LeaderboardScoreProps) {
+export default function LeaderboardScore({ language, onOpen, }: LeaderboardScoreProps) {
   const messages = {
     th: { leaderboard: "อันดับ" },
     en: { leaderboard: "Ranking" },

@@ -42,6 +42,7 @@ export type PropsBuffStatus = {
 };
 
 export type PropsBoard = {
+  gridSize: { columns: number; rows: number };
   snake: Position[];
   foods: Position[];
   energyShields: Position[];

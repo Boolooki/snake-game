@@ -11,8 +11,25 @@ import { useScoreSubmission } from "./useScoreSubmission";
 import { useCountdownTimer } from "./useCountdownTimer";
 
 export const useSnakeGame = () => {
+  const [gridSize, setGridSize] = useState({ columns: 40, rows: 20 }); // ค่าเริ่มต้น
+  const [showRotateHint, setShowRotateHint] = useState(false);
+
+  useEffect(() => {
+    const updateGridSize = () => {
+      const isLandscape = window.innerWidth > window.innerHeight;
+      setGridSize({
+        columns: isLandscape ? 40 : 20,
+        rows: isLandscape ? 20 : 40,
+      });
+      setShowRotateHint(!isLandscape); // แสดง hint เมื่ออยู่ใน portrait
+    };
+    updateGridSize(); // เรียกครั้งแรก
+    window.addEventListener("resize", updateGridSize);
+    return () => window.removeEventListener("resize", updateGridSize);
+  }, []);
   const [snake, setSnake] = useState<Position[]>(INITIAL_SNAKE);
-  const { bombs, foods, energyShields, speedBursts, spawner } = useSpawning();
+  const { bombs, foods, energyShields, speedBursts, spawner } =
+    useSpawning(gridSize);
 
   // ใน useSnakeGame.ts
 
@@ -86,7 +103,17 @@ export const useSnakeGame = () => {
       isSafeHeaven
     );
     spawner(countFoods, countBombs, countES, countSB, snake);
-  }, [isMoreProduceMoretribute]);
+  }, [isMoreProduceMoretribute, gridSize]);
+
+  useEffect(() => {
+    // ปรับตำแหน่ง snake ให้อยู่ใน grid ใหม่
+    setSnake((prev) => {
+      const newHead = { ...prev[0] };
+      if (newHead.x >= gridSize.columns) newHead.x = gridSize.columns - 1;
+      if (newHead.y >= gridSize.rows) newHead.y = gridSize.rows - 1;
+      return [newHead, ...prev.slice(1)];
+    });
+  }, [gridSize]);
 
   useEffect(() => {
     if (countdown === 0) {
@@ -150,7 +177,7 @@ export const useSnakeGame = () => {
       const utilSnake = [head, ...prevSnake.slice(0, -1)];
 
       requestAnimationFrame(() => {
-        if (isCollision(prevSnake, head) || isOutOfBounds(head)) {
+        if (isCollision(prevSnake, head) || isOutOfBounds(head, gridSize)) {
           setIsGameOver(true);
           return prevSnake;
         }
@@ -218,6 +245,7 @@ export const useSnakeGame = () => {
     speedBursts,
     getSpawnCounts,
     isMoreProduceMoretribute,
+    gridSize,
   ]);
 
   const speedy = (() => {
@@ -344,5 +372,7 @@ export const useSnakeGame = () => {
     triggerBarExp,
     triggerBuffPanel,
     setTriggerBuffPanel,
+    gridSize,
+    showRotateHint,
   };
 };

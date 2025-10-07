@@ -49,7 +49,10 @@ export default function StartModal({
       </div>
 
       {/* Modal Card */}
-      <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 p-10 w-full max-w-md">
+      <div className="
+        relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 p-6 w-full max-w-[90%] 
+        lg:max-w-md landscape:max-w-[70%] landscape:h-auto max-h-[90dvh]
+      ">
         {/* Language Toggle */}
         <div className="absolute top-4 right-4 flex gap-2">
           <button
@@ -75,31 +78,31 @@ export default function StartModal({
         </div>
 
         {/* Snake Icon */}
-        <div className="flex justify-center mb-6">
-          <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
-            <span className="text-4xl">🐍</span>
+        <div className="flex justify-center mb-4">
+          <div className="w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
+            <span className="text-3xl lg:text-4xl">🐍</span>
           </div>
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl font-bold text-center bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-2xl lg:text-3xl font-bold text-center bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
           {t.title}
         </h1>
-        <p className="text-center text-gray-500 text-sm mb-8">
+        <p className="text-center text-gray-500 text-xs lg:text-sm mb-6">
           {t.subtitle}
         </p>
 
         {/* Input Field */}
-        <div className="relative mb-6">
+        <div className="relative mb-4">
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             maxLength={10}
-            className="w-full px-6 py-4 bg-white/60 backdrop-blur-sm border-2 border-gray-200 rounded-2xl text-center text-lg font-medium transition-all duration-300 focus:outline-none focus:border-emerald-400 focus:shadow-lg focus:shadow-emerald-200/50"
+            className="w-full px-4 py-3 lg:px-6 lg:py-4 bg-white/60 backdrop-blur-sm border-2 border-gray-200 rounded-2xl text-center text-base lg:text-lg font-medium transition-all duration-300 focus:outline-none focus:border-emerald-400 focus:shadow-lg focus:shadow-emerald-200/50"
             placeholder={t.placeholder}
           />
-          <div className="absolute -bottom-5 right-2 text-xs text-gray-400">
+          <div className="absolute -bottom-4 right-2 text-xs text-gray-400">
             {username.length}/10
           </div>
         </div>
@@ -108,7 +111,7 @@ export default function StartModal({
         <button
           onClick={gameStart}
           disabled={!username}
-          className="w-full mt-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-300 group"
+          className="w-full mt-6 py-3 lg:py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-2xl font-bold text-base lg:text-lg shadow-xl hover:shadow-2xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-300 group"
         >
           <span className="flex items-center justify-center gap-2">
             {t.startButton}
@@ -119,8 +122,8 @@ export default function StartModal({
         </button>
 
         {/* Decorative blur elements */}
-        <div className="absolute -top-4 -left-4 w-24 h-24 bg-gradient-to-br from-emerald-400/20 to-teal-400/20 rounded-full blur-2xl -z-10" />
-        <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-gradient-to-br from-teal-400/20 to-cyan-400/20 rounded-full blur-2xl -z-10" />
+        <div className="absolute -top-3 -left-3 w-20 h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-emerald-400/20 to-teal-400/20 rounded-full blur-2xl -z-10" />
+        <div className="absolute -bottom-3 -right-3 w-24 h-24 lg:w-32 lg:h-32 bg-gradient-to-br from-teal-400/20 to-cyan-400/20 rounded-full blur-2xl -z-10" />
       </div>
     </div>
   );
