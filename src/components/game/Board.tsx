@@ -27,16 +27,16 @@ export default function Board({ gridSize, ...game }: PropsBoard) {
         isEnergyShield={game.isEnergyShield}
         isSpeedBurst={game.isSpeedBurst}
       />
-      {game.foods.map((pos, index) => (
-        <Food key={`food-${index}`} position={pos} />
+      {game.foods.map((b) => (
+        <Food key={`${b.x}-${b.y}`} position={b} />
       ))}
-      {game.energyShields.map((b, index) => (
+      {game.energyShields.map((b) => (
         <EnergyShield key={`${b.x}-${b.y}`} position={b} />
       ))}
-      {game.speedBursts.map((b, index) => (
+      {game.speedBursts.map((b) => (
         <SpeedBurst key={`${b.x}-${b.y}`} position={b} />
       ))}
-      {game.bombs.map((b, index) => (
+      {game.bombs.map((b) => (
         <Bomb key={`${b.x}-${b.y}`} position={b} />
       ))}
 

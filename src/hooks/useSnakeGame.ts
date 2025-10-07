@@ -103,7 +103,7 @@ export const useSnakeGame = () => {
       isSafeHeaven
     );
     spawner(countFoods, countBombs, countES, countSB, snake);
-  }, [isMoreProduceMoretribute, gridSize]);
+  }, [isMoreProduceMoretribute, gridSize, isSafeHeaven]);
 
   useEffect(() => {
     // ปรับตำแหน่ง snake ให้อยู่ใน grid ใหม่

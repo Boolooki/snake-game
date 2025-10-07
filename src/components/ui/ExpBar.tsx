@@ -69,7 +69,7 @@ export default function ExpBar({
     if (Math.round(progress) <= 50 ){
       hasTriggeredbarexp.current = false;
     }
-  }, [progress]);
+  }, [progress,settriggerBarExp]);
 
   return (
     <div className="w-full">
