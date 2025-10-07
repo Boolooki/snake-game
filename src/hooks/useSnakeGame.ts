@@ -9,6 +9,7 @@ import { usePlayTimeTracker } from "./usePlayTimeTracker";
 import { useLevelProgression } from "./useLevelProgression";
 import { useScoreSubmission } from "./useScoreSubmission";
 import { useCountdownTimer } from "./useCountdownTimer";
+import Head from "next/head";
 
 export const useSnakeGame = () => {
   const [gridSize, setGridSize] = useState({ columns: 40, rows: 20 }); // ค่าเริ่มต้น

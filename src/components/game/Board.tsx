@@ -10,7 +10,7 @@ import BoardOverlay from "../ui/BoardOverlay";
 export default function Board({ gridSize, ...game }: PropsBoard) {
   return (
     <div
-      className={`game relative w-full h-full max-w-[90vw] max-h-[90dvh] lg:max-w-[25vw] lg:max-h-[90dvh] landscape:max-w-[90vw] portrait:max-w-[80vw] bg-white/80 rounded-3xl shadow-2xl
+      className={`relative w-full h-full max-w-[90vw] max-h-[90dvh] landscape:max-w-[90vw] portrait:max-w-[80vw] bg-white/80 rounded-3xl shadow-2xl
       ${
         game.isSpeedBurst
           ? "bg-yellow-50 border-yellow-400 shadow-[0_0_20px_0px_#fff200]"

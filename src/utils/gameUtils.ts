@@ -58,7 +58,7 @@ export function isOutOfBounds(head?: Position, gridSize?: { columns: number; row
   if (!head || !gridSize) return true; // ถ้าไม่มี head หรือ gridSize ถือว่า out of bounds
   const { x, y } = head;
   const { columns, rows } = gridSize;
-  return x < 0 || x >= columns || y < 0 || y >= rows;
+  return x < 0 || x > columns || y < 0 || y > rows;
 }
 
 export function formatTime(sec: number) {
