@@ -160,6 +160,20 @@ body {
   box-sizing: border-box;
 }
 
+/* ซ่อนเกมเมื่ออยู่ใน portrait mode */
+@media screen and (orientation: portrait) {
+  body {
+    overflow: hidden;
+  }
+}
+
+/* ปรับ layout เมื่ออยู่ใน landscape */
+@media screen and (orientation: landscape) {
+  body {
+    overflow: auto;
+  }
+}
+
 body {
   display: flex;
   flex-direction: column;

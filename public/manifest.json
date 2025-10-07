@@ -1,0 +1,14 @@
+{
+  "name": "Snake Game",
+  "short_name": "Snake",
+  "orientation": "landscape",
+  "display": "fullscreen",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

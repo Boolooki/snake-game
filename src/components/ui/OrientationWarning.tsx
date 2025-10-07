@@ -1,0 +1,62 @@
+// components/ui/OrientationWarning.tsx
+"use client";
+
+import { useEffect, useState } from "react";
+
+export default function OrientationWarning() {
+  const [isPortrait, setIsPortrait] = useState(false);
+
+  useEffect(() => {
+    const checkOrientation = () => {
+      setIsPortrait(window.innerHeight > window.innerWidth);
+    };
+
+    checkOrientation();
+
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", checkOrientation);
+
+    // Lock orientation - ใช้ @ts-ignore แทนการ type
+    const lockOrientation = async () => {
+      try {
+        // @ts-ignore
+        if (screen.orientation?.lock) {
+          // @ts-ignore - ส่ง string ตรงๆ
+          await screen.orientation.lock("landscape");
+        }
+      } catch (err) {
+        // Lock ไม่สำเร็จ
+      }
+    };
+
+    lockOrientation();
+
+    return () => {
+      window.removeEventListener("resize", checkOrientation);
+      window.removeEventListener("orientationchange", checkOrientation);
+    };
+  }, []);
+
+  if (!isPortrait) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black z-[999] flex items-center justify-center">
+      <div className="text-center text-white p-8">
+        <div className="mb-6 animate-bounce">
+          <div className="w-24 h-36 border-4 border-white rounded-2xl mx-auto relative">
+            <div className="absolute inset-2 border-2 border-white/50 rounded-lg" />
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-1 bg-white rounded-full" />
+          </div>
+          <div className="text-6xl mt-4">↻</div>
+        </div>
+
+        <h2 className="text-3xl font-bold mb-4">
+          กรุณาหมุนหน้าจอ
+        </h2>
+        <p className="text-lg text-gray-300">
+          เกมนี้รองรับเฉพาะโหมดแนวนอน
+        </p>
+      </div>
+    </div>
+  );
+}
