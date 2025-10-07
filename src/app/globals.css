@@ -151,7 +151,20 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100%; /* fallback สำหรับเบราว์เซอร์ที่ไม่รองรับ */
+  height: -webkit-fill-available; /* สำหรับ Chrome บน iOS */
+  min-height: 100dvh; /* ใช้ dvh เป็น fallback */
+  overflow: hidden; /* ป้องกัน scroll ที่ไม่ต้องการ */
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding-top: env(safe-area-inset-top); /* รองรับ Dynamic Island */
+  padding-bottom: env(safe-area-inset-bottom); /* รองรับแถบด้านล่าง */
 }
 
 .grid {
