@@ -16,16 +16,15 @@ export default function OrientationWarning() {
     window.addEventListener("resize", checkOrientation);
     window.addEventListener("orientationchange", checkOrientation);
 
-    // Lock orientation - ใช้ @ts-ignore แทนการ type
+    // Lock orientation
     const lockOrientation = async () => {
       try {
-        // @ts-ignore
-        if (screen.orientation?.lock) {
-          // @ts-ignore - ส่ง string ตรงๆ
-          await screen.orientation.lock("landscape");
+        const orientation = screen.orientation as any;
+        if (orientation?.lock) {
+          await orientation.lock("landscape");
         }
       } catch (err) {
-        // Lock ไม่สำเร็จ
+        // Lock ไม่สำเร็จ (ปกติบน mobile browser)
       }
     };
 
@@ -42,11 +41,13 @@ export default function OrientationWarning() {
   return (
     <div className="fixed inset-0 bg-black z-[999] flex items-center justify-center">
       <div className="text-center text-white p-8">
+        {/* Phone Icon */}
         <div className="mb-6 animate-bounce">
           <div className="w-24 h-36 border-4 border-white rounded-2xl mx-auto relative">
             <div className="absolute inset-2 border-2 border-white/50 rounded-lg" />
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-1 bg-white rounded-full" />
           </div>
+          {/* Rotation Arrow */}
           <div className="text-6xl mt-4">↻</div>
         </div>
 
