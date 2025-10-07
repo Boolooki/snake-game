@@ -3,6 +3,11 @@
 
 import { useEffect, useState } from "react";
 
+// Define type สำหรับ Screen Orientation API
+interface ScreenOrientationExtended extends ScreenOrientation {
+  lock?: (orientation: "landscape" | "portrait") => Promise<void>;
+}
+
 export default function OrientationWarning() {
   const [isPortrait, setIsPortrait] = useState(false);
 
@@ -19,7 +24,7 @@ export default function OrientationWarning() {
     // Lock orientation
     const lockOrientation = async () => {
       try {
-        const orientation = screen.orientation as any;
+        const orientation = screen.orientation as ScreenOrientationExtended;
         if (orientation?.lock) {
           await orientation.lock("landscape");
         }
