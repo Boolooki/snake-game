@@ -9,7 +9,6 @@ import BoardOverlay from "../ui/BoardOverlay";
 
 export default function Board({ gridSize, ...game }: PropsBoard) {
   return (
-    console.log("Board rendered", gridSize.columns, gridSize.rows),
     (
       <div
         className={`

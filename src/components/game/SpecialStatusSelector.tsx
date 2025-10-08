@@ -77,8 +77,10 @@ export default function SpecialStatusSelector({
         className={`
           relative bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl 
           border border-white/50 
-          p-8 [@media(orientation:landscape)]:p-4
-          w-full max-w-lg [@media(orientation:landscape)]:max-w-md
+          p-8 
+          [@media(orientation:landscape)]:p-4
+          w-full max-w-lg 
+          [@media(orientation:landscape)]:max-w-md
           transition-all duration-600 ease-out
           ${isVisible ? "scale-100 opacity-100 blur-0" : "scale-75 opacity-0 blur-lg"}
         `}

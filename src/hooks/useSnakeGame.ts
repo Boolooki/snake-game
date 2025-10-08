@@ -138,7 +138,6 @@ export const useSnakeGame = () => {
   }, [isEnergyShield, isSpeedBurst]);
 
   const gameStart = useCallback(() => {
-    console.log("gameStart is called");
     setHasStarted(true);
     setIsLoading(true);
   }, []);
