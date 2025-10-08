@@ -33,7 +33,7 @@ export default function Snake({
         return (
           <div
             key={index}
-            className={`${baseClass}${energyShieldClass}${speedBurstClass}${headClass}`}
+            className={`${baseClass}${energyShieldClass}${speedBurstClass}${headClass} no-pointer-events`}
             style={{
               gridColumnStart: segment.x,
               gridRowStart: segment.y,
