@@ -13,6 +13,7 @@ export default function Board({ gridSize, ...game }: PropsBoard) {
       className={`
         relative
         bg-white/80 rounded-3xl shadow-2xl
+        w-[min(90vw,90vh)] h-[min(90vw,90vh)]
       ${
         game.isSpeedBurst
           ? "bg-yellow-50 border-yellow-400 shadow-[0_0_20px_0px_#fff200]"
