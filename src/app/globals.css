@@ -40,15 +40,6 @@ body {
   padding-top: env(safe-area-inset-top); /* รองรับ Dynamic Island */
   padding-bottom: env(safe-area-inset-bottom); /* รองรับแถบด้านล่าง */
 }
-
-#game,
-canvas {
-  width: 100%;
-  height: 100%;
-  max-height: -webkit-fill-available;
-  flex: 1; /* ครอบคลุมพื้นที่ที่เหลือ */
-}
-
 /* Orientation-based Styles */
 @media (orientation: landscape) {
   .landscape\:text-sm {
@@ -89,15 +80,6 @@ canvas {
   }
 }
 
-/* Component Styles */
-.game {
-  width: 100%;
-  height: 100%;
-  max-width: 90vw;
-  max-height: 90vh;
-  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
-  grid-template-rows: repeat(var(--grid-rows), minmax(0, 1fr));
-}
 
 .card {
   background: var(--color-secondary);

@@ -9,11 +9,12 @@ import BoardOverlay from "../ui/BoardOverlay";
 
 export default function Board({ gridSize, ...game }: PropsBoard) {
   return (
+    console.log("Board rendered", gridSize.columns, gridSize.rows),
     <div
       className={`
         relative
         bg-white/80 rounded-3xl shadow-2xl
-        w-[min(90vw,90vh)] h-[min(90vw,90vh)]
+        w-[90vw] h-[90vh]
       ${
         game.isSpeedBurst
           ? "bg-yellow-50 border-yellow-400 shadow-[0_0_20px_0px_#fff200]"
@@ -21,11 +22,8 @@ export default function Board({ gridSize, ...game }: PropsBoard) {
       }`}
       style={{
         display: "grid",
-        gridTemplateColumns: `repeat(${gridSize.columns}, minmax(0, 1fr))`,
+        gridTemplateColumns: `repeat(${gridSize.columns-1}, minmax(0, 1fr))`,
         gridTemplateRows: `repeat(${gridSize.rows}, minmax(0, 1fr))`,
-        width: "min(90vw, 90vh)",
-        height: "min(90vw, 90vh)",
-        aspectRatio: "1 / 1",
       }}
     >
       <Snake

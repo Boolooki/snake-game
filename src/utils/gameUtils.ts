@@ -1,52 +1,17 @@
 import { Position } from "../types";
-import { GRID_SIZECOLUMS,GRID_SIZEROWS } from "../constants/gameConstants";
 
 export function getSafeRandomPos(exclude: Position[], gridSize: { columns: number; rows: number }): Position {
   const maxAttempts = 1000;
   for (let i = 0; i < maxAttempts; i++) {
     const pos = {
-      x: Math.floor(Math.random() * gridSize.columns),
-      y: Math.floor(Math.random() * gridSize.rows),
+      x: Math.floor(Math.random() * gridSize.columns)+1,
+      y: Math.floor(Math.random() * gridSize.rows)+1,
     };
 
     const isConflict = exclude.some((p) => p.x === pos.x && p.y === pos.y);
-    if (!isConflict) return pos;
+    if (!isConflict) return { x: pos.x + 1, y: pos.y + 1 };
   }
   throw new Error("Unable to find safe position after many attempts");
-}
-
-export function getSafePositionsArray(
-  exclude: Position[],
-  count: number
-): Position[] {
-  const positions: Position[] = [];
-  const maxAttempts = 1000;
-  let attempts = 0;
-
-  while (positions.length < count && attempts < maxAttempts) {
-    const pos = {
-      x: Math.floor(Math.random() * GRID_SIZECOLUMS) + 1,
-      y: Math.floor(Math.random() * GRID_SIZEROWS) + 1,
-    };
-
-    const isConflict =
-      exclude.some((p) => p.x === pos.x && p.y === pos.y) ||
-      positions.some((p) => p.x === pos.x && p.y === pos.y);
-
-    if (!isConflict) {
-      positions.push(pos);
-    }
-
-    attempts++;
-  }
-
-  if (positions.length < count) {
-    throw new Error(
-      `Unable to find ${count} safe bomb positions after ${maxAttempts} attempts`
-    );
-  }
-
-  return positions;
 }
 
 export function isCollision(snake: Position[], head: Position): boolean {
@@ -58,7 +23,7 @@ export function isOutOfBounds(head?: Position, gridSize?: { columns: number; row
   if (!head || !gridSize) return true; // ถ้าไม่มี head หรือ gridSize ถือว่า out of bounds
   const { x, y } = head;
   const { columns, rows } = gridSize;
-  return x < 0 || x > columns || y < 0 || y > rows;
+  return x < 1 || x > columns || y < 1 || y > rows;
 }
 
 export function formatTime(sec: number) {

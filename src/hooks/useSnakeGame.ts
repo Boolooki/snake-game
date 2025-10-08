@@ -179,13 +179,11 @@ export const useSnakeGame = () => {
       requestAnimationFrame(() => {
         if (isCollision(prevSnake, head) || isOutOfBounds(head, gridSize)) {
           setIsGameOver(true);
-          return prevSnake;
         }
         if (
           bombs.some((b) => b.x === head.x && b.y === head.y && !isEnergyShield)
         ) {
           setIsGameOver(true);
-          return prevSnake;
         }
       });
 
@@ -194,7 +192,7 @@ export const useSnakeGame = () => {
           isMoreProduceMoretribute,
           isSafeHeaven
         );
-        spawner(countFoods, countBombs, countES, countSB, snake);
+        spawner(countFoods, countBombs, countES, countSB, newSnake);
         setScore((prev) => prev + (isDoubleScore ? 2 : 1));
         return newSnake;
       }
@@ -204,7 +202,7 @@ export const useSnakeGame = () => {
           isMoreProduceMoretribute,
           isSafeHeaven
         );
-        spawner(countFoods, countBombs, countES, countSB, snake);
+        spawner(countFoods, countBombs, countES, countSB, utilSnake);
         setIsEnergyShield(true);
         return utilSnake;
       }
@@ -228,7 +226,7 @@ export const useSnakeGame = () => {
           isMoreProduceMoretribute,
           isSafeHeaven
         );
-        spawner(countFoods, countBombs, countES, countSB, snake);
+        spawner(countFoods, countBombs, countES, countSB, utilSnake);
         setIsEnergyShield(false);
         return utilSnake;
       }
