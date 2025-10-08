@@ -14,6 +14,15 @@ Live demo: [Click here](https://snake-game-peach-delta.vercel.app/)
 - 📈 Score tracking and leaderboard-ready
 - 🌐 Deployed on Vercel
 
+
+## 📸 Gameplay Screenshots
+<div className="Flex">
+  <img src="https://github.com/user-attachments/assets/3bbd2fe5-1818-46c5-9c27-06a8b69504c2" width="200" />
+  <img src="https://github.com/user-attachments/assets/f29edd84-c21c-4e31-bb2d-6bd492f252a9" width="200" />
+  <img src="https://github.com/user-attachments/assets/c85d6934-e774-4c47-9640-6c0349c37526" width="200" />
+  <img src="https://github.com/user-attachments/assets/123ea75c-b41c-406b-90da-d0f28528824e" width="200" />
+</div>
+
 ## 📦 Tech Stack
 
 | Technology     | Purpose              |
