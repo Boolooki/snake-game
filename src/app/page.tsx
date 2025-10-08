@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { useSnakeGame } from "@/hooks/useSnakeGame";
 import Board from "@/components/game/Board";
 import Score from "@/components/ui/Score";
@@ -26,15 +26,95 @@ export default function Home() {
   const shouldShowUI =
     !game.hasStarted || game.isPaused || game.isGameOver || isUIVisible;
 
+  // คำนวณ progress สำหรับระดับน้ำ
+  const { progress } = useMemo(() => {
+    const nextThreshold = game.thresholds.find((t) => game.score < t);
+    const currentThreshold = game.thresholds[game.level - 1] || 0;
+
+    if (!nextThreshold) {
+      return { progress: 100 }; // Max level
+    }
+
+    const scoreInLevel = game.score - currentThreshold;
+    const neededInLevel = nextThreshold - currentThreshold;
+    const progress = (scoreInLevel / neededInLevel) * 100;
+
+    return { progress: Math.min(progress, 100) };
+  }, [game.score, game.level, game.thresholds]);
+
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen p-5 overflow-hidden">
-      {/* Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 -z-20">
-        <div className="absolute w-32 h-32 bg-emerald-400/10 rounded-full top-10 left-10 blur-3xl" />
-        <div className="absolute w-40 h-40 bg-teal-400/10 rounded-full top-40 right-20 blur-3xl" />
-        <div className="absolute w-36 h-36 bg-cyan-400/10 rounded-full bottom-20 left-1/4 blur-3xl" />
-        <div className="absolute w-44 h-44 bg-emerald-400/10 rounded-full bottom-10 right-10 blur-3xl" />
+    <div className="relative flex flex-col items-center justify-center w-full h-full overflow-hidden">
+      {/* Background with Water Effect */}
+      <div className="fixed inset-0 -z-20 overflow-hidden">
+        {/* ชั้นน้ำที่สูงขึ้น */}
+        <div
+          className="absolute inset-x-0 bottom-0 pointer-events-none water-layer"
+          style={{
+            height: `${progress}%`,
+            background: `linear-gradient(to top, #a855f7, #34d399)`, // จากม่วงไปเขียว
+            opacity: 0.7,
+            backdropFilter: "blur(5px)",
+            transition: "height 0.5s ease-out",
+          }}
+        >
+          {/* ขอบน้ำที่มีริ้วคลื่น */}
+          <div
+            className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white/50 to-transparent animate-wave"
+            style={{
+              clipPath: "url(#waveClip)", // ใช้ clip-path เพื่อสร้างรูปร่างคลื่น
+            }}
+          />
+          {/* SVG สำหรับ clip-path คลื่น */}
+          <svg width="0" height="0">
+            <defs>
+              <clipPath id="waveClip" clipPathUnits="objectBoundingBox">
+                <path
+                  d="M0,0.8 Q0.25,1 0.5,0.8 T1,0.8 V0 H0 Z"
+                  transform="translate(0, 0)"
+                />
+                  <animate
+                    attributeName="d"
+                    values="
+                      M0,0.8 Q0.25,1 0.5,0.8 T1,0.8 V0 H0 Z;
+                      M0,0.9 Q0.25,0.7 0.5,0.9 T1,0.7 V0 H0 Z;
+                      M0,0.8 Q0.25,1 0.5,0.8 T1,0.8 V0 H0 Z
+                    "
+                    dur="2s"
+                    repeatCount="indefinite"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          {/* ฟองสบู่ในน้ำ */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `
+                radial-gradient(circle at 30% 20%, rgba(255,255,255,0.3) 0%, transparent 5%),
+                radial-gradient(circle at 70% 50%, rgba(255,255,255,0.2) 0%, transparent 4%),
+                radial-gradient(circle at 50% 80%, rgba(255,255,255,0.25) 0%, transparent 6%)
+              `,
+              animation: "bubbleFloat 6s infinite ease-in-out",
+            }}
+          ></div>
+        </div>
+        {/* วงกลมพื้นหลังเดิม */}
+        {BACKGROUND_CIRCLES.map((circle, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-gradient-to-br from-emerald-400/30 to-teal-400/30 animate-float"
+            style={{
+              width: `${circle.size}px`,
+              height: `${circle.size}px`,
+              left: `${circle.left}%`,
+              top: `${circle.top}%`,
+              animationDelay: `${circle.delay}s`,
+              animationDuration: `${circle.duration}s`,
+            }}
+          />
+        ))}
       </div>
+
       {/* Loading Transition */}
       {game.isLoading && (
         <LoadingTransition
@@ -52,23 +132,6 @@ export default function Home() {
         onLangToggle={game.onLangToggle}
       />
 
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 overflow-hidden pointer-events-none">
-        {BACKGROUND_CIRCLES.map((circle, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-br from-emerald-400/30 to-teal-400/30 animate-float"
-            style={{
-              width: `${circle.size}px`,
-              height: `${circle.size}px`,
-              left: `${circle.left}%`,
-              top: `${circle.top}%`,
-              animationDelay: `${circle.delay}s`,
-              animationDuration: `${circle.duration}s`,
-            }}
-          />
-        ))}
-      </div>
-
       {/* Game Board */}
       <Board
         gridSize={game.gridSize}
@@ -83,8 +146,8 @@ export default function Home() {
         isSpeedBurst={game.isSpeedBurst}
         language={game.language}
         countdown={game.countdown}
-        showLevelUpNotification={game.showLevelUpNotification} // เพิ่ม
-        upgradeQueue={game.upgradeQueue} // เพิ่ม
+        showLevelUpNotification={game.showLevelUpNotification}
+        upgradeQueue={game.upgradeQueue}
       />
 
       <div
@@ -206,7 +269,7 @@ export default function Home() {
           onComplete={game.handleNotificationComplete}
         />
       )}
-      {/* showboard Up Notification */}
+      {/* Leaderboard Modal */}
       {game.showLeaderboard && (
         <LeaderboardModal
           onClose={() => game.setShowLeaderboard(false)}

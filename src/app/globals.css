@@ -24,21 +24,21 @@ body {
   touch-action: none;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
   margin: 0;
   padding: 0;
-  height: 100%; /* fallback */
-  height: -webkit-fill-available; /* Chrome บน iOS */
-  min-height: 100vh; /* ใช้ vh เป็น fallback */
-  overflow: hidden; /* ป้องกัน scroll */
+  height: 100dvh; /* ใช้ dvh เพื่อรองรับ Dynamic Island */
+  min-height: 100dvh;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  padding-top: env(safe-area-inset-top); /* รองรับ Dynamic Island */
-  padding-bottom: env(safe-area-inset-bottom); /* รองรับแถบด้านล่าง */
+  align-items: center; /* จัดกึ่งกลางในแนวนอน */
+  justify-content: center; /* จัดกึ่งกลางในแนวตั้ง */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 /* Orientation-based Styles */
 @media (orientation: landscape) {
@@ -103,6 +103,84 @@ body {
   background-color: #0090cc;
 }
 
+/* Link Box */
+.link-box {
+  position: absolute;
+  bottom: env(safe-area-inset-bottom);
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 10;
+}
+
+/* Water Layer */
+.water-layer {
+  will-change: transform, opacity; /* Optimize performance */
+}
+
+/* Animations */
+@keyframes waterRipple {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 20%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@keyframes bubbleFloat {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(10px, -10px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.8;
+  }
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-10px) scaleY(1.2);
+  }
+  100% {
+    transform: translateX(0) scaleY(1);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
@@ -135,22 +213,6 @@ body {
 
 .animate-shimmer {
   animation: shimmer 2s infinite;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0) translateX(0) rotate(0deg);
-    opacity: 0.3;
-  }
-  33% {
-    transform: translateY(-30px) translateX(20px) rotate(120deg);
-    opacity: 0.5;
-  }
-  66% {
-    transform: translateY(-10px) translateX(-20px) rotate(240deg);
-    opacity: 0.4;
-  }
 }
 
 .animate-float {
