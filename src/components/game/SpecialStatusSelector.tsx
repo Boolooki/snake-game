@@ -140,7 +140,7 @@ export default function SpecialStatusSelector({
         </div>
 
         {/* Options List */}
-        <ul className="space-y-3 [@media(orientation:landscape)]:space-y-2 max-h-[55dvh] [@media(orientation:landscape)]:max-h-[60dvh] overflow-y-auto scrollbar-hide pr-2 px-1">
+        <ul className="space-y-3 [@media(orientation:landscape)]:space-y-2 max-h-[55vh] [@media(orientation:landscape)]:max-h-[60vh] overflow-y-auto scrollbar-hide pr-2 px-1">
           {options.map((opt, idx) => (
             <li
               key={opt.key}
