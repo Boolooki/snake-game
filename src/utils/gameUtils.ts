@@ -1,15 +1,18 @@
 import { Position } from "../types";
 
-export function getSafeRandomPos(exclude: Position[], gridSize: { columns: number; rows: number }): Position {
+export function getSafeRandomPos(
+  exclude: Position[], // ตำแหน่งที่ต้องหลีกเลี่ยง (งูและไอเทมทั้งหมด)
+  gridSize: { columns: number; rows: number }
+): Position {
   const maxAttempts = 1000;
   for (let i = 0; i < maxAttempts; i++) {
     const pos = {
-      x: Math.floor(Math.random() * gridSize.columns)+1,
-      y: Math.floor(Math.random() * gridSize.rows)+1,
+      x: Math.floor(Math.random() * gridSize.columns) + 1, // เริ่มที่ 1
+      y: Math.floor(Math.random() * gridSize.rows) + 1,
     };
 
     const isConflict = exclude.some((p) => p.x === pos.x && p.y === pos.y);
-    if (!isConflict) return { x: pos.x + 1, y: pos.y + 1 };
+    if (!isConflict) return pos; // คืนตำแหน่งที่ไม่ทับ
   }
   throw new Error("Unable to find safe position after many attempts");
 }
