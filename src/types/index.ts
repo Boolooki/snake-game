@@ -32,13 +32,17 @@ export type PropsControlButton = {
 };
 
 export type PropsBuffStatus = {
-  isEnergyShield: boolean;
+  isEnergyShield: number;
   isSpeedBurst: boolean;
   isDoubleScore: boolean;
   isExtendedBurst: boolean;
   isSlowSpeed: boolean;
   isMoreProduceMoretribute: boolean;
   isSafeHeaven: boolean;
+  isPetrified: boolean;
+  isChargingBehavior: boolean;
+  isArmadilloLike: boolean;
+  isNoLimitSpeed: boolean;
 };
 
 export type PropsBoard = {
@@ -48,7 +52,7 @@ export type PropsBoard = {
   energyShields: Position[];
   bombs: Position[];
   speedBursts: Position[];
-  isEnergyShield: boolean;
+  isEnergyShield: number;
   isSpeedBurst: boolean;
   isGameOver: boolean;
   isPaused: boolean;
@@ -56,7 +60,6 @@ export type PropsBoard = {
   countdown: number | null;
   showLevelUpNotification: boolean;
   upgradeQueue: boolean;
-
 };
 
 export type PropsLanguage = {

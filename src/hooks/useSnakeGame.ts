@@ -39,6 +39,10 @@ export const useSnakeGame = () => {
     isSlowSpeed,
     isSafeHeaven,
     isMoreProduceMoretribute,
+    isPetrified,
+    isChargingBehavior,
+    isArmadilloLike,
+    isNoLimitSpeed,
     applyStatus,
     resetStatus,
     setSelectedStatuses,
@@ -49,6 +53,7 @@ export const useSnakeGame = () => {
 
   const [username, setUsername] = useState("");
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const speedBurstTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [isPaused, setIsPaused] = useState<boolean>(true);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
@@ -92,7 +97,7 @@ export const useSnakeGame = () => {
     generateRandomOptions,
     onComplete: triggerCountdown,
   });
-  const [isEnergyShield, setIsEnergyShield] = useState<boolean>(false);
+  const [energyShield, setEnergyShield] = useState<number>(0);
   const [isSpeedBurst, setIsSpeedBurst] = useState<boolean>(false);
   const [triggerBarExp, settriggerBarExp] = useState<boolean>(false);
   const [triggerBuffPanel, setTriggerBuffPanel] = useState<boolean>(false);
@@ -141,11 +146,20 @@ export const useSnakeGame = () => {
   }, [progress, settriggerBarExp]);
 
   useEffect(() => {
+    const collectedItems = { foods, energyShields, speedBursts };
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
       isMoreProduceMoretribute,
       isSafeHeaven
     );
-    spawner(countFoods, countBombs, countES, countSB, snake);
+    spawner(
+      countFoods,
+      countBombs,
+      countES,
+      countSB,
+      snake,
+      isPetrified,
+      collectedItems
+    );
   }, [isMoreProduceMoretribute, gridSize, isSafeHeaven]);
 
   useEffect(() => {
@@ -171,14 +185,14 @@ export const useSnakeGame = () => {
   }, [upgradeQueue]);
 
   useEffect(() => {
-    if (isEnergyShield || isSpeedBurst) {
+    if (energyShield > 0 || isSpeedBurst) {
       setTriggerBuffPanel(true);
 
       setTimeout(() => {
         setTriggerBuffPanel(false);
       }, 3000);
     }
-  }, [isEnergyShield, isSpeedBurst]);
+  }, [energyShield, isSpeedBurst]);
 
   const gameStart = useCallback(() => {
     setHasStarted(true);
@@ -223,8 +237,11 @@ export const useSnakeGame = () => {
           setIsGameOver(true);
         }
         if (
-          bombs.some((b) => b.x === head.x && b.y === head.y && !isEnergyShield)
+          bombs.some(
+            (b) => b.x === head.x && b.y === head.y && energyShield <= 0
+          )
         ) {
+          setScore((prev) => prev + (isChargingBehavior ? 3 : 0));
           setIsGameOver(true);
         }
       });
@@ -234,7 +251,24 @@ export const useSnakeGame = () => {
           isMoreProduceMoretribute,
           isSafeHeaven
         );
-        spawner(countFoods, countBombs, countES, countSB, newSnake);
+        const collectedItems = {
+          foods: foods.filter((f) => !(f.x === head.x && f.y === head.y)),
+          energyShields: energyShields.filter(
+            (es) => !(es.x === head.x && es.y === head.y)
+          ),
+          speedBursts: speedBursts.filter(
+            (sb) => !(sb.x === head.x && sb.y === head.y)
+          ),
+        };
+        spawner(
+          countFoods,
+          countBombs,
+          countES,
+          countSB,
+          newSnake,
+          isPetrified,
+          collectedItems
+        );
         setScore((prev) => prev + (isDoubleScore ? 2 : 1));
         return newSnake;
       }
@@ -244,8 +278,31 @@ export const useSnakeGame = () => {
           isMoreProduceMoretribute,
           isSafeHeaven
         );
-        spawner(countFoods, countBombs, countES, countSB, utilSnake);
-        setIsEnergyShield(true);
+        const collectedItems = {
+          foods: foods.filter((f) => !(f.x === head.x && f.y === head.y)),
+          energyShields: energyShields.filter(
+            (es) => !(es.x === head.x && es.y === head.y)
+          ),
+          speedBursts: speedBursts.filter(
+            (sb) => !(sb.x === head.x && sb.y === head.y)
+          ),
+        };
+        spawner(
+          countFoods,
+          countBombs,
+          countES,
+          countSB,
+          utilSnake,
+          isPetrified,
+          collectedItems
+        );
+
+        if (isArmadilloLike) {
+          setEnergyShield((prev) => prev + 1);
+        } else {
+          setEnergyShield(1);
+        }
+
         return utilSnake;
       }
 
@@ -254,22 +311,71 @@ export const useSnakeGame = () => {
           isMoreProduceMoretribute,
           isSafeHeaven
         );
-        spawner(countFoods, countBombs, countES, countSB, snake);
-        const burstDuration = isExtendedBurst ? 6000 : 3000;
+        const collectedItems = {
+          foods: foods.filter((f) => !(f.x === head.x && f.y === head.y)),
+          energyShields: energyShields.filter(
+            (es) => !(es.x === head.x && es.y === head.y)
+          ),
+          speedBursts: speedBursts.filter(
+            (sb) => !(sb.x === head.x && sb.y === head.y)
+          ),
+        };
+        spawner(
+          countFoods,
+          countBombs,
+          countES,
+          countSB,
+          snake,
+          isPetrified,
+          collectedItems
+        );
+
+        if (speedBurstTimerRef.current) {
+          clearTimeout(speedBurstTimerRef.current);
+        }
+
         setIsSpeedBurst(true);
-        setTimeout(() => setIsSpeedBurst(false), burstDuration);
+
+        const burstDuration = isExtendedBurst
+          ? (isNoLimitSpeed ? 6000 : 3000) * 2
+          : isNoLimitSpeed
+          ? 6000
+          : 3000;
+
+        speedBurstTimerRef.current = setTimeout(() => {
+          setIsSpeedBurst(false);
+          speedBurstTimerRef.current = null;
+        }, burstDuration);
         return utilSnake;
       }
 
       if (
-        bombs.some((b) => b.x === head.x && b.y === head.y && isEnergyShield)
+        bombs.some((b) => b.x === head.x && b.y === head.y && energyShield > 0)
       ) {
         const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
           isMoreProduceMoretribute,
           isSafeHeaven
         );
-        spawner(countFoods, countBombs, countES, countSB, utilSnake);
-        setIsEnergyShield(false);
+        const collectedItems = {
+          foods: foods.filter((f) => !(f.x === head.x && f.y === head.y)),
+          energyShields: energyShields.filter(
+            (es) => !(es.x === head.x && es.y === head.y)
+          ),
+          speedBursts: speedBursts.filter(
+            (sb) => !(sb.x === head.x && sb.y === head.y)
+          ),
+        };
+        spawner(
+          countFoods,
+          countBombs,
+          countES,
+          countSB,
+          utilSnake,
+          isPetrified,
+          collectedItems
+        );
+        setEnergyShield((prev) => prev - 1);
+        setScore((prev) => prev + (isChargingBehavior ? 3 : 0));
         return utilSnake;
       }
 
@@ -279,7 +385,7 @@ export const useSnakeGame = () => {
     foods,
     energyShields,
     bombs,
-    isEnergyShield,
+    energyShield,
     snake,
     spawner,
     speedBursts,
@@ -310,7 +416,7 @@ export const useSnakeGame = () => {
     setScore(0);
     resetPlayTime();
     setIsGameOver(false);
-    setIsEnergyShield(false);
+    setEnergyShield(0);
     setIsSpeedBurst(false);
     setTriggerReset(true);
     resetSubmission();
@@ -319,7 +425,16 @@ export const useSnakeGame = () => {
       isMoreProduceMoretribute,
       isSafeHeaven
     );
-    spawner(countFoods, countBombs, countES, countSB, INITIAL_SNAKE);
+    const collectedItems = { foods, energyShields, speedBursts };
+    spawner(
+      countFoods,
+      countBombs,
+      countES,
+      countSB,
+      INITIAL_SNAKE,
+      isPetrified,
+      collectedItems
+    );
   }, [
     triggerCountdown,
     resetStatus,
@@ -365,7 +480,7 @@ export const useSnakeGame = () => {
     resetGame,
     setIsPaused,
     energyShields,
-    isEnergyShield,
+    energyShield,
     speedBursts,
     isSpeedBurst,
     bombs,
@@ -418,5 +533,9 @@ export const useSnakeGame = () => {
     nextThreshold,
     progress,
     isMaxLevel,
+    isPetrified,
+    isChargingBehavior,
+    isArmadilloLike,
+    isNoLimitSpeed,
   };
 };

@@ -140,7 +140,7 @@ export default function Home() {
         energyShields={game.energyShields}
         bombs={game.bombs}
         speedBursts={game.speedBursts}
-        isEnergyShield={game.isEnergyShield}
+        isEnergyShield={game.energyShield}
         isGameOver={game.isGameOver}
         isPaused={game.isPaused}
         isSpeedBurst={game.isSpeedBurst}
@@ -208,13 +208,17 @@ export default function Home() {
         `}
       >
         <BuffStatus
-          isEnergyShield={game.isEnergyShield}
+          isEnergyShield={game.energyShield}
           isSpeedBurst={game.isSpeedBurst}
           isDoubleScore={game.isDoubleScore}
           isExtendedBurst={game.isExtendedBurst}
           isSlowSpeed={game.isSlowSpeed}
           isMoreProduceMoretribute={game.isMoreProduceMoretribute}
           isSafeHeaven={game.isSafeHeaven}
+          isPetrified={game.isPetrified}
+          isChargingBehavior={game.isChargingBehavior}
+          isArmadilloLike={game.isArmadilloLike}
+          isNoLimitSpeed={game.isNoLimitSpeed}
           language={game.language}
         />
       </div>

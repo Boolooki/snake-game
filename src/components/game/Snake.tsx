@@ -3,7 +3,7 @@ import { Position } from '../../types';
 
 type SnakeProps = {
   segments: Position[];
-  isEnergyShield: boolean;
+  isEnergyShield: number;
   isSpeedBurst: boolean;
 };
 
@@ -20,7 +20,7 @@ export default function Snake({
         const baseClass =
           'rounded-full bg-gradient-to-br from-green-400 to-teal-200 shadow-teal-300 shadow-lg';
 
-        const energyShieldClass = isEnergyShield
+        const energyShieldClass = isEnergyShield > 0
           ? ' border-4 border-blue-300'
           : '';
 

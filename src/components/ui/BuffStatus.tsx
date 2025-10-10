@@ -12,6 +12,10 @@ const messages = {
     slowSpeed: "ความเร็วช้าลง",
     moreProduce: "อาหารมากขึ้น",
     safeHeaven: "ระเบิดน้อยลง",
+    petrified: "อาหารและบัฟไม่สุ่ม",
+    chargingBehavior: "เหยียบระเบิดได้แต้ม",
+    armadilloLike: "สะสมโล่ได้",
+    noLimitSpeed: "สะสมSBเพิ่มเวลา",
   },
   en: {
     buffpanel: "Active Buffs",
@@ -23,6 +27,10 @@ const messages = {
     slowSpeed: "Slow Speed",
     moreProduce: "More Food",
     safeHeaven: "Safe Heaven",
+    petrified: "Petrified",
+    chargingBehavior: "Charging Behavior",
+    armadilloLike: "Armadillo Like",
+    noLimitSpeed: "No Limit Speed",
   },
 };
 
@@ -62,7 +70,33 @@ const buffConfig = {
     gradient: "from-indigo-400 to-purple-500",
     labelKey: "safeHeaven" as const,
   },
+  petrified: {
+    emoji: "😨",
+    gradient: "from-indigo-400 to-purple-500",
+    labelKey: "petrified" as const,
+  },
+  chargingBehavior: {
+    emoji: "💥",
+    gradient: "from-indigo-400 to-purple-500",
+    labelKey: "chargingBehavior" as const,
+  },
+  armadilloLike: {
+    emoji: "🦔",
+    gradient: "from-indigo-400 to-purple-500",
+    labelKey: "armadilloLike" as const,
+  },
+  noLimitSpeed: {
+    emoji: "🚀",
+    gradient: "from-indigo-400 to-purple-500",
+    labelKey: "noLimitSpeed" as const,
+  },
 };
+
+interface PropsBuffStatusWithCount
+  extends Omit<PropsBuffStatus, "isEnergyShield"> {
+  isEnergyShield: number;
+  language: Language;
+}
 
 export default function BuffStatus({
   isEnergyShield,
@@ -72,16 +106,24 @@ export default function BuffStatus({
   isSlowSpeed,
   isMoreProduceMoretribute,
   isSafeHeaven,
+  isPetrified,
+  isChargingBehavior,
+  isArmadilloLike,
+  isNoLimitSpeed,
   language,
-}: PropsBuffStatus & { language: Language }) {
+}: PropsBuffStatusWithCount & { language: Language }) {
   const activeBuffs = [
-    isEnergyShield && "energyShield",
+    isEnergyShield > 0 && "energyShield",
     isSpeedBurst && "speedBurst",
     isDoubleScore && "doubleScore",
     isExtendedBurst && "extendedBurst",
     isSlowSpeed && "slowSpeed",
     isMoreProduceMoretribute && "moreProduce",
     isSafeHeaven && "safeHeaven",
+    isPetrified && "petrified",
+    isChargingBehavior && "chargingBehavior",
+    isArmadilloLike && "armadilloLike",
+    isNoLimitSpeed && "noLimitSpeed",
   ].filter(Boolean) as (keyof typeof buffConfig)[];
 
   return (
@@ -96,22 +138,33 @@ export default function BuffStatus({
         <div className="flex flex-wrap gap-3 justify-center">
           {activeBuffs.map((buffKey) => {
             const buff = buffConfig[buffKey];
+            const shieldCount = buffKey === "energyShield" ? isEnergyShield : 0;
             return (
-              <div
-                key={buffKey}
-                className="group relative"
-              >
+              <div key={buffKey} className="group relative">
                 {/* Gradient Card */}
                 <div
                   className={`
-                    w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br ${buff.gradient} 
+                    w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br ${
+                      buff.gradient
+                    } 
                     rounded-2xl flex items-center justify-center shadow-lg
                     transition-all duration-300 ease-out
                     group-hover:scale-110 group-hover:shadow-2xl
                     animate-[fadeIn_0.4s_ease-out]
+                    ${
+                      shieldCount > 0
+                        ? `border-2 border-blue-${300 + shieldCount * 100}`
+                        : ""
+                    }
                   `}
                 >
                   <span className="text-xl md:text-3xl">{buff.emoji}</span>
+                  {/* แสดงตัวเลขเล็ก ๆ สำหรับ energyShield */}
+                  {shieldCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                      {shieldCount}
+                    </span>
+                  )}
                 </div>
 
                 {/* Tooltip on Hover */}
@@ -125,6 +178,8 @@ export default function BuffStatus({
                   "
                 >
                   {messages[language][buff.labelKey]}
+                  {shieldCount > 0 &&
+                    ` (${shieldCount} layer${shieldCount > 1 ? "s" : ""})`}
                 </div>
               </div>
             );

@@ -20,7 +20,7 @@ const ALL_OPTIONS = {
     emoji: "🔥",
   },
   slowSpeed: {
-    label: "เยื่องเท้า",
+    label: "คืบคลาน",
     description: "ลดความเร็วของงูลงเท่าตัว",
     emoji: "🐢",
   },
@@ -33,6 +33,26 @@ const ALL_OPTIONS = {
     label: "สวรรค์ปัดป้อง",
     description: "สุ่มได้ระเบิดเท่าไรจำนวนสุดท้ายจะ -2 ลูก",
     emoji: "🛡️",
+  },
+  petrified: {
+    label: "กลัวจนขาแข็ง",
+    description: "การเก็บอาหารและบัฟจะไม่สุ่มตำแหน่งอาหารและบัฟ",
+    emoji: "😨",
+  },
+  chargingBehavior: {
+    label: "พุ่งลืมตาย",
+    description: "เมื่อเหยียบระเบิดจะได้ 3 แต้ม",
+    emoji: "💥",
+  },
+  armadilloLike:{
+    label: "อาร์มาดิลโลเอง",
+    description: "โล่เก็บซ้อนได้",
+    emoji: "🦔",
+  },
+  noLimitSpeed: {
+    label: "ไร้ขีดจำกัด",
+    description: "Speed Burst เวลาพื้นฐานเพิ่ม 3 วินาที",
+    emoji: "🚀",
   },
 };
 
@@ -221,27 +241,6 @@ export default function SpecialStatusSelector({
           </p>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes slideInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </div>
   );
 }

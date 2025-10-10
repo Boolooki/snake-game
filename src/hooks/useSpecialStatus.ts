@@ -7,6 +7,10 @@ export type SpecialStatusFlags = {
   slowSpeed: boolean;
   moreProduceMoretribute: boolean;
   safeHeaven: boolean;
+  petrified: boolean;
+  chargingBehavior: boolean;
+  armadilloLike: boolean;
+  noLimitSpeed: boolean;
 };
 
 export const useSpecialStatus = () => {
@@ -16,12 +20,16 @@ export const useSpecialStatus = () => {
     slowSpeed: false,
     moreProduceMoretribute: false,
     safeHeaven: false,
+    petrified: false,
+    chargingBehavior: false,
+    armadilloLike: false,
+    noLimitSpeed: false,
   });
 
   const [selectedStatuses, setSelectedStatuses] = useState<
     (keyof SpecialStatusFlags)[]
   >([]);
-  // สุ่ม 4 ตัวเลือกที่ยังไม่เคยเลือก
+  // สุ่ม 3 ตัวเลือกที่ยังไม่เคยเลือก
   const [randomOptions, setRandomOptions] = useState<
     (keyof SpecialStatusFlags)[]
   >([]);
@@ -32,10 +40,10 @@ export const useSpecialStatus = () => {
       (key) => !selectedStatuses.includes(key)
     );
 
-    // ถ้าเหลือน้อยกว่า 4 ก็เอาทั้งหมด
+    // ถ้าเหลือน้อยกว่า 3 ก็เอาทั้งหมด
     const count = Math.min(3, availableKeys.length);
 
-    // Shuffle และเอาแค่ 4 ตัวแรก
+    // Shuffle และเอาแค่ 3 ตัวแรก
     const shuffled = [...availableKeys].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, count);
 
@@ -56,6 +64,10 @@ export const useSpecialStatus = () => {
       slowSpeed: false,
       moreProduceMoretribute: false,
       safeHeaven: false,
+      petrified: false,
+      chargingBehavior: false,
+      armadilloLike: false,
+      noLimitSpeed: false,
     });
     setSelectedStatuses([]);
     setRandomOptions([]);
@@ -74,5 +86,9 @@ export const useSpecialStatus = () => {
     isSlowSpeed: status.slowSpeed,
     isMoreProduceMoretribute: status.moreProduceMoretribute,
     isSafeHeaven: status.safeHeaven,
+    isPetrified: status.petrified,
+    isChargingBehavior: status.chargingBehavior,
+    isArmadilloLike: status.armadilloLike,
+    isNoLimitSpeed: status.noLimitSpeed,
   };
 };
