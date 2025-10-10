@@ -1,9 +1,9 @@
 // hooks/useLevelProgression.ts
 import { useState, useEffect, useRef } from "react";
-
+import { LEVELUPTHRESHOLDS } from "@/constants/gameConstants";
 export const useLevelProgression = ({
   score,
-  thresholds = [5, 20, 50, 100],
+  thresholds = LEVELUPTHRESHOLDS,
   setIsPaused,
   generateRandomOptions,
   onComplete,
@@ -67,6 +67,6 @@ export const useLevelProgression = ({
     resetProgression,
     showLevelUpNotification,
     handleNotificationComplete,
-    thresholds
+    thresholds,
   };
 };

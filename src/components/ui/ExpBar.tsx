@@ -1,5 +1,5 @@
 // components/ui/ExpBar.tsx
-import { useMemo,useEffect,useRef } from "react";
+import { LEVELUPTHRESHOLDS } from "@/constants/gameConstants";
 
 type Props = {
   score: number;
@@ -7,6 +7,10 @@ type Props = {
   thresholds?: number[];
   language: "th" | "en";
   settriggerBarExp: (value: boolean) => void;
+  currentThreshold: number;
+  nextThreshold: number | null;
+  progress: number;
+  isMaxLevel: boolean;
 };
 
 const messages = {
@@ -23,54 +27,14 @@ const messages = {
 export default function ExpBar({
   score,
   level,
-  thresholds = [5, 20, 50, 100],
+  thresholds = LEVELUPTHRESHOLDS,
   language,
+  currentThreshold,
+  nextThreshold,
+  progress,
+  isMaxLevel,
   settriggerBarExp,
 }: Props) {
-  // คำนวณ progress
-  const { currentThreshold, nextThreshold, progress, isMaxLevel } = useMemo(() => {
-    const nextThreshold = thresholds.find((t) => score < t);
-    const currentThreshold = thresholds[level - 1] || 0;
-
-    if (!nextThreshold) {
-      // Max level แล้ว
-      return {
-        currentThreshold: thresholds[thresholds.length - 1] || 0,
-        nextThreshold: null,
-        progress: 100,
-        isMaxLevel: true,
-      };
-    }
-
-    const scoreInLevel = score - currentThreshold;
-    const neededInLevel = nextThreshold - currentThreshold;
-    const progress = (scoreInLevel / neededInLevel) * 100;
-
-    return {
-      currentThreshold,
-      nextThreshold,
-      progress: Math.min(progress, 100),
-      isMaxLevel: false,
-    };
-  }, [score, level, thresholds]);
-
-  
-  const hasTriggeredbarexp = useRef<boolean>(false);
-
-  useEffect(() => {
-    if (!hasTriggeredbarexp.current && Math.round(progress) >= 50) {
-      settriggerBarExp(true);
-      hasTriggeredbarexp.current = true; // ป้องกันไม่ให้ trigger ซ้ำ
-
-      setTimeout(() => {
-      settriggerBarExp(false);
-    }, 3000);
-    }
-    if (Math.round(progress) <= 50 ){
-      hasTriggeredbarexp.current = false;
-    }
-  }, [progress,settriggerBarExp]);
-
   return (
     <div className="w-full">
       {/* Level Display */}
@@ -93,7 +57,9 @@ export default function ExpBar({
 
         {/* Next Level Preview */}
         {!isMaxLevel && (
-          <span className="text-xs md:text-xl text-gray-400">{Math.round(progress)}%</span>
+          <span className="text-xs md:text-xl text-gray-400">
+            {Math.round(progress)}%
+          </span>
         )}
       </div>
 
@@ -114,11 +80,17 @@ export default function ExpBar({
         {/* Threshold markers */}
         {!isMaxLevel &&
           thresholds.map((threshold, idx) => {
-            if (threshold <= currentThreshold || threshold >= (nextThreshold || Infinity)) {
+            if (
+              threshold <= currentThreshold ||
+              threshold >= (nextThreshold || Infinity)
+            ) {
               return null;
             }
 
-            const position = ((threshold - currentThreshold) / ((nextThreshold || threshold) - currentThreshold)) * 100;
+            const position =
+              ((threshold - currentThreshold) /
+                ((nextThreshold || threshold) - currentThreshold)) *
+              100;
 
             return (
               <div

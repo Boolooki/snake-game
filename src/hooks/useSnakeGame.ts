@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Position, Language } from "../types";
 import { INITIAL_SNAKE, SPEED } from "../constants/gameConstants";
 import { isCollision, isOutOfBounds, getSpawnCounts } from "../utils/gameUtils";
@@ -96,6 +96,49 @@ export const useSnakeGame = () => {
   const [isSpeedBurst, setIsSpeedBurst] = useState<boolean>(false);
   const [triggerBarExp, settriggerBarExp] = useState<boolean>(false);
   const [triggerBuffPanel, setTriggerBuffPanel] = useState<boolean>(false);
+
+  const { currentThreshold, nextThreshold, progress, isMaxLevel } =
+    useMemo(() => {
+      const nextThreshold = thresholds.find((t) => score < t);
+      const currentThreshold = thresholds[level - 1] || 0;
+
+      if (!nextThreshold) {
+        // Max level แล้ว
+        return {
+          currentThreshold: thresholds[thresholds.length - 1] || 0,
+          nextThreshold: null,
+          progress: 100,
+          isMaxLevel: true,
+        };
+      }
+
+      const scoreInLevel = score - currentThreshold;
+      const neededInLevel = nextThreshold - currentThreshold;
+      const progress = (scoreInLevel / neededInLevel) * 100;
+
+      return {
+        currentThreshold,
+        nextThreshold,
+        progress: Math.min(progress, 100),
+        isMaxLevel: false,
+      };
+    }, [score, level, thresholds]);
+
+  const hasTriggeredbarexp = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (!hasTriggeredbarexp.current && Math.round(progress) >= 50) {
+      settriggerBarExp(true);
+      hasTriggeredbarexp.current = true; // ป้องกันไม่ให้ trigger ซ้ำ
+
+      setTimeout(() => {
+        settriggerBarExp(false);
+      }, 3000);
+    }
+    if (Math.round(progress) <= 50) {
+      hasTriggeredbarexp.current = false;
+    }
+  }, [progress, settriggerBarExp]);
 
   useEffect(() => {
     const { countFoods, countBombs, countES, countSB } = getSpawnCounts(
@@ -371,5 +414,9 @@ export const useSnakeGame = () => {
     setTriggerBuffPanel,
     gridSize,
     showRotateHint,
+    currentThreshold,
+    nextThreshold,
+    progress,
+    isMaxLevel,
   };
 };

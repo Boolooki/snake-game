@@ -72,19 +72,19 @@ export default function Home() {
                   d="M0,0.8 Q0.25,1 0.5,0.8 T1,0.8 V0 H0 Z"
                   transform="translate(0, 0)"
                 />
-                  <animate
-                    attributeName="d"
-                    values="
+                <animate
+                  attributeName="d"
+                  values="
                       M0,0.8 Q0.25,1 0.5,0.8 T1,0.8 V0 H0 Z;
                       M0,0.9 Q0.25,0.7 0.5,0.9 T1,0.7 V0 H0 Z;
                       M0,0.8 Q0.25,1 0.5,0.8 T1,0.8 V0 H0 Z
                     "
-                    dur="2s"
-                    repeatCount="indefinite"
-                  />
-                </clipPath>
-              </defs>
-            </svg>
+                  dur="2s"
+                  repeatCount="indefinite"
+                />
+              </clipPath>
+            </defs>
+          </svg>
           {/* ฟองสบู่ในน้ำ */}
           <div
             className="absolute inset-0"
@@ -250,6 +250,10 @@ export default function Home() {
           thresholds={game.thresholds}
           language={game.language}
           settriggerBarExp={game.settriggerBarExp}
+          currentThreshold={game.currentThreshold}
+          nextThreshold={game.nextThreshold}
+          progress={game.progress}
+          isMaxLevel={game.isMaxLevel}
         />
       </div>
 
