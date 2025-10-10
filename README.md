@@ -14,6 +14,15 @@ Live demo: [Click here](https://snake-game-peach-delta.vercel.app/)
 - 📈 Score tracking and leaderboard-ready
 - 🌐 Deployed on Vercel
 
+
+## 📸 Gameplay Screenshots
+<div className="Flex">
+  <img src="https://github.com/user-attachments/assets/3bbd2fe5-1818-46c5-9c27-06a8b69504c2" width="200" />
+  <img src="https://github.com/user-attachments/assets/f29edd84-c21c-4e31-bb2d-6bd492f252a9" width="200" />
+  <img src="https://github.com/user-attachments/assets/c85d6934-e774-4c47-9640-6c0349c37526" width="200" />
+  <img src="https://github.com/user-attachments/assets/123ea75c-b41c-406b-90da-d0f28528824e" width="200" />
+</div>
+
 ## 📦 Tech Stack
 
 | Technology     | Purpose              |
@@ -44,54 +53,3 @@ pnpm dev
 # or
 bun dev
 Then open http://localhost:3000 in your browser.
-
-📁 Project Structure
-Code
-src/
-├── app/                     # Next.js app entry and backend logic
-│   ├── api/                 # API routes (Next.js Route Handlers)
-│   │   ├── clearLeaderboard/route.ts
-│   │   ├── getLeaderboard/route.ts
-│   │   └── submitScore/route.ts
-│   ├── lib/                 # Shared backend utilities
-│   │   └── mongoose.ts      # MongoDB connection setup
-│   ├── models/              # Mongoose models
-│   │   └── Leaderboard.ts
-│   ├── services/            # Client-side data hooks
-│   │   └── useLeaderboard.ts
-│   ├── favicon.ico
-│   ├── globals.css          # Global styles
-│   ├── layout.tsx           # App layout wrapper
-│   └── page.tsx             # Main game page
-│
-├── components/              # UI and game components
-│   ├── game/                # Game object renderers
-│   │   ├── Board.tsx
-│   │   ├── Bomb.tsx
-│   │   ├── Energyshield.tsx
-│   │   ├── Food.tsx
-│   │   ├── Snake.tsx
-│   │   └── Speedburst.tsx
-│   ├── leaderboard/         # Leaderboard display
-│   │   ├── Leaderboard.tsx
-│   │   └── LeaderboardModal.tsx
-│   └── ui/                  # General UI components
-│       ├── BoardOverlay.tsx
-│       ├── BuffStatus.tsx
-│       ├── ControlButtons.tsx
-│       ├── Score.tsx
-│       ├── StartModal.tsx
-│       └── Timer.tsx
-│
-├── constants/               # Game configuration values
-│   └── gameConstants.ts
-│
-├── hooks/                   # Custom React hooks
-│   └── useSnakeGame.ts
-│
-├── types/                   # TypeScript type definitions
-│   ├── index.ts
-│   └── mongoose.d.ts
-│
-└── utils/                   # Game logic helpers
-    └── gameUtils.ts
