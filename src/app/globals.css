@@ -126,6 +126,27 @@ body {
 }
 
 /* Animations */
+@keyframes waveMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes waveClip {
+  0% {
+    clip-path: polygon(0% 80%, 25% 100%, 50% 80%, 75% 100%, 100% 80%, 100% 0%, 0% 0%);
+  }
+  50% {
+    clip-path: polygon(0% 90%, 25% 70%, 50% 90%, 75% 70%, 100% 90%, 100% 0%, 0% 0%);
+  }
+  100% {
+    clip-path: polygon(0% 80%, 25% 100%, 50% 80%, 75% 100%, 100% 80%, 100% 0%, 0% 0%);
+  }
+}
+
+.wave {
+  animation: waveClip 2s infinite;
+}
+
 @keyframes slideInUp {
   from {
     opacity: 0;

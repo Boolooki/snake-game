@@ -7,7 +7,7 @@ import SpeedBurst from "./Speedburst";
 import { PropsBoard } from "../../types";
 import BoardOverlay from "../ui/BoardOverlay";
 
-export default function Board({ gridSize, ...game }: PropsBoard) {
+export default function Board({ gridSize, snakefacedirction, ...game }: PropsBoard) {
   return (
     (
       <div
@@ -35,6 +35,7 @@ export default function Board({ gridSize, ...game }: PropsBoard) {
           segments={game.snake}
           isEnergyShield={game.isEnergyShield}
           isSpeedBurst={game.isSpeedBurst}
+          snakefacedirction={snakefacedirction}
         />
         {game.foods.map((b) => (
           <Food key={`${b.x}-${b.y}`} position={b} />

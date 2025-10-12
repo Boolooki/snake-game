@@ -58,41 +58,32 @@ export default function Home() {
           }}
         >
           {/* ขอบน้ำที่มีริ้วคลื่น */}
-          <div
-            className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white/50 to-transparent animate-wave"
-            style={{
-              clipPath: "url(#waveClip)", // ใช้ clip-path เพื่อสร้างรูปร่างคลื่น
-            }}
-          />
+          <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white/50 to-transparent wave" />
           {/* SVG สำหรับ clip-path คลื่น */}
-          <svg width="0" height="0">
-            <defs>
-              <clipPath id="waveClip" clipPathUnits="objectBoundingBox">
-                <path
-                  d="M0,0.8 Q0.25,1 0.5,0.8 T1,0.8 V0 H0 Z"
-                  transform="translate(0, 0)"
-                />
-                <animate
-                  attributeName="d"
-                  values="
-                      M0,0.8 Q0.25,1 0.5,0.8 T1,0.8 V0 H0 Z;
-                      M0,0.9 Q0.25,0.7 0.5,0.9 T1,0.7 V0 H0 Z;
-                      M0,0.8 Q0.25,1 0.5,0.8 T1,0.8 V0 H0 Z
-                    "
-                  dur="2s"
-                  repeatCount="indefinite"
-                />
-              </clipPath>
-            </defs>
+          <svg className="absolute top-0 left-0 w-full h-32 overflow-hidden">
+            <path
+              d="M0,30 C150,80 350,0 500,30 L500,00 L0,0 Z"
+              fill="rgba(255,255,255,0.5)"
+              style={{
+                animation: "waveMove 6s linear infinite",
+              }}
+            />
+            <path
+              d="M0,40 C150,90 350,10 500,40 L500,00 L0,0 Z"
+              fill="rgba(255,255,255,0.3)"
+              style={{
+                animation: "waveMove 8s linear infinite reverse",
+              }}
+            />
           </svg>
           {/* ฟองสบู่ในน้ำ */}
           <div
             className="absolute inset-0"
             style={{
               background: `
-                radial-gradient(circle at 30% 20%, rgba(255,255,255,0.3) 0%, transparent 5%),
+                radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 1) 0%, transparent 5%),
                 radial-gradient(circle at 70% 50%, rgba(255,255,255,0.2) 0%, transparent 4%),
-                radial-gradient(circle at 50% 80%, rgba(255,255,255,0.25) 0%, transparent 6%)
+                radial-gradient(circle at 50% 80%, rgba(228, 222, 222, 1) 0%, transparent 6%)
               `,
               animation: "bubbleFloat 6s infinite ease-in-out",
             }}
@@ -136,6 +127,7 @@ export default function Home() {
       <Board
         gridSize={game.gridSize}
         snake={game.snake}
+        snakefacedirction={game.direction}
         foods={game.foods}
         energyShields={game.energyShields}
         bombs={game.bombs}

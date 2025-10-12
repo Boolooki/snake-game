@@ -78,7 +78,7 @@ export default function SpecialStatusSelector({
     <div
       className={`
         fixed inset-0 flex justify-center items-center z-48 p-4
-        [@media(orientation:landscape)]:p-2
+        landscape:p-2
         transition-all duration-500 ease-out
         ${isVisible ? "opacity-100" : "opacity-0"}
       `}
@@ -98,9 +98,9 @@ export default function SpecialStatusSelector({
           relative bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl 
           border border-white/50 
           p-8 
-          [@media(orientation:landscape)]:p-4
+          landscape:p-4
           w-full max-w-lg 
-          [@media(orientation:landscape)]:max-w-md
+          landscape:max-w-[60%]
           transition-all duration-600 ease-out
           ${isVisible ? "scale-100 opacity-100 blur-0" : "scale-75 opacity-0 blur-lg"}
         `}
@@ -109,10 +109,10 @@ export default function SpecialStatusSelector({
         }}
       >
         {/* Header */}
-        <div className="text-center mb-6 [@media(orientation:landscape)]:mb-3">
+        <div className="text-center mb-6 landscape:mb-3">
           <div
             className={`
-              inline-block mb-4 [@media(orientation:landscape)]:mb-2
+              inline-block mb-4 landscape:mb-2
               transition-all duration-700 ease-out
               ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-12 opacity-0"}
             `}
@@ -121,17 +121,17 @@ export default function SpecialStatusSelector({
               transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
             }}
           >
-            <div className="w-16 h-16 [@media(orientation:landscape)]:w-12 [@media(orientation:landscape)]:h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl [@media(orientation:landscape)]:rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-3xl [@media(orientation:landscape)]:text-2xl">✨</span>
+            <div className="w-16 h-16 landscape:w-12 landscape:h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl landscape:rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-3xl landscape:text-2xl">✨</span>
             </div>
           </div>
 
           <h2
             className={`
-              text-3xl [@media(orientation:landscape)]:text-xl 
+              text-3xl landscape:text-2xl
               font-bold bg-gradient-to-r from-purple-600 to-pink-600 
               bg-clip-text text-transparent 
-              mb-2 [@media(orientation:landscape)]:mb-1
+              mb-2 landscape:mb-1
               transition-all duration-500 ease-out
               ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}
             `}
@@ -142,7 +142,7 @@ export default function SpecialStatusSelector({
 
           <p
             className={`
-              text-sm [@media(orientation:landscape)]:text-xs
+              text-sm landscape:text-xs
               text-gray-500
               transition-all duration-500 ease-out
               ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}
@@ -150,11 +150,11 @@ export default function SpecialStatusSelector({
             style={{ transitionDelay: "0.35s" }}
           >
             ใช้{" "}
-            <kbd className="px-2 py-1 [@media(orientation:landscape)]:px-1.5 [@media(orientation:landscape)]:py-0.5 bg-gray-100 rounded text-xs [@media(orientation:landscape)]:text-[10px]">
+            <kbd className="px-2 py-1 landscape:px-1.5 landscape:py-0.5 bg-gray-100 rounded text-xs landscape:text-[10px]">
               ↑↓
             </kbd>{" "}
             และ{" "}
-            <kbd className="px-2 py-1 [@media(orientation:landscape)]:px-1.5 [@media(orientation:landscape)]:py-0.5 bg-gray-100 rounded text-xs [@media(orientation:landscape)]:text-[10px]">
+            <kbd className="px-2 py-1 landscape:px-1.5 landscape:py-0.5 bg-gray-100 rounded text-xs landscape:text-[10px]">
               Enter
             </kbd>{" "}
             หรือคลิก
@@ -162,15 +162,15 @@ export default function SpecialStatusSelector({
         </div>
 
         {/* Options List */}
-        <ul className="space-y-3 [@media(orientation:landscape)]:space-y-2 max-h-[55vh] [@media(orientation:landscape)]:max-h-[60vh] overflow-y-auto scrollbar-hide pr-2 px-1">
+        <ul className="space-y-3 landscape:space-y-2 max-h-[55vh] landscape:max-h-[60vh] overflow-y-auto scrollbar-hide pr-2 px-1">
           {options.map((opt, idx) => (
             <li
               key={opt.key}
               onClick={() => onSelect(opt.key)}
               className={`
                 relative bg-white/60 backdrop-blur-sm 
-                rounded-2xl [@media(orientation:landscape)]:rounded-xl 
-                p-4 [@media(orientation:landscape)]:p-2
+                rounded-2xl landscape:rounded-xl 
+                p-4 landscap:ep-2
                 cursor-pointer border-2 transition-all duration-200 ease-out
                 ${
                   idx === selectedIndex
@@ -184,14 +184,14 @@ export default function SpecialStatusSelector({
                   : "none",
               }}
             >
-              <div className="flex items-start gap-4 [@media(orientation:landscape)]:gap-2">
+              <div className="flex items-start gap-4 landscape:gap-2">
                 <div
                   className={`
                     flex-shrink-0 
-                    w-12 h-12 [@media(orientation:landscape)]:w-8 [@media(orientation:landscape)]:h-8
-                    rounded-xl [@media(orientation:landscape)]:rounded-lg 
+                    w-12 h-12 landscape:w-8 landscape:h-8
+                    rounded-xl landscape:rounded-lg 
                     flex items-center justify-center 
-                    text-2xl [@media(orientation:landscape)]:text-lg
+                    text-2xl landscape:text-lg
                     transition-all duration-200
                     ${
                       idx === selectedIndex
@@ -204,24 +204,24 @@ export default function SpecialStatusSelector({
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1 [@media(orientation:landscape)]:mb-0.5">
-                    <h3 className="font-bold text-gray-800 text-lg [@media(orientation:landscape)]:text-sm">
+                  <div className="flex items-center justify-between mb-1 landscape:mb-0.5">
+                    <h3 className="font-bold text-gray-800 text-lg landscape:text-sm">
                       {opt.label}
                     </h3>
                     {idx === selectedIndex && (
-                      <span className="text-purple-500 text-xl [@media(orientation:landscape)]:text-base animate-pulse">
+                      <span className="text-purple-500 text-xl landscape:text-base animate-pulse">
                         ▶
                       </span>
                     )}
                   </div>
-                  <p className="text-sm [@media(orientation:landscape)]:text-xs text-gray-600 leading-relaxed [@media(orientation:landscape)]:leading-snug">
+                  <p className="text-sm landscape:text-xs text-gray-600 leading-relaxed landscape:leading-snug">
                     {opt.description}
                   </p>
                 </div>
               </div>
 
               {idx === selectedIndex && (
-                <div className="absolute inset-0 rounded-2xl [@media(orientation:landscape)]:rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 opacity-20 pointer-events-none" />
+                <div className="absolute inset-0 rounded-2xl landscape:rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 opacity-20 pointer-events-none" />
               )}
             </li>
           ))}
@@ -229,14 +229,14 @@ export default function SpecialStatusSelector({
 
         <div
           className={`
-            mt-6 [@media(orientation:landscape)]:mt-3 
+            mt-6 landscape:mt-3 
             text-center
             transition-all duration-500 ease-out
             ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}
           `}
           style={{ transitionDelay: `${0.4 + options.length * 0.1}s` }}
         >
-          <p className="text-xs [@media(orientation:landscape)]:text-[10px] text-gray-400">
+          <p className="text-xs landscape:text-[10px] text-gray-400">
             💡 เลือกอัพเกรดที่เหมาะกับสไตล์การเล่นของคุณ
           </p>
         </div>

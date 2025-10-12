@@ -51,7 +51,7 @@ export default function StartModal({
       {/* Modal Card */}
       <div className="
         relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 p-6 w-full max-w-[90%] 
-        lg:max-w-md landscape:max-w-[70%] landscape:h-auto max-h-[90vh]
+        landscape:max-w-[40%] landscape:h-auto max-h-[90vh] 
       ">
         {/* Language Toggle */}
         <div className="absolute top-4 right-4 flex gap-2">
