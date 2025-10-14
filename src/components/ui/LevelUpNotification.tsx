@@ -124,22 +124,6 @@ export default function LevelUpNotification({ level, onComplete }: Props) {
           >
             Level {level}
           </p>
-
-          {/* Subtitle */}
-          <p
-            className={`
-              text-sm text-gray-500 mt-4
-              transition-all duration-500 ease-out
-              ${
-                phase === "displaying"
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
-              }
-            `}
-            style={{ transitionDelay: "0.5s" }}
-          >
-            เตรียมพบกับสถานะพิเศษ...
-          </p>
         </div>
 
         {/* Glow effect */}
