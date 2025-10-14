@@ -128,6 +128,7 @@ export default function Home() {
       {/* Loading Transition */}
       {game.isLoading && (
         <LoadingTransition
+          language={game.language}
           onComplete={game.startTutorial}
           username={game.username}
         />
@@ -209,11 +210,11 @@ export default function Home() {
           fixed z-49 bottom-[10vh] right-[12vw]
           transition-all duration-500 ease-out
           ${
-            (!game.countdown &&
-              game.isPaused &&
-              !game.upgradeQueue &&
-              !game.showLevelUpNotification &&
-              !game.isActive)
+            !game.countdown &&
+            game.isPaused &&
+            !game.upgradeQueue &&
+            !game.showLevelUpNotification &&
+            !game.isActive
               ? "translate-x-0 opacity-100"
               : "-translate-x-full opacity-0"
           }

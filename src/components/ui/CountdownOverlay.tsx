@@ -19,11 +19,6 @@ export default function CountdownOverlay({ count }: { count: number }) {
           <div className="text-8xl font-black bg-gradient-to-br from-emerald-500 to-teal-600 bg-clip-text text-transparent animate-[bounce_0.6s_ease-in-out]">
             {count}
           </div>
-          
-          {/* Label */}
-          <div className="text-sm font-medium text-gray-600 mt-2 animate-[fadeIn_0.5s_ease-out_0.2s_both]"> 
-            {count === 3 ? "เตรียมตัว..." : count === 2 ? "พร้อม..." : "ไป!"}
-          </div>
 
           {/* Progress ring */}
           <div className="absolute inset-0 -z-10">

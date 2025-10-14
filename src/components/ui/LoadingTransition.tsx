@@ -1,16 +1,35 @@
 // components/ui/LoadingTransition.tsx
 import { useEffect, useState } from "react";
-import { BACKGROUND_CIRCLES } from "@/constants/gameConstants"
-
+import { BACKGROUND_CIRCLES } from "@/constants/gameConstants";
+import { Language } from "@/types";
 
 type Props = {
   onComplete: () => void;
   username: string;
+  language: Language;
 };
 
-export default function LoadingTransition({ onComplete, username }: Props) {
-  const [phase, setPhase] = useState<"loading" | "scattering" | "complete">("loading");
+const messages = {
+  th: {
+    welcome: "ยินดีต้อนรับ",
+    prepairing: "กำลังเตรียมเกม...",
+  },
+  en: {
+    welcome: "Welcome",
+    prepairing: "Prepairing assets...",
+  },
+}
+
+export default function LoadingTransition({
+  language,
+  onComplete,
+  username,
+}: Props) {
+  const [phase, setPhase] = useState<"loading" | "scattering" | "complete">(
+    "loading"
+  );
   const [progress, setProgress] = useState(0);
+  const t = messages[language];
 
   useEffect(() => {
     // Phase 1: Loading (2 วินาที)
@@ -60,8 +79,14 @@ export default function LoadingTransition({ onComplete, username }: Props) {
             style={{
               width: `${circle.size}px`,
               height: `${circle.size}px`,
-              left: phase === "scattering" ? `${Math.random() * 120 - 10}%` : `${circle.left}%`,
-              top: phase === "scattering" ? `${Math.random() * 120 - 10}%` : `${circle.top}%`,
+              left:
+                phase === "scattering"
+                  ? `${Math.random() * 120 - 10}%`
+                  : `${circle.left}%`,
+              top:
+                phase === "scattering"
+                  ? `${Math.random() * 120 - 10}%`
+                  : `${circle.top}%`,
               opacity: phase === "scattering" ? 0 : 1,
               transform: phase === "scattering" ? "scale(2)" : "scale(1)",
               animationDelay: `${circle.delay}s`,
@@ -76,7 +101,11 @@ export default function LoadingTransition({ onComplete, username }: Props) {
         className={`
           absolute inset-0 flex flex-col items-center justify-center
           transition-all duration-1000
-          ${phase === "scattering" ? "opacity-0 scale-150 blur-lg" : "opacity-100 scale-100"}
+          ${
+            phase === "scattering"
+              ? "opacity-0 scale-150 blur-lg"
+              : "opacity-100 scale-100"
+          }
         `}
       >
         {/* Snake Icon */}
@@ -85,19 +114,25 @@ export default function LoadingTransition({ onComplete, username }: Props) {
             <span className="text-6xl">🐍</span>
           </div>
           {/* Orbiting dots */}
-          <div className="absolute inset-0 animate-spin" style={{ animationDuration: "3s" }}>
+          <div
+            className="absolute inset-0 animate-spin"
+            style={{ animationDuration: "3s" }}
+          >
             <div className="absolute top-0 left-1/2 -ml-2 w-4 h-4 bg-emerald-500 rounded-full" />
           </div>
-          <div className="absolute inset-0 animate-spin" style={{ animationDuration: "2s", animationDirection: "reverse" }}>
+          <div
+            className="absolute inset-0 animate-spin"
+            style={{ animationDuration: "2s", animationDirection: "reverse" }}
+          >
             <div className="absolute bottom-0 left-1/2 -ml-2 w-4 h-4 bg-teal-500 rounded-full" />
           </div>
         </div>
 
         {/* Welcome Message */}
         <h2 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
-          ยินดีต้อนรับ {username}!
+          {t.welcome} {username}!
         </h2>
-        <p className="text-gray-500 mb-8">กำลังเตรียมเกม...</p>
+        <p className="text-gray-500 mb-8">{t.prepairing}</p>
 
         {/* Progress Bar */}
         <div className="w-64 h-2 bg-white/60 backdrop-blur-sm rounded-full overflow-hidden shadow-inner">
