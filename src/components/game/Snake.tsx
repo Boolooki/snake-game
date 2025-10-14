@@ -41,6 +41,7 @@ export default function Snake({
 
         return (
           <div
+          data-tutorial="snake"
             key={index}
             className={`${baseClass}${energyShieldClass}${speedBurstClass}${headClass} no-pointer-events`}
             style={{
@@ -55,10 +56,16 @@ export default function Snake({
                 style={{ transform: `rotate(${rotationAngle})`, transition: "all 50ms ease-in-out"}}
               >
                 {/* ดวงตา */}
-                <div className="absolute top-[12px] left-[6px] w-[4px] h-[4px] bg-black rounded-full" />
-                <div className="absolute top-[12px] right-[6px] w-[4px] h-[4px] bg-black rounded-full" />
+                <div className="absolute bg-white rounded-full z-10
+                top-[2.5vw] left-[2.5vw] w-[0.5vw] h-[0.5vh]
+                landscape:top-[1.2vw] landscape:left-[1vw] landscape:w-[0.5vw] landscape:h-[0.5vh] " />
+                <div className="absolute bg-black rounded-full z-9
+                top-[2vw] left-[2vw] w-[1vw] h-[1vh]
+                landscape:top-[1vw] landscape:left-[1vw] landscape:w-[1vw] landscape:h-[1vh] " />
                 {/* ลิ้น */}
-                <div className="absolute bottom-[-2px] left-1/2 transform -translate-x-1/2 w-[2px] h-[6px] bg-red-500 rounded-full" />
+                <div className="absolute  left-1/2 transform -translate-x-1/2 bg-red-500 rounded-full z-8
+                bottom-[-2vw] w-[1vw] h-[1vh]
+                landscape:bottom-[-2vh] landscape:w-[0.5vw] landscape:h-[2vh] " />
               </div>
             )}
           </div>

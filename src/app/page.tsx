@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { useSnakeGame } from "@/hooks/useSnakeGame";
 import Board from "@/components/game/Board";
 import Score from "@/components/ui/Score";
@@ -18,6 +18,7 @@ import ExpBar from "@/components/ui/ExpBar";
 import LevelUpNotification from "@/components/ui/LevelUpNotification";
 import { useUIVisibility } from "@/hooks/useUIVisibility";
 import LeaderboardModal from "@/components/leaderbaord/LeaderboardModal";
+import GameTutorialOverlay from "@/components/ui/GameTutorialOverlay";
 
 export default function Home() {
   const game = useSnakeGame();
@@ -106,10 +107,26 @@ export default function Home() {
         ))}
       </div>
 
+      <div className="absolute min-h-screen">
+        {/* Game content */}
+
+        {/* Tutorial Overlay */}
+        {game.isActive && (
+          <GameTutorialOverlay
+            step={game.currentStepData}
+            currentStep={game.currentStep}
+            totalSteps={game.totalSteps}
+            onNext={game.nextStep}
+            onPrev={game.prevStep}
+            onSkip={game.skipTutorial}
+          />
+        )}
+      </div>
+
       {/* Loading Transition */}
       {game.isLoading && (
         <LoadingTransition
-          onComplete={game.triggerCountdown}
+          onComplete={game.startTutorial}
           username={game.username}
         />
       )}
@@ -182,6 +199,29 @@ export default function Home() {
           onOpen={() => game.setShowLeaderboard(true)}
         />
       </div>
+      <button
+        onClick={() => {
+          game.startTutorial;
+        }}
+        className={`
+          fixed z-49 bottom-[10vh] right-[12vw] bg-white rounded-xl p-2
+          hover:bg-yellow-400
+          transition-all duration-500 ease-out
+          flex space-x-4
+          ${
+            (!game.countdown &&
+              game.isPaused &&
+              !game.upgradeQueue &&
+              !game.showLevelUpNotification) ||
+            game.isGameOver
+              ? "translate-x-0 opacity-100"
+              : "-translate-x-full opacity-0"
+          }
+        `}
+      >
+        <span className="text-xl">📖</span>
+        ดูTutorial
+      </button>
       <div
         className={`
           fixed z-49 bottom-[5vh]

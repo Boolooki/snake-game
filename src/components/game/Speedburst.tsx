@@ -4,6 +4,7 @@ import { Position } from '../../types';
 export default function SpeedBurst({ position }: { position: Position }) {
   return (
     <div
+    data-tutorial="speed"
       className="bg-yellow-300 rounded-full
       bg-gradient-to-br from-yellow-500 to-yellow-300 shadow-yellow-300 shadow-lg
       no-pointer-events"
