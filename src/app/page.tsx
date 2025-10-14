@@ -19,6 +19,7 @@ import LevelUpNotification from "@/components/ui/LevelUpNotification";
 import { useUIVisibility } from "@/hooks/useUIVisibility";
 import LeaderboardModal from "@/components/leaderbaord/LeaderboardModal";
 import GameTutorialOverlay from "@/components/ui/GameTutorialOverlay";
+import Tutorial from "@/components/ui/Tutorial";
 
 export default function Home() {
   const game = useSnakeGame();
@@ -149,6 +150,7 @@ export default function Home() {
         energyShields={game.energyShields}
         bombs={game.bombs}
         speedBursts={game.speedBursts}
+        isTutorial={game.isActive}
         isEnergyShield={game.energyShield}
         isGameOver={game.isGameOver}
         isPaused={game.isPaused}
@@ -165,7 +167,7 @@ export default function Home() {
           transition-all duration-500 ease-out
           flex space-x-4
           ${
-            shouldShowUI
+            shouldShowUI && !game.isActive
               ? "translate-y-0 opacity-100"
               : "-translate-y-full opacity-0"
           }
@@ -183,7 +185,8 @@ export default function Home() {
             (!game.countdown &&
               game.isPaused &&
               !game.upgradeQueue &&
-              !game.showLevelUpNotification) ||
+              !game.showLevelUpNotification &&
+              !game.isActive) ||
             game.isGameOver
               ? "translate-y-0 opacity-100"
               : "-translate-y-full opacity-0 pointer-events-none"
@@ -199,29 +202,27 @@ export default function Home() {
           onOpen={() => game.setShowLeaderboard(true)}
         />
       </div>
-      <button
-        onClick={() => {
-          game.startTutorial;
-        }}
+
+      <div
         className={`
-          fixed z-49 bottom-[10vh] right-[12vw] bg-white rounded-xl p-2
-          hover:bg-yellow-400
+          fixed z-49 bottom-[10vh] right-[12vw]
           transition-all duration-500 ease-out
-          flex space-x-4
           ${
             (!game.countdown &&
               game.isPaused &&
               !game.upgradeQueue &&
-              !game.showLevelUpNotification) ||
-            game.isGameOver
+              !game.showLevelUpNotification &&
+              !game.isActive)
               ? "translate-x-0 opacity-100"
               : "-translate-x-full opacity-0"
           }
         `}
       >
-        <span className="text-xl">📖</span>
-        ดูTutorial
-      </button>
+        <Tutorial
+          language={game.language}
+          onOpen={() => game.startTutorial()}
+        />
+      </div>
       <div
         className={`
           fixed z-49 bottom-[5vh]
@@ -231,7 +232,8 @@ export default function Home() {
             (!game.countdown &&
               game.isPaused &&
               !game.upgradeQueue &&
-              !game.showLevelUpNotification) ||
+              !game.showLevelUpNotification &&
+              !game.isActive) ||
             game.isGameOver ||
             game.triggerBuffPanel
               ? "translate-x-0 opacity-100"
@@ -272,7 +274,8 @@ export default function Home() {
             (!game.countdown &&
               game.isPaused &&
               !game.upgradeQueue &&
-              !game.showLevelUpNotification) ||
+              !game.showLevelUpNotification &&
+              !game.isActive) ||
             game.isGameOver ||
             game.triggerBarExp
               ? "translate-x-0 opacity-100"

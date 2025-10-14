@@ -3,7 +3,6 @@ import { useState, useEffect ,useCallback} from "react";
 
 export const useCountdownTimer = ({
   setIsPaused,
-  username,
 }: {
   setIsPaused: React.Dispatch<React.SetStateAction<boolean>>;
   setHasStarted: React.Dispatch<React.SetStateAction<boolean>>;

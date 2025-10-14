@@ -7,11 +7,15 @@ import SpeedBurst from "./Speedburst";
 import { PropsBoard } from "../../types";
 import BoardOverlay from "../ui/BoardOverlay";
 
-export default function Board({ gridSize, snakefacedirction, ...game }: PropsBoard) {
+export default function Board({
+  gridSize,
+  snakefacedirction,
+  isTutorial,
+  ...game
+}: PropsBoard) {
   return (
-    (
-      <div
-        className={`
+    <div
+      className={`
         relative
           rounded-[40px]
           w-[90vw] h-[90vh]
@@ -23,41 +27,39 @@ export default function Board({ gridSize, snakefacedirction, ...game }: PropsBoa
           ? "bg-yellow-50 border-yellow-400 shadow-[0_0_20px_0px_#fff200]"
           : "bg-white border-black"
       }`}
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${
-            gridSize.columns
-          }, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${gridSize.rows}, minmax(0, 1fr))`,
-        }}
-      >
-        <Snake
-          segments={game.snake}
-          isEnergyShield={game.isEnergyShield}
-          isSpeedBurst={game.isSpeedBurst}
-          snakefacedirction={snakefacedirction}
-        />
-        {game.foods.map((b) => (
-          <Food key={`${b.x}-${b.y}`} position={b} />
-        ))}
-        {game.energyShields.map((b) => (
-          <EnergyShield key={`${b.x}-${b.y}`} position={b} />
-        ))}
-        {game.speedBursts.map((b) => (
-          <SpeedBurst key={`${b.x}-${b.y}`} position={b} />
-        ))}
-        {game.bombs.map((b) => (
-          <Bomb key={`${b.x}-${b.y}`} position={b} />
-        ))}
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${gridSize.columns}, minmax(0, 1fr))`,
+        gridTemplateRows: `repeat(${gridSize.rows}, minmax(0, 1fr))`,
+      }}
+    >
+      <Snake
+        segments={game.snake}
+        isEnergyShield={game.isEnergyShield}
+        isSpeedBurst={game.isSpeedBurst}
+        snakefacedirction={snakefacedirction}
+      />
+      {game.foods.map((b) => (
+        <Food key={`${b.x}-${b.y}`} position={b} />
+      ))}
+      {game.energyShields.map((b) => (
+        <EnergyShield key={`${b.x}-${b.y}`} position={b} />
+      ))}
+      {game.speedBursts.map((b) => (
+        <SpeedBurst key={`${b.x}-${b.y}`} position={b} />
+      ))}
+      {game.bombs.map((b) => (
+        <Bomb key={`${b.x}-${b.y}`} position={b} />
+      ))}
 
-        <BoardOverlay
-          isGameOver={game.isGameOver}
-          isPaused={game.isPaused}
-          language={game.language}
-          countdown={game.countdown}
-          isLevelingUp={game.showLevelUpNotification || game.upgradeQueue}
-        />
-      </div>
-    )
+      <BoardOverlay
+        isTutorial={isTutorial}
+        isGameOver={game.isGameOver}
+        isPaused={game.isPaused}
+        language={game.language}
+        countdown={game.countdown}
+        isLevelingUp={game.showLevelUpNotification || game.upgradeQueue}
+      />
+    </div>
   );
 }

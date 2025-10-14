@@ -47,6 +47,7 @@ export type PropsBuffStatus = {
 
 export type PropsBoard = {
   gridSize: { columns: number; rows: number };
+  isTutorial: boolean;
   snake: Position[];
   snakefacedirction: Direction;
   foods: Position[];

@@ -6,7 +6,7 @@ export default function CountdownOverlay({ count }: { count: number }) {
   return (
     <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-50">
       {/* Backdrop blur */}
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm animate-[fadeIn_0.3s_ease-out]" />
+      <div className="absolute inset-0 bg-black/20 animate-[fadeIn_0.3s_ease-out]" />
 
       {/* Countdown Card */}
       <div className="relative animate-[scaleIn_0.5s_cubic-bezier(0.34,1.56,0.64,1)]">
