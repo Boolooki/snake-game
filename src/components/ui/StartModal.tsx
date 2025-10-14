@@ -73,6 +73,7 @@ export default function StartModal({
                 : "bg-white/50 text-gray-600 hover:bg-white/80"
             }`}
           >
+
             EN
           </button>
         </div>

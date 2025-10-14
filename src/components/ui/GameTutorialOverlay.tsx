@@ -3,6 +3,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import type { TutorialStep } from "@/hooks/useGameTutorial";
+import type { Language } from "@/types";
 
 type Props = {
   step: TutorialStep;
@@ -11,6 +12,20 @@ type Props = {
   onNext: () => void;
   onPrev: () => void;
   onSkip: () => void;
+  language: Language;
+};
+
+const messages = {
+  th: {
+    prev: "ก่อนหน้า",
+    next: "ถัดไป",
+    done: "เสร็จสิ้น",
+  },
+  en: {
+    prev: "Back",
+    next: "Next",
+    done: "Done",
+  },
 };
 
 export default function GameTutorialOverlay({
@@ -20,10 +35,13 @@ export default function GameTutorialOverlay({
   onNext,
   onPrev,
   onSkip,
+  language,
 }: Props) {
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
-  const [tooltipSize, setTooltipSize] = useState({ width: 320, height: 250 }); // เล็กลง
+  const [tooltipSize, setTooltipSize] = useState({ width: 320, height: 250 });
   const tooltipRef = useRef<HTMLDivElement>(null);
+
+  const t = messages[language];
 
   useEffect(() => {
     const updateTargetPosition = () => {
@@ -55,7 +73,7 @@ export default function GameTutorialOverlay({
   if (!targetRect) return null;
 
   const getTooltipPosition = () => {
-    const padding = 12; // ลดจาก 20
+    const padding = 12;
     const viewport = {
       width: window.innerWidth,
       height: window.innerHeight,
@@ -180,7 +198,7 @@ export default function GameTutorialOverlay({
         }}
       />
 
-      {/* Highlight border - เล็กลง */}
+      {/* Highlight border */}
       <div
         className="absolute border-2 border-yellow-400 rounded-lg transition-all duration-500 pointer-events-none"
         style={{
@@ -192,7 +210,7 @@ export default function GameTutorialOverlay({
         }}
       />
 
-      {/* Tooltip Card - เล็กลง */}
+      {/* Tooltip Card */}
       <div
         className="absolute z-[101] animate-[fadeIn_1s_ease-out] transition-all duration-500"
         style={{
@@ -205,7 +223,7 @@ export default function GameTutorialOverlay({
           ref={tooltipRef}
           className="bg-white/95 backdrop-blur-xl rounded-xl shadow-2xl p-4 w-80 border border-yellow-400/50 animate-[fadeIn_1s_ease-out]"
         >
-          {/* Header - เล็กลง */}
+          {/* Header */}
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
               <h3 className="text-lg font-bold text-gray-800 mb-1 flex items-center gap-2">
@@ -223,12 +241,12 @@ export default function GameTutorialOverlay({
             </button>
           </div>
 
-          {/* Description - เล็กลง */}
+          {/* Description */}
           <p className="text-sm text-gray-700 mb-4 leading-snug">
             {step.description}
           </p>
 
-          {/* Progress Bar - เล็กลง */}
+          {/* Progress Bar */}
           <div className="mb-3">
             <div className="h-0.5 bg-gray-200 rounded-full overflow-hidden">
               <div
@@ -238,7 +256,7 @@ export default function GameTutorialOverlay({
             </div>
           </div>
 
-          {/* Navigation - เล็กลง */}
+          {/* Navigation */}
           <div className="flex gap-2">
             {currentStep > 0 && (
               <button
@@ -248,7 +266,7 @@ export default function GameTutorialOverlay({
                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
-                ก่อนหน้า
+                {t.prev}
               </button>
             )}
             <button
@@ -257,14 +275,14 @@ export default function GameTutorialOverlay({
             >
               {currentStep === totalSteps - 1 ? (
                 <>
-                  เสร็จสิ้น
+                  {t.done}
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </>
               ) : (
                 <>
-                  ถัดไป
+                  {t.next}
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>

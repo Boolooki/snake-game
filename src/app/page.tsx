@@ -114,6 +114,7 @@ export default function Home() {
         {/* Tutorial Overlay */}
         {game.isActive && (
           <GameTutorialOverlay
+            language={game.language}
             step={game.currentStepData}
             currentStep={game.currentStep}
             totalSteps={game.totalSteps}
@@ -330,6 +331,7 @@ export default function Home() {
             game.setIsPaused(false);
           }}
           availableOptions={game.randomOptions}
+          language={game.language}
         />
       )}
     </div>

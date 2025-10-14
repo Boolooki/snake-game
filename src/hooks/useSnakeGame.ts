@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Position, Language } from "../types";
 import { INITIAL_SNAKE, SPEED } from "../constants/gameConstants";
-import { GAME_TUTORIAL_STEPS } from "@/constants/tutorialSteps";
+import {
+  GAME_TUTORIAL_STEPS_TH,
+  GAME_TUTORIAL_STEPS_ENG,
+} from "@/constants/tutorialSteps";
 import { isCollision, isOutOfBounds, getSpawnCounts } from "../utils/gameUtils";
 import { useSpecialStatus } from "./useSpecialStatus";
 import { useSpawning } from "./useSpawning";
@@ -12,19 +15,7 @@ import { useScoreSubmission } from "./useScoreSubmission";
 import { useCountdownTimer } from "./useCountdownTimer";
 import { useGameTutorial } from "./useGameTutorial";
 
-
-
 export const useSnakeGame = () => {
-  const {isActive,
-    currentStep,
-    currentStepData,
-    totalSteps,
-    hasCompleted,
-    startTutorial,
-    nextStep,
-    prevStep,
-    skipTutorial,
-    endTutorial,} = useGameTutorial(GAME_TUTORIAL_STEPS);
   const [gridSize, setGridSize] = useState({ columns: 40, rows: 20 }); // ค่าเริ่มต้น
   const [showRotateHint, setShowRotateHint] = useState(false);
 
@@ -74,6 +65,18 @@ export const useSnakeGame = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [triggerReset, setTriggerReset] = useState<boolean>(false);
   const [language, setLanguage] = useState<Language>("th");
+  const {
+    isActive,
+    currentStep,
+    currentStepData,
+    totalSteps,
+    hasCompleted,
+    startTutorial,
+    nextStep,
+    prevStep,
+    skipTutorial,
+    endTutorial,
+  } = useGameTutorial(language === "th"? GAME_TUTORIAL_STEPS_TH : GAME_TUTORIAL_STEPS_ENG);
   const { countdown, triggerCountdown, setCountdown, setIsLoading, isLoading } =
     useCountdownTimer({
       setIsPaused,
@@ -187,24 +190,24 @@ export const useSnakeGame = () => {
   }, [gridSize]);
 
   // เริ่ม tutorial อัตโนมัติเมื่อเกมเริ่มครั้งแรก
-    useEffect(() => {
-      if (hasStarted && !hasCompleted && !isActive) {
-        // Delay ให้เกม render objects ก่อน
-        const timer = setTimeout(() => {
-          setIsPaused(true); // Pause เกมระหว่าง tutorial
-          startTutorial();
-        }, 1500);
-  
-        return () => clearTimeout(timer);
-      }
-    }, [hasStarted, hasCompleted]);
-  
-    // Resume เกมเมื่อ tutorial จบ
-    useEffect(() => {
-      if (!isActive && hasCompleted && isPaused) {
-        triggerCountdown();
-      }
-    }, [isActive, hasCompleted]);
+  useEffect(() => {
+    if (hasStarted && !hasCompleted && !isActive) {
+      // Delay ให้เกม render objects ก่อน
+      const timer = setTimeout(() => {
+        setIsPaused(true); // Pause เกมระหว่าง tutorial
+        startTutorial();
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [hasStarted, hasCompleted]);
+
+  // Resume เกมเมื่อ tutorial จบ
+  useEffect(() => {
+    if (!isActive && hasCompleted && isPaused) {
+      triggerCountdown();
+    }
+  }, [isActive, hasCompleted]);
 
   useEffect(() => {
     if (countdown === 0) {

@@ -2,63 +2,106 @@
 import React, { useEffect, useState } from "react";
 import { SpecialStatusFlags } from "@/hooks/useSpecialStatus";
 import { useArrowKeySelector } from "@/hooks/useArrowKeySelector";
+import type { Language } from "@/types";
 
 type Props = {
   onSelect: (status: keyof SpecialStatusFlags) => void;
   availableOptions: (keyof SpecialStatusFlags)[];
+  language: Language;
 };
 
 const ALL_OPTIONS = {
   doubleScore: {
-    label: "เติบโตสมบูรณ์",
-    description: "ได้แต้มเพิ่มเป็นสองเท่าเมื่อกินอาหาร",
+    label: { th: "เติบโตสมบูรณ์", en: "Full Growth" },
+    description: { 
+      th: "ได้แต้มเพิ่มเป็นสองเท่าเมื่อกินอาหาร", 
+      en: "Get double points when eating food" 
+    },
     emoji: "⭐",
   },
   extendedSpeedBurst: {
-    label: "เร่งราวี",
-    description: "Speed Burst ยาวนานขึ้น 2 เท่า",
+    label: { th: "เร่งราวี", en: "Swift Rush" },
+    description: { 
+      th: "Speed Burst ยาวนานขึ้น 2 เท่า", 
+      en: "Speed Burst lasts 2x longer" 
+    },
     emoji: "🔥",
   },
   slowSpeed: {
-    label: "คืบคลาน",
-    description: "ลดความเร็วของงูลงเท่าตัว",
+    label: { th: "คืบคลาน", en: "Slow & Steady" },
+    description: { 
+      th: "ลดความเร็วของงูลงเท่าตัว", 
+      en: "Reduce snake speed by half" 
+    },
     emoji: "🐢",
   },
   moreProduceMoretribute: {
-    label: "เต็มไปหมด",
-    description: "อาหารเกิด +1 สุ่มระเบิด 3-10 ลูกแทน (จากเดิม 1-5 ลูก)",
+    label: { th: "เต็มไปหมด", en: "Abundance" },
+    description: { 
+      th: "อาหารเกิด +1 สุ่มระเบิด 3-10 ลูกแทน (จากเดิม 1-5 ลูก)", 
+      en: "+1 food spawn, bombs increase to 3-10 (from 1-5)" 
+    },
     emoji: "🍎",
   },
   safeHeaven: {
-    label: "สวรรค์ปัดป้อง",
-    description: "สุ่มได้ระเบิดเท่าไรจำนวนสุดท้ายจะ -2 ลูก",
+    label: { th: "สวรรค์ปัดป้อง", en: "Safe Haven" },
+    description: { 
+      th: "สุ่มได้ระเบิดเท่าไรจำนวนสุดท้ายจะ -2 ลูก", 
+      en: "Reduce final bomb count by 2" 
+    },
     emoji: "🛡️",
   },
   petrified: {
-    label: "กลัวจนขาแข็ง",
-    description: "การเก็บอาหารและบัฟจะไม่สุ่มตำแหน่งอาหารและบัฟ",
+    label: { th: "กลัวจนขาแข็ง", en: "Petrified" },
+    description: { 
+      th: "การเก็บอาหารและบัฟจะไม่สุ่มตำแหน่งอาหารและบัฟ", 
+      en: "Collecting items won't respawn new ones" 
+    },
     emoji: "😨",
   },
   chargingBehavior: {
-    label: "พุ่งลืมตาย",
-    description: "เมื่อเหยียบระเบิดจะได้ 3 แต้ม",
+    label: { th: "พุ่งลืมตาย", en: "Reckless Charge" },
+    description: { 
+      th: "เมื่อเหยียบระเบิดจะได้ 3 แต้ม", 
+      en: "Get 3 points when hitting bombs" 
+    },
     emoji: "💥",
   },
-  armadilloLike:{
-    label: "อาร์มาดิลโลเอง",
-    description: "โล่เก็บซ้อนได้",
+  armadilloLike: {
+    label: { th: "อาร์มาดิลโลเอง", en: "Armadillo" },
+    description: { 
+      th: "โล่เก็บซ้อนได้", 
+      en: "Shields can stack" 
+    },
     emoji: "🦔",
   },
   noLimitSpeed: {
-    label: "ไร้ขีดจำกัด",
-    description: "Speed Burst เวลาพื้นฐานเพิ่ม 3 วินาที",
+    label: { th: "ไร้ขีดจำกัด", en: "No Limits" },
+    description: { 
+      th: "Speed Burst เวลาพื้นฐานเพิ่ม 3 วินาที", 
+      en: "Speed Burst base duration +3 seconds" 
+    },
     emoji: "🚀",
+  },
+};
+
+const messages = {
+  th: {
+    title: "เลือกสถานะพิเศษ",
+    hint: "หรือคลิก",
+    footer: "💡 เลือกอัพเกรดที่เหมาะกับสไตล์การเล่นของคุณ",
+  },
+  en: {
+    title: "Choose Special Status",
+    hint: "or Click",
+    footer: "💡 Choose an upgrade that fits your playstyle",
   },
 };
 
 export default function SpecialStatusSelector({
   onSelect,
   availableOptions,
+  language,
 }: Props) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -69,10 +112,13 @@ export default function SpecialStatusSelector({
 
   const options = availableOptions.map((key) => ({
     key,
-    ...ALL_OPTIONS[key],
+    label: ALL_OPTIONS[key].label[language],
+    description: ALL_OPTIONS[key].description[language],
+    emoji: ALL_OPTIONS[key].emoji,
   }));
 
   const { selectedIndex } = useArrowKeySelector(availableOptions, onSelect, true);
+  const t = messages[language];
 
   return (
     <div
@@ -137,7 +183,7 @@ export default function SpecialStatusSelector({
             `}
             style={{ transitionDelay: "0.3s" }}
           >
-            เลือกสถานะพิเศษ
+            {t.title}
           </h2>
 
           <p
@@ -149,15 +195,15 @@ export default function SpecialStatusSelector({
             `}
             style={{ transitionDelay: "0.35s" }}
           >
-            ใช้{" "}
+            {language === "th" ? "ใช้" : "Use"}{" "}
             <kbd className="px-2 py-1 landscape:px-1.5 landscape:py-0.5 bg-gray-100 rounded text-xs landscape:text-[10px]">
               ↑↓
             </kbd>{" "}
-            และ{" "}
+            {language === "th" ? "และ" : "and"}{" "}
             <kbd className="px-2 py-1 landscape:px-1.5 landscape:py-0.5 bg-gray-100 rounded text-xs landscape:text-[10px]">
               Enter
             </kbd>{" "}
-            หรือคลิก
+            {t.hint}
           </p>
         </div>
 
@@ -170,7 +216,7 @@ export default function SpecialStatusSelector({
               className={`
                 relative bg-white/60 backdrop-blur-sm 
                 rounded-2xl landscape:rounded-xl 
-                p-4 landscap:ep-2
+                p-4 landscape:p-2
                 cursor-pointer border-2 transition-all duration-200 ease-out
                 ${
                   idx === selectedIndex
@@ -237,7 +283,7 @@ export default function SpecialStatusSelector({
           style={{ transitionDelay: `${0.4 + options.length * 0.1}s` }}
         >
           <p className="text-xs landscape:text-[10px] text-gray-400">
-            💡 เลือกอัพเกรดที่เหมาะกับสไตล์การเล่นของคุณ
+            {t.footer}
           </p>
         </div>
       </div>
