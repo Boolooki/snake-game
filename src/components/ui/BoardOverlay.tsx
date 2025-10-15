@@ -17,12 +17,16 @@ const fallbackLanguage: Language = "en";
 
 export default function BoardOverlay({
   isTutorial,
+  isShowWallAnimation,
+  isBombAnimation,
   isGameOver,
   isPaused,
   language,
   countdown,
   isLevelingUp, // เพิ่ม prop นี้
 }: {
+  isShowWallAnimation: boolean;
+  isBombAnimation: boolean;
   isTutorial: boolean;
   isGameOver: boolean;
   isPaused: boolean;
@@ -32,9 +36,10 @@ export default function BoardOverlay({
 }) {
   if (countdown !== null && countdown > 0) return null;
   if (!isGameOver && !isPaused) return null;
-  
+
   // ซ่อนถ้ากำลัง level up
-  if (isLevelingUp || isTutorial) return null;
+  if (isLevelingUp || isTutorial || isBombAnimation || isShowWallAnimation)
+    return null;
 
   const safeLanguage = messages[language] ? language : fallbackLanguage;
   const message = isGameOver

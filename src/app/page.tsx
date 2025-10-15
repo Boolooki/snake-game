@@ -20,6 +20,8 @@ import { useUIVisibility } from "@/hooks/useUIVisibility";
 import LeaderboardModal from "@/components/leaderbaord/LeaderboardModal";
 import GameTutorialOverlay from "@/components/ui/GameTutorialOverlay";
 import Tutorial from "@/components/ui/Tutorial";
+import BombCollisionAnimation from "@/components/ui/BombCollisionAnimation";
+import WallCollisionAnimation from "@/components/ui/WallCollisionAnimation";
 
 export default function Home() {
   const game = useSnakeGame();
@@ -64,14 +66,14 @@ export default function Home() {
           {/* SVG สำหรับ clip-path คลื่น */}
           <svg className="absolute top-0 left-0 w-full h-32 overflow-hidden">
             <path
-              d="M0,30 C150,80 350,0 500,30 L500,00 L0,0 Z"
+              d="M0,30 C150,80 350,0 100,30 L500,00 L0,0 Z"
               fill="rgba(255,255,255,0.5)"
               style={{
                 animation: "waveMove 6s linear infinite",
               }}
             />
             <path
-              d="M0,40 C150,90 350,10 500,40 L500,00 L0,0 Z"
+              d="M0,40 C150,90 350,10 100,40 L500,00 L0,0 Z"
               fill="rgba(255,255,255,0.3)"
               style={{
                 animation: "waveMove 8s linear infinite reverse",
@@ -142,6 +144,15 @@ export default function Home() {
         language={game.language}
         onLangToggle={game.onLangToggle}
       />
+      {game.showBombAnimation && (
+        <BombCollisionAnimation onComplete={game.handleBombAnimationComplete} />
+      )}
+      {game.showWallAnimation && (
+        <WallCollisionAnimation
+          onComplete={game.handleWallAnimationComplete}
+          direction={game.collisionDirection}
+        />
+      )}
 
       {/* Game Board */}
       <Board
@@ -161,6 +172,8 @@ export default function Home() {
         countdown={game.countdown}
         showLevelUpNotification={game.showLevelUpNotification}
         upgradeQueue={game.upgradeQueue}
+        isBombAnimation={game.showBombAnimation}
+        isShowWallAnimation={game.showWallAnimation}
       />
 
       <div
@@ -185,6 +198,8 @@ export default function Home() {
           flex space-x-4 landscape:space-x-[50vw]
           ${
             (!game.countdown &&
+              !game.showWallAnimation &&
+              !game.showBombAnimation &&
               game.isPaused &&
               !game.upgradeQueue &&
               !game.showLevelUpNotification &&
@@ -211,6 +226,9 @@ export default function Home() {
           transition-all duration-500 ease-out
           ${
             !game.countdown &&
+            !game.showBombAnimation &&
+            !game.showWallAnimation &&
+            !game.isGameOver &&
             game.isPaused &&
             !game.upgradeQueue &&
             !game.showLevelUpNotification &&
@@ -233,6 +251,8 @@ export default function Home() {
           ${
             (!game.countdown &&
               game.isPaused &&
+              !game.showWallAnimation &&
+              !game.showBombAnimation &&
               !game.upgradeQueue &&
               !game.showLevelUpNotification &&
               !game.isActive) ||
@@ -275,7 +295,9 @@ export default function Home() {
           ${
             (!game.countdown &&
               game.isPaused &&
+              !game.showWallAnimation &&
               !game.upgradeQueue &&
+              !game.showBombAnimation &&
               !game.showLevelUpNotification &&
               !game.isActive) ||
             game.isGameOver ||

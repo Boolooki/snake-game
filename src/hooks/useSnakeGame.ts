@@ -17,6 +17,11 @@ import { useGameTutorial } from "./useGameTutorial";
 
 export const useSnakeGame = () => {
   const [gridSize, setGridSize] = useState({ columns: 40, rows: 20 }); // ค่าเริ่มต้น
+  const [showBombAnimation, setShowBombAnimation] = useState(false);
+  const [showWallAnimation, setShowWallAnimation] = useState(false);
+  const [collisionDirection, setCollisionDirection] = useState<
+    "UP" | "DOWN" | "LEFT" | "RIGHT"
+  >("UP");
   const [showRotateHint, setShowRotateHint] = useState(false);
 
   useEffect(() => {
@@ -76,7 +81,9 @@ export const useSnakeGame = () => {
     prevStep,
     skipTutorial,
     endTutorial,
-  } = useGameTutorial(language === "th"? GAME_TUTORIAL_STEPS_TH : GAME_TUTORIAL_STEPS_ENG);
+  } = useGameTutorial(
+    language === "th" ? GAME_TUTORIAL_STEPS_TH : GAME_TUTORIAL_STEPS_ENG
+  );
   const { countdown, triggerCountdown, setCountdown, setIsLoading, isLoading } =
     useCountdownTimer({
       setIsPaused,
@@ -221,6 +228,11 @@ export const useSnakeGame = () => {
     }
   }, [upgradeQueue]);
 
+  const handleWallAnimationComplete = useCallback(() => {
+    setShowWallAnimation(false);
+    setIsGameOver(true);
+  }, []);
+
   useEffect(() => {
     if (energyShield > 0 || isSpeedBurst) {
       setTriggerBuffPanel(true);
@@ -271,7 +283,9 @@ export const useSnakeGame = () => {
 
       requestAnimationFrame(() => {
         if (isCollision(prevSnake, head) || isOutOfBounds(head, gridSize)) {
-          setIsGameOver(true);
+          setCollisionDirection(dir);
+          setShowWallAnimation(true);
+          setIsPaused(true);
         }
         if (
           bombs.some(
@@ -279,7 +293,8 @@ export const useSnakeGame = () => {
           )
         ) {
           setScore((prev) => prev + (isChargingBehavior ? 3 : 0));
-          setIsGameOver(true);
+          setShowBombAnimation(true);
+          setIsPaused(true);
         }
       });
 
@@ -437,6 +452,11 @@ export const useSnakeGame = () => {
     return SPEED; // ปกติ
   })();
 
+  const handleBombAnimationComplete = useCallback(() => {
+    setShowBombAnimation(false);
+    setIsGameOver(true);
+  }, []);
+
   useEffect(() => {
     if (isPaused || isGameOver || countdown !== null) return;
 
@@ -584,5 +604,10 @@ export const useSnakeGame = () => {
     prevStep,
     skipTutorial,
     endTutorial,
+    showBombAnimation,
+    handleBombAnimationComplete,
+    showWallAnimation,
+    collisionDirection,
+    handleWallAnimationComplete,
   };
 };

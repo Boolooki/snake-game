@@ -4,7 +4,7 @@ export default function CountdownOverlay({ count }: { count: number }) {
   if (count >= 10) return null;
 
   return (
-    <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-50">
+    <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-48">
       {/* Backdrop blur */}
       <div className="absolute inset-0 bg-black/20 animate-[fadeIn_0.3s_ease-out]" />
 

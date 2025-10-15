@@ -11,6 +11,8 @@ export default function Board({
   gridSize,
   snakefacedirction,
   isTutorial,
+  isBombAnimation,
+  isShowWallAnimation,
   ...game
 }: PropsBoard) {
   return (
@@ -53,7 +55,9 @@ export default function Board({
       ))}
 
       <BoardOverlay
+        isShowWallAnimation={isShowWallAnimation}
         isTutorial={isTutorial}
+        isBombAnimation={isBombAnimation}
         isGameOver={game.isGameOver}
         isPaused={game.isPaused}
         language={game.language}
