@@ -84,79 +84,85 @@ export default function GameTutorialOverlay({
     let top = 0;
     let transform = "";
 
-    switch (position) {
-      case "top":
-        left = targetRect.left + targetRect.width / 2;
-        top = targetRect.top - padding;
-        transform = "translate(-50%, -100%)";
-        
-        if (top - tooltipSize.height < 0) {
-          position = "bottom";
-          top = targetRect.bottom + padding;
-          transform = "translate(-50%, 0)";
-        }
-        break;
-
-      case "bottom":
-        left = targetRect.left + targetRect.width / 2;
-        top = targetRect.bottom + padding;
-        transform = "translate(-50%, 0)";
-        
-        if (top + tooltipSize.height > viewport.height) {
-          position = "top";
+    if (currentStep === 0) {
+      left = (viewport.width - tooltipSize.width + 50) / 2; // กลางแนวนอน
+      top = (viewport.height - tooltipSize.height) / 2; // กลางแนวตั้ง
+      transform = "translate(0, 0)"; // ไม่ต้องปรับตำแหน่งเพิ่ม
+    } else {
+      switch (position) {
+        case "top":
+          left = targetRect.left + targetRect.width / 2;
           top = targetRect.top - padding;
           transform = "translate(-50%, -100%)";
-        }
-        break;
+          
+          if (top - tooltipSize.height < 0) {
+            position = "bottom";
+            top = targetRect.bottom + padding;
+            transform = "translate(-50%, 0)";
+          }
+          break;
 
-      case "left":
-        left = targetRect.left - padding;
-        top = targetRect.top + targetRect.height / 2;
-        transform = "translate(-100%, -50%)";
-        
-        if (left - tooltipSize.width < 0) {
-          position = "right";
-          left = targetRect.right + padding;
-          transform = "translate(0, -50%)";
-        }
-        break;
+        case "bottom":
+          left = targetRect.left + targetRect.width / 2;
+          top = targetRect.bottom + padding;
+          transform = "translate(-50%, 0)";
+          
+          if (top + tooltipSize.height > viewport.height) {
+            position = "top";
+            top = targetRect.top - padding;
+            transform = "translate(-50%, -100%)";
+          }
+          break;
 
-      case "right":
-        left = targetRect.right + padding;
-        top = targetRect.top + targetRect.height / 2;
-        transform = "translate(0, -50%)";
-        
-        if (left + tooltipSize.width > viewport.width) {
-          position = "left";
+        case "left":
           left = targetRect.left - padding;
+          top = targetRect.top + targetRect.height / 2;
           transform = "translate(-100%, -50%)";
-        }
-        break;
-    }
+          
+          if (left - tooltipSize.width < 0) {
+            position = "right";
+            left = targetRect.right + padding;
+            transform = "translate(0, -50%)";
+          }
+          break;
 
-    if (position === "top" || position === "bottom") {
-      const tooltipLeft = left - tooltipSize.width / 2;
-      const tooltipRight = left + tooltipSize.width / 2;
-
-      if (tooltipLeft < padding) {
-        left = tooltipSize.width / 2 + padding;
-        transform = "translate(-50%, " + (position === "top" ? "-100%" : "0") + ")";
-      } else if (tooltipRight > viewport.width - padding) {
-        left = viewport.width - tooltipSize.width / 2 - padding;
-        transform = "translate(-50%, " + (position === "top" ? "-100%" : "0") + ")";
+        case "right":
+          left = targetRect.right + padding;
+          top = targetRect.top + targetRect.height / 2;
+          transform = "translate(0, -50%)";
+          
+          if (left + tooltipSize.width > viewport.width) {
+            position = "left";
+            left = targetRect.left - padding;
+            transform = "translate(-100%, -50%)";
+          }
+          break;
       }
-    }
 
-    if (position === "left" || position === "right") {
-      const tooltipTop = top - tooltipSize.height / 2;
-      const tooltipBottom = top + tooltipSize.height / 2;
+      if (position === "top" || position === "bottom") {
+        const tooltipLeft = left - tooltipSize.width / 2;
+        const tooltipRight = left + tooltipSize.width / 2;
 
-      if (tooltipTop < padding) {
-        top = tooltipSize.height / 2 + padding;
-        transform = "translate(" + (position === "left" ? "-100%" : "0") + ", -50%)";
-      } else if (tooltipBottom > viewport.height - padding) {
-        top = viewport.height - tooltipSize.height / 2 - padding;
-        transform = "translate(" + (position === "left" ? "-100%" : "0") + ", -50%)";
+        if (tooltipLeft < padding) {
+          left = tooltipSize.width / 2 + padding;
+          transform = "translate(-50%, " + (position === "top" ? "-100%" : "0") + ")";
+        } else if (tooltipRight > viewport.width - padding) {
+          left = viewport.width - tooltipSize.width / 2 - padding;
+          transform = "translate(-50%, " + (position === "top" ? "-100%" : "0") + ")";
+        }
+      }
+
+      if (position === "left" || position === "right") {
+        const tooltipTop = top - tooltipSize.height / 2;
+        const tooltipBottom = top + tooltipSize.height / 2;
+
+        if (tooltipTop < padding) {
+          top = tooltipSize.height / 2 + padding;
+          transform = "translate(" + (position === "left" ? "-100%" : "0") + ", -50%)";
+        } else if (tooltipBottom > viewport.height - padding) {
+          top = viewport.height - tooltipSize.height / 2 - padding;
+          transform = "translate(" + (position === "left" ? "-100%" : "0") + ", -50%)";
+        }
       }
     }
 
